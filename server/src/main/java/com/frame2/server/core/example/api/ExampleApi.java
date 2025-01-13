@@ -33,4 +33,5 @@ public class ExampleApi {
     public void remove(@PathVariable("exampleId") Long exampleId) {
 
     }
+
 }

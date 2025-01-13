@@ -12,4 +12,5 @@ public interface ExampleService {
     void remove();
 
     ExampleSearchResponse find();
+
 }

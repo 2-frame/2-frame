@@ -31,8 +31,7 @@ public class ExampleServiceImpl implements ExampleService {
     @Override
     @Transactional(readOnly = true)
     public ExampleSearchResponse find() {
-        return ExampleSearchResponse.of(
-                exampleRepository.findAll()
-        );
+        return ExampleSearchResponse.of(exampleRepository.findAll());
     }
+
 }

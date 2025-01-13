@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Example extends BaseEntity {
 
     private String name;
+
     private String description;
 
     @Builder
@@ -22,4 +23,5 @@ public class Example extends BaseEntity {
         this.name = name;
         this.description = description;
     }
+
 }
