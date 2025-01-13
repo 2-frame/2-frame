@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/frame2_dev
+    password: password
+    driver-class-name: com.mysql.jdbc.Driver
