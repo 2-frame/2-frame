@@ -11,6 +11,8 @@ group = "${projectGroup}"
 version = "${applicationVersion}"
 sourceCompatibility = project.javaVersion
 
+jar.enabled = false
+
 repositories {
     mavenCentral()
 }
