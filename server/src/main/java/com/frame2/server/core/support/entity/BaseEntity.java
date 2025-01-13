@@ -1,6 +1,8 @@
-package com.frame2.server.core.common.entity;
+package com.frame2.server.core.support.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -13,12 +15,14 @@ public class BaseEntity {
 
     @Id
     @Getter
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 

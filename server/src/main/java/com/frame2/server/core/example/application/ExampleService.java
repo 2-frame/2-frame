@@ -1,4 +1,4 @@
-package com.frame2.server.core.example.service;
+package com.frame2.server.core.example.application;
 
 import com.frame2.server.core.example.payload.ExampleRegisterRequest;
 import com.frame2.server.core.example.payload.ExampleSearchResponse;

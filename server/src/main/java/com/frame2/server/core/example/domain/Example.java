@@ -1,6 +1,6 @@
 package com.frame2.server.core.example.domain;
 
-import com.frame2.server.core.common.entity.BaseEntity;
+import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
