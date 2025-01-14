@@ -11,7 +11,7 @@ spring:
       local: local
       local-dev: local-dev
 
-    active: local-dev
+    active: local
   config:
     import:
       - logging.yml

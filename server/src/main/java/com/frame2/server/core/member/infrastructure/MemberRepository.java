@@ -12,6 +12,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                 .orElseThrow(() -> new DomainException(ExceptionType.MEMBER_NOT_FOUND));
     }
 
+    boolean existsByNickname(String nickname);
+
     boolean existsByEmail(String email);
 
     Optional<Member> findByEmail(String email);

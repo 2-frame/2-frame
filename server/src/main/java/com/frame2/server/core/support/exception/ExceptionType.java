@@ -11,10 +11,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ExceptionType {
 
-    DUPLICATE_MEMBER_ERROR(HttpStatus.BAD_REQUEST, ExceptionCode.A01, "중복된 이메일로 회원가입했습니다.", LogLevel.INFO),
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, ExceptionCode.A02, "회원이 존재하지 않습니다.", LogLevel.INFO),
-    DEFAULT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ExceptionCode.E500, "알 수 없는 이유로 서버에서 요청을 처리할 수 없습니다.",
-            LogLevel.ERROR);
+    DEFAULT_ERROR(INTERNAL_SERVER_ERROR, E500, "알 수 없는 이유로 서버에서 요청을 처리할 수 없습니다.", ERROR),
+    DUPLICATE_NICKNAME(ExceptionCode.A01, "중복된 닉네임으로 회원가입했습니다."),
+    MEMBER_NOT_FOUND(ExceptionCode.A02, "회원이 존재하지 않습니다."),
+    DUPLICATE_EMAIL(ExceptionCode.A03, "중복된 이메일로 회원가입했습니다."),
+    ;
+
 
     private final HttpStatus status;
 

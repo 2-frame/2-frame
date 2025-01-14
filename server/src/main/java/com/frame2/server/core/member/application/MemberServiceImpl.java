@@ -24,6 +24,10 @@ public class MemberServiceImpl implements MemberService {
             throw new DomainException(ExceptionType.DUPLICATE_EMAIL);
         }
 
+        if (memberRepository.existsByNickname(signupRequest.nickname())) {
+            throw new DomainException(ExceptionType.DUPLICATE_NICKNAME);
+        }
+
         var member = memberRepository.save(signupRequest.toEntity());
         basicAuthenticationRepository.save(signupRequest.toEntity(member));
 

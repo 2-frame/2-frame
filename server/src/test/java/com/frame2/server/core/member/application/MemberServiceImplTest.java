@@ -4,6 +4,7 @@ import static com.frame2.server.core.support.exception.ExceptionType.DUPLICATE_E
 import static com.frame2.server.core.support.exception.ExceptionType.DUPLICATE_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.member.payload.request.SignupRequest;
@@ -14,8 +15,10 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@Transactional
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class MemberServiceImplTest {
 
