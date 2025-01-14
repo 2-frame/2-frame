@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public SignupInfo signup(SignupRequest signupRequest) {
         if (memberRepository.existsByEmail(signupRequest.email())) {
-            throw new DomainException(ExceptionType.DUPLICATE_MEMBER_ERROR);
+            throw new DomainException(ExceptionType.DUPLICATE_EMAIL);
         }
 
         var member = memberRepository.save(signupRequest.toEntity());
