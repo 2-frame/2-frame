@@ -23,13 +23,20 @@ class MemberServiceImplTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
+    
     @Test
     @DisplayName("회원가입 성공한다")
     void 회원가입_성공() {
-        memberService.signup(new SignupRequest("의연", "euiyeon@gmail.com", "의연", "1234"));
+        var signupInfo = memberService.signup(new SignupRequest("의연", "euiyeon@gmail.com", "의연", "1234"));
 
         // 회원가입 성공하면 회원 하나 증가
+        var member = memberRepository.findOne(signupInfo.memberId());
+
+        assertAll(
+                () -> assertThat(member.getName()).isEqualTo("의연"),
+                () -> assertThat(member.getEmail()).isEqualTo("euiyeon@gmail.com")
+        );
+
         assertThat(memberRepository.count())
                 .isEqualTo(1);
     }

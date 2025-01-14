@@ -1,6 +1,8 @@
 package com.frame2.server.core.member.application;
 
+import com.frame2.server.core.member.infrastructure.BasicAuthenticationRepository;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
+import com.frame2.server.core.member.payload.SignupInfo;
 import com.frame2.server.core.member.payload.request.SignupRequest;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
@@ -14,13 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final BasicAuthenticationRepository basicAuthenticationRepository;
 
     @Override
-    public void signup(SignupRequest signupRequest) {
+    public SignupInfo signup(SignupRequest signupRequest) {
         if (memberRepository.existsByEmail(signupRequest.email())) {
             throw new DomainException(ExceptionType.DUPLICATE_MEMBER_ERROR);
         }
-        memberRepository.save(signupRequest.toEntity());
+
+        var member = memberRepository.save(signupRequest.toEntity());
+        basicAuthenticationRepository.save(signupRequest.toEntity(member));
+
+        return new SignupInfo(member.getId());
     }
 
 }

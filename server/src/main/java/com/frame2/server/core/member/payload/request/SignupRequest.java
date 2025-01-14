@@ -1,5 +1,6 @@
 package com.frame2.server.core.member.payload.request;
 
+import com.frame2.server.core.member.domain.BasicAuthentication;
 import com.frame2.server.core.member.domain.Member;
 
 public record SignupRequest(
@@ -14,6 +15,14 @@ public record SignupRequest(
                 .email(email)
                 .name(name)
                 .nickname(nickname)
+                .build();
+    }
+
+    public BasicAuthentication toEntity(Member member) {
+        return BasicAuthentication.builder()
+                .member(member)
+                .email(email)
+                .password(password)
                 .build();
     }
 }
