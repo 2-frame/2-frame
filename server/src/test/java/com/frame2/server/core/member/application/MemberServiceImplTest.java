@@ -1,10 +1,12 @@
 package com.frame2.server.core.member.application;
 
+import static com.frame2.server.core.support.exception.ExceptionType.DUPLICATE_MEMBER_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.member.payload.request.SignupRequest;
+import com.frame2.server.core.support.exception.DomainException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -37,6 +39,7 @@ class MemberServiceImplTest {
         assertThatThrownBy(() -> {
             memberService.signup(new SignupRequest("의연", "euiyeon@gmail.com", "의연", "1234"));
             memberService.signup(new SignupRequest("의연", "euiyeon@gmail.com", "의연", "1234"));
-        }).isInstanceOf(Exception.class);
+        }).isInstanceOf(DomainException.class)
+                .hasMessageContaining(DUPLICATE_MEMBER_ERROR.getMessage());
     }
 }
