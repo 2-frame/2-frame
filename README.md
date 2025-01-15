@@ -60,3 +60,6 @@ public class Two2Frame{
 
 ### (3) 브랜치 생성 규칙
 - 작업은 이슈 번호를 기반으로 브랜치를 생성하여 진행합니다.
+
+## 🌿4. ERD
+![frame2_20250115.drawio.png](img/frame2_20250115.drawio.png)
