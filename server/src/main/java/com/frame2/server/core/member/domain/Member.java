@@ -29,5 +29,4 @@ public class Member extends BaseEntity {
         this.email = email;
         this.accountStatus = AccountStatus.INIT;
     }
-
 }
