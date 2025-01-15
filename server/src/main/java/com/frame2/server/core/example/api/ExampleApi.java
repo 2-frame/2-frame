@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/examples")
-public class ExampleApi {
+public class ExampleApi implements ExampleApiSpec {
 
     @GetMapping
     public void get() {
