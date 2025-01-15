@@ -15,7 +15,7 @@ public enum ExceptionType {
     DUPLICATE_NICKNAME(ExceptionCode.A01, "중복된 닉네임으로 회원가입했습니다."),
     MEMBER_NOT_FOUND(ExceptionCode.A02, "회원이 존재하지 않습니다."),
     DUPLICATE_EMAIL(ExceptionCode.A03, "중복된 이메일로 회원가입했습니다."),
-    ;
+    LOGIN_FAIL(ExceptionCode.A04, "존재하지 않는 아이디 혹은 이메일입니다.");
 
 
     private final HttpStatus status;

@@ -1,8 +1,11 @@
 package com.frame2.server.core.member.application;
 
+import com.frame2.server.core.member.domain.BasicAuthentication;
 import com.frame2.server.core.member.infrastructure.BasicAuthenticationRepository;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
+import com.frame2.server.core.member.payload.SignInInfo;
 import com.frame2.server.core.member.payload.SignupInfo;
+import com.frame2.server.core.member.payload.request.SignInRequest;
 import com.frame2.server.core.member.payload.request.SignupRequest;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
@@ -32,6 +35,15 @@ public class MemberServiceImpl implements MemberService {
         basicAuthenticationRepository.save(signupRequest.toEntity(member));
 
         return new SignupInfo(member.getId());
+    }
+
+    @Override
+    public SignInInfo signIn(SignInRequest signInRequest) {
+        return basicAuthenticationRepository.findByEmail(signInRequest.email())
+                .filter(authentication -> authentication.comparePassword(signInRequest.password()))
+                .map(BasicAuthentication::getMemberId)
+                .map(SignInInfo::new)
+                .orElseThrow(() -> new DomainException(ExceptionType.LOGIN_FAIL));
     }
 
 }
