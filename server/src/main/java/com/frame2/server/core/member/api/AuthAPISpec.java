@@ -12,5 +12,4 @@ public interface AuthAPISpec {
 
     void signIn(SignInRequest signInRequest, HttpSession httpSession);
 
-
 }
