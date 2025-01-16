@@ -4,12 +4,10 @@ import com.frame2.server.core.product.application.ProductService;
 import com.frame2.server.core.product.payload.response.ProductListResponse;
 import com.frame2.server.core.product.payload.response.ProductResponse;
 import com.frame2.server.core.product.payload.response.ProductSearchResponse;
-import com.frame2.server.core.support.entity.BaseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.annotation.Repeatable;
 import java.util.List;
 
 @RestController
