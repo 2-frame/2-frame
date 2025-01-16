@@ -19,6 +19,9 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "delete_status", nullable = false)
+    private boolean deleteStatus;
+
     @Column
     @CreationTimestamp
     private LocalDateTime createdAt;
