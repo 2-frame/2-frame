@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+    
     default CartItem findOne(Long id) {
         return findById(id)
                 .orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_NOT_FOUND));

@@ -3,7 +3,12 @@ package com.frame2.server.core.cart.domain;
 import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +27,6 @@ public class CartItem extends BaseEntity {
     @JoinColumn(name = "sale_product_id")
     private SaleProduct saleProduct;
 
+    @Column(nullable = false)
     private int quantity;
 }
