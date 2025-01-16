@@ -10,21 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-
-// 회원 - 나중에 조인 해야함
-//private String user;
-
-//        private String question;
-//        private String manager;
-//        private String answer;
-//        private boolean answer_YN;
-//        private boolean isDeleted;
-//        private Date answer_date;
-//private LocalDateTime createdAt;
-//private LocalDateTime updatedAt;
-
 public record SimpleProductQnA(Long id,
-                               String user,
+                               String user_id,
                                String question,
                                String answer,
                                boolean answer_YN,
@@ -35,9 +22,13 @@ public record SimpleProductQnA(Long id,
     public static SimpleProductQnA from(ProductQnA productQnA) {
         return new SimpleProductQnA(
                 productQnA.getId(),
-                productQnA.getUser(),
-                productQnA.getQuestion()),
-                productQnA.
-
+                productQnA.getUser_id(),
+                productQnA.getQuestion(),
+                productQnA.getAnswer(),
+                productQnA.isAnswer_YN(),
+                productQnA.getAnswer_date(),
+                productQnA.getCreatedAt(),
+                productQnA.getUpdatedAt()
+        );
     }
 }

@@ -1,31 +1,30 @@
 package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductQnA;
-import com.frame2.server.core.board.payload.ProductQnARegisterRequest;
-import com.frame2.server.core.board.payload.ProductQnASearchResponse;
-import com.frame2.server.core.example.payload.ExampleRegisterRequest;
-
-import java.util.List;
+import com.frame2.server.core.board.payload.request.ProductQnAAnswerRegisterRequest;
+import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
+import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
+import com.frame2.server.core.board.payload.response.ProductQnASearchAllResponse;
+import com.frame2.server.core.board.payload.response.ProductQnASearchResponse;
 
 public interface ProductQnAdService {
 
-    // Question
+    // 셍성 : 질문
     ProductQnA questionCreate(ProductQnARegisterRequest request);
 
     // 수정 : 질문 수정
-    ProductQnA questionModify(ProductQnARegisterRequest request);
+    ProductQnA questionModify(ProductQnAModifyRequest request, Long id);
 
-    // 수정 : Answer
-    ProductQnA answer();
+    // 수정 : 답변 수정
+    ProductQnA answer(ProductQnAAnswerRegisterRequest request, Long id);
 
-    // Question 삭제
-    void remove();
+    // 질문 삭제
+    void remove(Long id);
 
-    // 조회가 꼭 필요한지 모르겠으나 일단 만듦
-    ProductQnASearchResponse searchOne();
+    // 질문 조회
+    ProductQnASearchResponse searchOne(Long id);
 
-//    ProductQnA searchOne();
-
-    List<ProductQnA> searchAll();
+    // 질문 리스트
+    ProductQnASearchAllResponse searchAll();
 
 }
