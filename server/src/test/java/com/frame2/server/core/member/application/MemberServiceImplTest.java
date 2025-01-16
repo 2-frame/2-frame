@@ -92,7 +92,7 @@ class MemberServiceImplTest {
 
             assertAll(
                     () -> assertThatThrownBy(
-                            () -> memberService.signIn(new SignInRequest("uunknown@gmail.com", "password")))
+                            () -> memberService.signIn(new SignInRequest("unknown@gmail.com", "password")))
                             .isInstanceOf(DomainException.class)
                             .hasMessageContaining(LOGIN_FAIL.getMessage()),
                     () -> assertThatThrownBy(

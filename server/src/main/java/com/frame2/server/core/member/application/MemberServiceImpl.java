@@ -43,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public SignInInfo signIn(SignInRequest signInRequest) {
         return memberCredentialRepository.findByEmail(signInRequest.email())
-                .filter(authentication -> authentication.tryLogin(signInRequest.password()) == LoginStatus.FAIL)
+                .filter(authentication -> authentication.tryLogin(signInRequest.password()) == LoginStatus.OK)
                 .map(MemberCredential::getMemberId)
                 .map(SignInInfo::new)
                 .orElseThrow(() -> new DomainException(ExceptionType.LOGIN_FAIL));

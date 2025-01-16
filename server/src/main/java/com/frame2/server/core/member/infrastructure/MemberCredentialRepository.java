@@ -8,3 +8,4 @@ public interface MemberCredentialRepository extends JpaRepository<MemberCredenti
 
     Optional<MemberCredential> findByEmail(String email);
 }
+
