@@ -1,11 +1,6 @@
 package com.frame2.server.core.board.payload;
 
 import com.frame2.server.core.board.domain.ProductQnA;
-import com.frame2.server.core.example.domain.Example;
-import com.frame2.server.core.example.payload.SimpleExample;
-import jakarta.persistence.Column;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;

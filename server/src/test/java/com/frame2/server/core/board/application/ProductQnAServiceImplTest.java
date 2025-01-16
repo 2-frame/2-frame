@@ -2,12 +2,9 @@ package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductQnA;
 import com.frame2.server.core.board.infrastructure.ProductQnARepository;
-import com.frame2.server.core.board.payload.request.ProductQnAAnswerRegisterRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnASearchAllResponse;
-import com.frame2.server.core.board.payload.response.ProductQnASearchResponse;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class ProductQnAServiceImplTest {
@@ -61,26 +56,25 @@ class ProductQnAServiceImplTest {
         ProductQnA productQnA = repository.findById(1L).orElseThrow();
         System.out.println("productQnA = " + productQnA);
 
-
     }
 
 
     @Test
     @DisplayName("QnA 조회 테스트")
-    public void searchOneTest(){
+    public void searchOneTest() {
         ProductQnA productQnA = productQnAService.searchOne(1L).productQnA();
         assertEquals(1L, productQnA.getId());
     }
 
     @Test
     @DisplayName("QnA 전체 조회 테스트")
-    public void searchAllTest(){
+    public void searchAllTest() {
         ProductQnASearchAllResponse productQnASearchAllResponse = productQnAService.searchAll();
         List<ProductQnA> list = productQnASearchAllResponse.list();
 
         assertEquals(10, list.size());
     }
-    
+
 //    @Test
 //    @DisplayName("답변 생성")
 //    public void answer(){
@@ -91,5 +85,5 @@ class ProductQnAServiceImplTest {
 //        ProductQnA productQnA = productQnASearchResponse.productQnA();
 //        System.out.println("productQnA = " + productQnA);
 //    }
-    
+
 }
