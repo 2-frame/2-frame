@@ -1,6 +1,7 @@
 package com.frame2.server.core.member.domain;
 
 import com.frame2.server.core.support.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -14,12 +15,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "basic_authentications")
+@Table(name = "member_credentials")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BasicAuthentication extends BaseEntity {
+public class MemberCredential extends BaseEntity {
 
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     private int tryCount;
@@ -29,11 +31,20 @@ public class BasicAuthentication extends BaseEntity {
     private Member member;
 
     @Builder
-    public BasicAuthentication(Member member, String email, String password) {
+    public MemberCredential(Member member, String email, String password) {
         this.member = member;
         this.email = email;
         this.password = password;
         this.tryCount = 0;
+    }
+
+    public LoginStatus tryLogin(String password) {
+        if (password.equals(this.password)) {
+            return LoginStatus.OK;
+        }
+
+        tryCount += 1;
+        return LoginStatus.FAIL;
     }
 
     public boolean comparePassword(String password) {
@@ -42,5 +53,9 @@ public class BasicAuthentication extends BaseEntity {
 
     public Long getMemberId() {
         return member.getId();
+    }
+
+    public boolean isAccountLocked() {
+        return member.getAccountStatus() == AccountStatus.STOP;
     }
 }

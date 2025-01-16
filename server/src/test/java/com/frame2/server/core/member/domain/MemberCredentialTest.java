@@ -7,11 +7,11 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class BasicAuthenticationTest {
+class MemberCredentialTest {
 
     @Test
     void 비밀번호를_비교하여_결과를_반환합니다() {
-        var basicAuthentication = new BasicAuthentication(new Member(), "email@email.com", "real-password");
+        var basicAuthentication = new MemberCredential(new Member(), "email@email.com", "real-password");
 
         var compareResult = basicAuthentication.comparePassword("other-password");
 
