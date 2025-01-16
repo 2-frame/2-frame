@@ -1,7 +1,8 @@
 package com.frame2.server.core.member.application;
 
-import com.frame2.server.core.member.domain.BasicAuthentication;
-import com.frame2.server.core.member.infrastructure.BasicAuthenticationRepository;
+import com.frame2.server.core.member.domain.LoginStatus;
+import com.frame2.server.core.member.domain.MemberCredential;
+import com.frame2.server.core.member.infrastructure.MemberCredentialRepository;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.member.payload.SignInInfo;
 import com.frame2.server.core.member.payload.SignupInfo;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final BasicAuthenticationRepository basicAuthenticationRepository;
+    private final MemberCredentialRepository memberCredentialRepository;
 
     @Override
     public SignupInfo signup(SignupRequest signupRequest) {
@@ -34,16 +35,16 @@ public class MemberServiceImpl implements MemberService {
         }
 
         var member = memberRepository.save(signupRequest.toEntity());
-        basicAuthenticationRepository.save(signupRequest.toEntity(member));
+        memberCredentialRepository.save(signupRequest.toEntity(member));
 
         return new SignupInfo(member.getId());
     }
 
     @Override
     public SignInInfo signIn(SignInRequest signInRequest) {
-        return basicAuthenticationRepository.findByEmail(signInRequest.email())
-                .filter(authentication -> authentication.comparePassword(signInRequest.password()))
-                .map(BasicAuthentication::getMemberId)
+        return memberCredentialRepository.findByEmail(signInRequest.email())
+                .filter(authentication -> authentication.tryLogin(signInRequest.password()) == LoginStatus.OK)
+                .map(MemberCredential::getMemberId)
                 .map(SignInInfo::new)
                 .orElseThrow(() -> new DomainException(ExceptionType.LOGIN_FAIL));
     }

@@ -1,7 +1,7 @@
 package com.frame2.server.core.member.payload.request;
 
-import com.frame2.server.core.member.domain.BasicAuthentication;
 import com.frame2.server.core.member.domain.Member;
+import com.frame2.server.core.member.domain.MemberCredential;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,8 +31,8 @@ public record SignupRequest(
                 .build();
     }
 
-    public BasicAuthentication toEntity(Member member) {
-        return BasicAuthentication.builder()
+    public MemberCredential toEntity(Member member) {
+        return MemberCredential.builder()
                 .member(member)
                 .email(email)
                 .password(password)
