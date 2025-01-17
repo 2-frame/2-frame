@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,13 +21,20 @@ import lombok.NoArgsConstructor;
 public class CartItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sale_product_id")
+    @JoinColumn(name = "sale_product_id", nullable = false)
     private SaleProduct saleProduct;
 
     @Column(nullable = false)
     private int quantity;
+
+    @Builder
+    public CartItem(Member member, SaleProduct saleProduct, int quantity) {
+        this.member = member;
+        this.saleProduct = saleProduct;
+        this.quantity = quantity;
+    }
 }

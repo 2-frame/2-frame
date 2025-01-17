@@ -24,7 +24,10 @@ public enum ExceptionType {
     REQUIRE_UNLOCK_DORMANT(ExceptionCode.A07, "현재 계정이 휴면상태입니다."),
 
     // - 상품 -
-    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR);
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR),
+
+    // - 장바구니 -
+    CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.C01, "존재하지 않는 상품입니다.", ERROR);
 
     private final HttpStatus status;
 
