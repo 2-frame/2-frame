@@ -3,8 +3,11 @@ package com.frame2.server.core.cart.api;
 import com.frame2.server.core.cart.application.CartService;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.member.payload.SignInInfo;
+import com.frame2.server.core.support.annotations.Auth;
+import com.frame2.server.core.support.annotations.MemberOnly;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
+import com.frame2.server.core.support.request.User;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +23,9 @@ public class CartApi implements CartApiSpec {
     private final CartService cartService;
 
     @Override
+    @MemberOnly
     @GetMapping
-    public List<CartItemListResponse> getCartItems(HttpSession session) {
+    public List<CartItemListResponse> getCartItems(@Auth User user, HttpSession session) {
         SignInInfo signInInfo = (SignInInfo) session.getAttribute("signInInfo");
 
         if (signInInfo == null) {
