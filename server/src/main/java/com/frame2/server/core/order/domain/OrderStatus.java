@@ -6,4 +6,5 @@ public enum OrderStatus {
     ORDER_COMPLETED,        // 주문완료
     ORDER_CANCELED,         // 주문취소
     PURCHASED_CONFIRMED;    // 구매확정
+
 }
