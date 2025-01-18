@@ -26,10 +26,6 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @GetMapping
     public List<CartItemListResponse> getCartItems(@Auth User user, HttpSession session) {
-        if (!user.isMember()) {
-            throw new DomainException(ExceptionType.UNAUTHORIZED_ERROR);
-        }
-
-        return cartService.getCartItemsByMemberId(user.id());
+        return cartService.getCartItems(user.id());
     }
 }

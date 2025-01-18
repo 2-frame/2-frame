@@ -17,7 +17,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CartItemListResponse> getCartItemsByMemberId(Long memberId) {
+    public List<CartItemListResponse> getCartItems(Long memberId) {
         return cartItemRepository.findAllByMemberId(memberId)
                 .stream()
                 .map(CartItemListResponse::from)

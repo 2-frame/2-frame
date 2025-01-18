@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface CartService {
 
-    List<CartItemListResponse> getCartItemsByMemberId(Long memberId);
+    List<CartItemListResponse> getCartItems(Long memberId);
 }
