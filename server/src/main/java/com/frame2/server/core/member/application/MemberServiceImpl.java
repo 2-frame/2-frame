@@ -36,8 +36,8 @@ public class MemberServiceImpl implements MemberService {
         }
 
         var member = memberRepository.save(signupRequest.toEntity());
-        memberCredentialRepository.save(signupRequest.toEntity(member));
 
+        memberCredentialRepository.save(signupRequest.toEntity(member));
         memberEmailService.sendSecret(member);
 
         return new SignupInfo(member.getId());
