@@ -26,12 +26,10 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @GetMapping
     public List<CartItemListResponse> getCartItems(@Auth User user, HttpSession session) {
-        SignInInfo signInInfo = (SignInInfo) session.getAttribute("signInInfo");
-
-        if (signInInfo == null) {
+        if (!user.isMember()) {
             throw new DomainException(ExceptionType.UNAUTHORIZED_ERROR);
         }
 
-        return cartService.getCartItemsByMemberId(signInInfo.memberId());
+        return cartService.getCartItemsByMemberId(user.id());
     }
 }

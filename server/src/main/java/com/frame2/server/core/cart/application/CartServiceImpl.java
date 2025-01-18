@@ -20,10 +20,7 @@ public class CartServiceImpl implements CartService {
     public List<CartItemListResponse> getCartItemsByMemberId(Long memberId) {
         return cartItemRepository.findAllByMemberId(memberId)
                 .stream()
-                .map(cartItems -> cartItems.stream()
-                        .map(CartItemListResponse::from)
-                        .collect(Collectors.toList()))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+                .map(CartItemListResponse::from)
+                .toList();
     }
 }
