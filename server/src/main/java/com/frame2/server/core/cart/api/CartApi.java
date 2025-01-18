@@ -25,7 +25,7 @@ public class CartApi implements CartApiSpec {
     @Override
     @MemberOnly
     @GetMapping
-    public List<CartItemListResponse> getCartItems(@Auth User user, HttpSession session) {
+    public List<CartItemListResponse> getCartItems(@Auth User user) {
         return cartService.getCartItems(user.id());
     }
 }
