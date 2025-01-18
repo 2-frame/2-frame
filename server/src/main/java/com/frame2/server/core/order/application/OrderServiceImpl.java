@@ -2,11 +2,9 @@ package com.frame2.server.core.order.application;
 
 import com.frame2.server.core.order.domain.Order;
 import com.frame2.server.core.order.domain.OrderDetail;
-import com.frame2.server.core.order.infrastructure.OrderDetailRepository;
 import com.frame2.server.core.order.infrastructure.OrderRepository;
 import com.frame2.server.core.order.payload.request.OrderCreateRequest;
 import com.frame2.server.core.product.domain.SaleProduct;
-import com.frame2.server.core.product.infrastructure.ProductRepository;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,6 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
     private final SaleProductRepository saleProductRepository;
 
     @Transactional
@@ -28,26 +25,42 @@ public class OrderServiceImpl implements OrderService {
         // 주문 생성
         Order order = request.toEntity();
         orderRepository.save(order);
-        
-        // 주문 상세 생성
-        List<OrderDetail> orderDetails = request.orderDetails().stream()
+
+        // 판매상품 id 리스트
+        List<Long> saleProductIdList = request.orderDetails().stream()
+                .map(orderDetail -> orderDetail.saleProductId())
+                .toList();
+
+        // 판매상품 id 리스트로 판매상품을 리스트로 받아옴
+        List<SaleProduct> saleProductList = saleProductRepository.findAllById(saleProductIdList);
+
+        // 주문 요청의 판매상품 개수와 레포지토리에서 가져온 판매상품 개수 비교
+        if(saleProductIdList.size() != saleProductList.size()) {
+            throw new IllegalArgumentException("판매상품 중 일부가 존재하지 않습니다.");
+        }
+
+        request.orderDetails().stream()
                 .map(orderDetail -> {
-                    // 판매상품 조회
-                    SaleProduct saleProduct = saleProductRepository.findById(orderDetail.saleProductId())
-                            .orElseThrow(()-> new IllegalArgumentException("판매상품 ID가 유효하지 않습니다."));
-                    
+                    // 주문 상세와 판매상품을 매핑
+                    SaleProduct saleProduct = saleProductList.stream()
+                            .filter(sp -> sp.getId().equals(orderDetail.saleProductId()))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalArgumentException("판매상품 ID가 유효하지 않습니다."));
+
                     // 주문 상세 생성
-                    return OrderDetail.builder()
+                    OrderDetail orderDetailEntity = OrderDetail.builder()
                             .order(order)
                             .saleProduct(saleProduct)
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
                             .build();
-                })
-                .peek(orderDetail -> order.getOrderDetails().add(orderDetail))
-                .toList();
 
-        // 주문 번호 반환
+                    // 주문에 주문 상세 추가
+                    order.getOrderDetails().add(orderDetailEntity);
+
+                    return orderDetailEntity;
+                }).toList();
+
         return order.getId();
     }
 }
