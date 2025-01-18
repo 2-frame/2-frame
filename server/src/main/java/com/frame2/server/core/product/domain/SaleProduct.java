@@ -1,8 +1,15 @@
 package com.frame2.server.core.product.domain;
 
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +39,9 @@ public class SaleProduct extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductDisclosure productDisclosure;
 
+    @Builder
+    public SaleProduct(String name, String mainImg) {
+        this.name = name;
+        this.mainImage = mainImg;
+    }
 }
