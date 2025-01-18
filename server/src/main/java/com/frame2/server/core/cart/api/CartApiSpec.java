@@ -10,5 +10,5 @@ import java.util.List;
 @Tag(name = "장바구니 API")
 public interface CartApiSpec {
 
-    List<CartItemListResponse> getCartItems(User user, HttpSession session);
+    List<CartItemListResponse> getCartItems(User user);
 }
