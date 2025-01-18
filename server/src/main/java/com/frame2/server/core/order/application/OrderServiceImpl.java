@@ -6,6 +6,7 @@ import com.frame2.server.core.order.infrastructure.OrderRepository;
 import com.frame2.server.core.order.payload.request.OrderCreateRequest;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
+import com.frame2.server.core.support.response.IdResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private final SaleProductRepository saleProductRepository;
 
     @Transactional
-    public Long createOrder(OrderCreateRequest request) {
+    public IdResponse createOrder(OrderCreateRequest request) {
         
         // 주문 생성
         Order order = request.toEntity();
@@ -61,6 +62,6 @@ public class OrderServiceImpl implements OrderService {
                     return orderDetailEntity;
                 }).toList();
 
-        return order.getId();
+        return new IdResponse(order.getId());
     }
 }

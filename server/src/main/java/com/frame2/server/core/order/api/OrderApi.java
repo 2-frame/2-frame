@@ -3,6 +3,7 @@ package com.frame2.server.core.order.api;
 import com.frame2.server.core.order.application.OrderService;
 import com.frame2.server.core.order.payload.request.OrderCreateRequest;
 import com.frame2.server.core.support.annotations.MemberOnly;
+import com.frame2.server.core.support.response.IdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +22,7 @@ public class OrderApi implements OrderApiSpec{
     @Override
     @MemberOnly
     @PostMapping
-    public Long createOrder(@RequestBody @Valid OrderCreateRequest request) {
+    public IdResponse createOrder(@RequestBody @Valid OrderCreateRequest request) {
 
         return orderServiceImpl.createOrder(request);
     }
