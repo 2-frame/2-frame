@@ -39,9 +39,21 @@ public class SaleProduct extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductDisclosure productDisclosure;
 
+    // 필터링을 위한 컬럼들
+    private int salePrice;
+    private int saleCount;
+
     @Builder
-    public SaleProduct(String name, String mainImg) {
+    public SaleProduct(String name, String mainImg, String subImage, String descriptionImage, String unit,
+                       ProductStatus productStatus, ProductDisclosure productDisclosure, int salePrice, int saleCount) {
         this.name = name;
         this.mainImage = mainImg;
+        this.subImage = subImage;
+        this.descriptionImage = descriptionImage;
+        this.unit = unit;
+        this.productStatus = productStatus;
+        this.productDisclosure = productDisclosure;
+        this.salePrice = salePrice;
+        this.saleCount = saleCount;
     }
 }
