@@ -2,6 +2,7 @@ package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductReview;
 import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
+import com.frame2.server.core.board.payload.request.ProductReviewModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductReviewRequest;
 import com.frame2.server.core.board.payload.response.ProductReviewListResponse;
 import com.frame2.server.core.board.payload.response.ProductReviewResponse;
@@ -15,7 +16,7 @@ public interface ProductReviewService {
     ProductReview productReviewCreate(ProductReviewRequest request);
 
     // 수정
-    ProductReview productReviewModify(ProductReviewRequest request);
+    ProductReview productReviewModify(ProductReviewModifyRequest request);
 
     // 삭제
     void remove(Long id);
