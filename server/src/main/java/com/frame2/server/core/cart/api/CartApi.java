@@ -33,7 +33,7 @@ public class CartApi implements CartApiSpec {
     @Override
     @MemberOnly
     @PostMapping
-    public void addCartItem(@RequestBody CartItemRequest cartItemRequest) {
-        cartService.addCartItem(cartItemRequest);
+    public void addCartItem(@Auth User user, @RequestBody CartItemRequest cartItemRequest) {
+        cartService.addCartItem(user.id(), cartItemRequest);
     }
 }

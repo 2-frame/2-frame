@@ -33,8 +33,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void addCartItem(CartItemRequest cartItemRequest) {
-        var member = memberRepository.findOne(cartItemRequest.memberId());
+    public void addCartItem(Long memberId, CartItemRequest cartItemRequest) {
+        var member = memberRepository.findOne(memberId);
         var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
 
         cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));

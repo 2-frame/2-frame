@@ -5,7 +5,6 @@ import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.SaleProduct;
 
 public record CartItemRequest (
-    Long memberId,
     Long saleProductId,
     int quantity
 ) {

@@ -8,5 +8,5 @@ public interface CartService {
 
     List<CartItemListResponse> getCartItems(Long memberId);
 
-    void addCartItem(CartItemRequest cartItemRequest);
+    void addCartItem(Long memberId, CartItemRequest cartItemRequest);
 }
