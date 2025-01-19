@@ -60,10 +60,18 @@ public class OrderServiceImpl implements OrderService {
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
                             .build();
-
                 }).toList();
 
         order.addOrderDetails(orderDetails);
+
+        // 총 금액 계산
+        int totalPrice = orderDetails.stream()
+                .mapToInt(orderDetail -> {
+                    return orderDetail.getPrice() * orderDetail.getQuantity();
+                })
+                .sum();
+
+        order.updateTotalPrice(totalPrice);
 
         return new IdResponse(order.getId());
     }
