@@ -1,6 +1,5 @@
 package com.frame2.server.core.cart.domain;
 
-import com.frame2.server.core.member.domain.AccountStatus;
 import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.support.entity.BaseEntity;
@@ -44,17 +43,23 @@ public class CartItem extends BaseEntity {
     }
 
     // 수량 검증 로직
-    public void tryUpdateQuantity(int quantity) {
-        // 현재 수량에 새로운 수량을 더한 값이 최대 수량을 초과하면 예외를 던짐
-        int newQuantity = this.quantity + quantity;
-
-        if (newQuantity > MAX_QUANTITY) {
-            throw new DomainException(ExceptionType.QUANTITY_EXCEEDS_STOCK);
+    public void tryUpdateQuantity(int quantity, boolean isDirectChange) {
+        // 장바구니에서 수량을 직접 변경하는 경우
+        if (isDirectChange) {
+            updateQuantity(quantity);
         }
+        // 판매상품 페이지에서 장바구니로 상품을 추가하는 경우
+        else {
+            int newQuantity = this.quantity + quantity;
 
-        updateQuantity(newQuantity);
+            // 현재 수량에 새로운 수량을 더한 값이 최대 수량을 초과하면 예외를 던짐
+            if (newQuantity > MAX_QUANTITY) {
+                throw new DomainException(ExceptionType.EXCEEDS_MAX_ORDER_QUANTITY);
+            }
+            updateQuantity(newQuantity);
+        }
     }
-    
+
     // 수량 변경 로직
     private void updateQuantity(int newQuantity) {
         this.quantity = newQuantity;
