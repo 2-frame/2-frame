@@ -22,7 +22,5 @@ public record ProductReviewResponse(
                 productReview.getContents(),
                 productReview.getImage()
         );
-
     }
-
 }

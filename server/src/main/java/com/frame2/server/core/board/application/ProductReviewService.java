@@ -1,13 +1,9 @@
 package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductReview;
-import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
 import com.frame2.server.core.board.payload.request.ProductReviewModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductReviewRequest;
-import com.frame2.server.core.board.payload.response.ProductReviewListResponse;
 import com.frame2.server.core.board.payload.response.ProductReviewResponse;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
