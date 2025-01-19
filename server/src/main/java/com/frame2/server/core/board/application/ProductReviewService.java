@@ -1,9 +1,28 @@
 package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductReview;
+import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
+import com.frame2.server.core.board.payload.request.ProductReviewRequest;
+import com.frame2.server.core.board.payload.response.ProductReviewListResponse;
+import com.frame2.server.core.board.payload.response.ProductReviewResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 public interface ProductReviewService {
+    // 생성
+    ProductReview productReviewCreate(ProductReviewRequest request);
 
+    // 수정
+    ProductReview productReviewModify(ProductReviewRequest request);
 
+    // 삭제
+    void remove(Long id);
+
+    // 단건 조회
+    ProductReviewResponse getProductReview(Long id);
+
+    // 전체 조회
+    List<ProductReviewResponse> getProductReviewList();
 }
