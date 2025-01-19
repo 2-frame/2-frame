@@ -1,9 +1,7 @@
 package com.frame2.server.core.product.api;
 
 import com.frame2.server.core.product.application.ProductService;
-import com.frame2.server.core.product.payload.response.ProductListResponse;
-import com.frame2.server.core.product.payload.response.ProductResponse;
-import com.frame2.server.core.product.payload.response.ProductSearchResponse;
+import com.frame2.server.core.product.payload.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +34,23 @@ public class ProductApi implements ProductApiSpec {
     public ResponseEntity<List<ProductSearchResponse>> searchProduct(@RequestParam(value = "keyword",
             required = false, defaultValue = "") String keyword) {
         List<ProductSearchResponse> response = productServiceImpl.searchProduct(keyword);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @GetMapping("/sale")
+    public ResponseEntity<List<SaleProductListResponse>> getAllSaleProducts(
+            @RequestParam(defaultValue = "0") int minPrice,
+            @RequestParam(defaultValue = "999999999") int maxPrice,
+            @RequestParam(defaultValue = "recentDesc") String sort) {
+        List<SaleProductListResponse> response = productServiceImpl.getAllSaleProducts(minPrice, maxPrice, sort);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @GetMapping("/sale/{saleProductId}")
+    public ResponseEntity<SaleProductDetailResponse> getSaleProduct(@PathVariable("saleProductId") Long id) {
+        SaleProductDetailResponse response = productServiceImpl.getSaleProduct(id);
         return ResponseEntity.ok().body(response);
     }
 }
