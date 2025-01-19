@@ -9,4 +9,5 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public interface MemberAPISpec {
 
     MyInformationResponse getMe(@Schema(hidden = true) User user);
+
 }
