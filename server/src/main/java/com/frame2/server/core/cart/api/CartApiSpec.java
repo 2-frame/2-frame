@@ -16,5 +16,5 @@ public interface CartApiSpec {
     List<CartItemListResponse> getCartItems(User user);
 
     @Operation(summary = "장바구니 상품 추가")
-    void addCartItem(User user, CartItemRequest cartItemRequest);
+    List<CartItemListResponse> addCartItem(User user, CartItemRequest cartItemRequest);
 }
