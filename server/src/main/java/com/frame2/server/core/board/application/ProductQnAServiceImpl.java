@@ -1,17 +1,19 @@
 package com.frame2.server.core.board.application;
 
+import com.frame2.server.core.board.domain.AnswerStatus;
 import com.frame2.server.core.board.domain.ProductQnA;
 import com.frame2.server.core.board.infrastructure.ProductQnARepository;
-import com.frame2.server.core.board.payload.request.ProductQnAAnswerRegisterRequest;
+import com.frame2.server.core.board.payload.SimpleProductQnA;
+import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
 import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
-import com.frame2.server.core.board.payload.response.ProductQnASearchAllResponse;
-import com.frame2.server.core.board.payload.response.ProductQnASearchResponse;
+import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
+import com.frame2.server.core.board.payload.response.ProductQnAResponse;
+import com.frame2.server.core.example.payload.SimpleExample;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +23,7 @@ public class ProductQnAServiceImpl implements ProductQnAdService{
 
     private final ProductQnARepository productQnARepository;
 
-    // 질문 등록
+    // 질문 생성
     @Override
     public ProductQnA questionCreate(ProductQnARegisterRequest request) {
         ProductQnA productQnA = request.toEntity();
@@ -30,60 +32,53 @@ public class ProductQnAServiceImpl implements ProductQnAdService{
 
     // 질문 수정
     @Override
-    public ProductQnA questionModify(ProductQnAModifyRequest request, Long id) {
-        ProductQnA entity = request.toEntity();
-        ProductQnA productQnA = productQnARepository.findById(id).orElseThrow();
-
-        productQnA = ProductQnA.builder()
-                .question(entity.getQuestion())
-                .user_id(entity.getUser_id())
-                .build();
-        return productQnARepository.save(productQnA);
+    public ProductQnA questionModify(ProductQnAModifyRequest request) {
+        ProductQnA productQnA = productQnARepository.findbyidProductQnA(request.id());
+        return productQnA.updateQuestion(request.title(), request.question());
     }
 
     // 답변 등록
     @Override
-    @Transactional
-    public ProductQnA answer(ProductQnAAnswerRegisterRequest answerRegisterRequest, Long id) {
-
+    public ProductQnA answer(ProductQnAAnswerRequest answerRegisterRequest) {
         ProductQnA requestProductQnA = answerRegisterRequest.toEntity();
-        ProductQnA productQnA = productQnARepository.findById(answerRegisterRequest.id()).orElseThrow();
 
-
-        System.out.println("productQnA = " + productQnA.getAnswer());
-
-        productQnA = ProductQnA.builder()
-                .answer(requestProductQnA.getAnswer())
-                .manager(requestProductQnA.getManager())
-                .answer_YN(true)
-                .build();
-
-
-        System.out.println("productQnA.getAnswer() = " + productQnA.getAnswer());
-        System.out.println("productQnA = " + productQnA);
-
-        return productQnARepository.save(productQnA);
+        ProductQnA productQnA = productQnARepository.findbyidProductQnA(answerRegisterRequest.id());
+        return productQnA.createAnswer(
+                requestProductQnA.getAnswer(),
+                requestProductQnA.getManager(),
+                requestProductQnA.getAnswer_YN()
+                );
     }
-    
+
+    // 답변 수정
+    @Override
+    public ProductQnA answerModify(ProductQnAAnswerRequest request) {
+        ProductQnA productQnA = productQnARepository.findbyidProductQnA(request.id());
+        return productQnA.updateAnswer(request.answer());
+    }
+
     // 질문 삭제
     @Override
     public void remove(Long id) {
-        ProductQnA productQnA = productQnARepository.findById(id).orElseThrow();
+        ProductQnA productQnA = productQnARepository.findbyidProductQnA(id);
         productQnARepository.deleteById(productQnA.getId());
     }
 
     // 질문 단건 조회
     @Override
-    public ProductQnASearchResponse searchOne(Long id) {
-        ProductQnA productQnA = productQnARepository.findById(id).orElseThrow();
-        return new ProductQnASearchResponse(productQnA);
+    @Transactional(readOnly = true)
+    public ProductQnAResponse getProductQnA(Long id) {
+        ProductQnA productQnA = productQnARepository.findbyidProductQnA(id);
+        SimpleProductQnA simpleProductQnA = SimpleProductQnA.from(productQnA);
+        return new ProductQnAResponse(simpleProductQnA);
     }
 
     // 질문 전체 조회
     @Override
-    public ProductQnASearchAllResponse searchAll() {
+    @Transactional(readOnly = true)
+    public ProductQnAListResponse getProductQnAList() {
         List<ProductQnA> productQnAList = productQnARepository.findAll();
-        return ProductQnASearchAllResponse.from(productQnAList);
+        return ProductQnAListResponse.of(productQnAList);
     }
 
 }

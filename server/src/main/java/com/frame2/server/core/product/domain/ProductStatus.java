@@ -1,5 +1,6 @@
 package com.frame2.server.core.product.domain;
 
-public enum ProductStatus {
+public enum
+ProductStatus {
     SELL, SOLD_OUT
 }

@@ -1,30 +1,31 @@
 package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductQnA;
-import com.frame2.server.core.board.payload.request.ProductQnAAnswerRegisterRequest;
-import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
-import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
-import com.frame2.server.core.board.payload.response.ProductQnASearchAllResponse;
-import com.frame2.server.core.board.payload.response.ProductQnASearchResponse;
+import com.frame2.server.core.board.payload.request.*;
+import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
+import com.frame2.server.core.board.payload.response.ProductQnAResponse;
 
 public interface ProductQnAdService {
 
-    // 셍성 : 질문
+    // 질문 생성
     ProductQnA questionCreate(ProductQnARegisterRequest request);
 
-    // 수정 : 질문 수정
-    ProductQnA questionModify(ProductQnAModifyRequest request, Long id);
+    // 질문 수정
+    ProductQnA questionModify(ProductQnAModifyRequest request);
 
-    // 수정 : 답변 수정
-    ProductQnA answer(ProductQnAAnswerRegisterRequest request, Long id);
+    // 답변
+    ProductQnA answer(ProductQnAAnswerRequest request);
+
+    // 답변 수정
+    ProductQnA answerModify(ProductQnAAnswerRequest request);
 
     // 질문 삭제
     void remove(Long id);
 
     // 질문 조회
-    ProductQnASearchResponse searchOne(Long id);
+    ProductQnAResponse getProductQnA(Long id);
 
     // 질문 리스트
-    ProductQnASearchAllResponse searchAll();
+    ProductQnAListResponse getProductQnAList();
 
 }

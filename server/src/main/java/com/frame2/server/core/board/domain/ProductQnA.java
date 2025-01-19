@@ -1,11 +1,13 @@
 package com.frame2.server.core.board.domain;
 
 
+import com.frame2.server.core.member.domain.Member;
+import com.frame2.server.core.product.domain.Product;
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,11 +17,19 @@ import java.util.Date;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductQnA extends BaseEntity {
 
-    // 회원 - 나중에 조인 해야함
-    private String user_id;
+    @ManyToOne //QnA를 죄회할 때 회원 id는 필수로 필요한가
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     // 질문
     private String question;
+    
+    // 추가 : 질문 제목
+    private String title;
 
     // 관리자
     private String manager;
@@ -27,13 +37,33 @@ public class ProductQnA extends BaseEntity {
     // 답변
     private String answer;
 
-    // 답변 여부 : 기본값 false
-    private boolean answer_YN;
-
-    // 삭제 여부 : false
-    private boolean isDeleted;
+    // 답변 상태 : 기본값 N
+    @Enumerated(EnumType.STRING)
+    private AnswerStatus answer_YN ;
 
     // 답변 작성일 : null 가능
-    private Date answer_date;
+    private LocalDateTime answer_date;
+    
+    // question 수정 메서드
+    public ProductQnA updateQuestion(String newTitle, String newQuestion){
+        this.title = newTitle;
+        this.question = newQuestion;
+        return this;
+    }
+
+    // answer 등록 메서드
+    // answer 엔티티가 따로 존재하지 않기 때문에 productQnA를 수정 하는 것에 속함
+    public ProductQnA createAnswer(String answer, String manager, AnswerStatus answer_YN ){
+        this.answer = answer;
+        this.manager = manager;
+        this.answer_YN = answer_YN;
+        return this;
+    }
+
+    // answer 수정 메서드
+    public ProductQnA updateAnswer(String newAnswer) {
+        this.answer = newAnswer;
+        return this;
+    }
 
 }
