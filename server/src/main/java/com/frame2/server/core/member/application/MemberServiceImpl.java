@@ -23,6 +23,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberCredentialRepository memberCredentialRepository;
+    private final MemberEmailService memberEmailService;
 
     @Override
     public SignupInfo signup(SignupRequest signupRequest) {
@@ -35,7 +36,9 @@ public class MemberServiceImpl implements MemberService {
         }
 
         var member = memberRepository.save(signupRequest.toEntity());
+
         memberCredentialRepository.save(signupRequest.toEntity(member));
+        memberEmailService.sendSecret(member);
 
         return new SignupInfo(member.getId());
     }
