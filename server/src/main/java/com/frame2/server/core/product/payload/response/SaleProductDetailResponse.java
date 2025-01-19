@@ -12,7 +12,7 @@ public record SaleProductDetailResponse(
     String mainImage,
     String subImage,
     String descriptionImage,
-    ProductResponse product,
+    ProductDetailResponse product,
     OptionResponse option,
     int stockQuantity
 ) {
@@ -28,7 +28,7 @@ public record SaleProductDetailResponse(
                 .mainImage(sp.getMainImage())
                 .subImage(sp.getSubImage())
                 .descriptionImage(sp.getDescriptionImage())
-                .product(ProductResponse.from(sp.getProduct()))
+                .product(ProductDetailResponse.from(sp.getProduct()))
                 .option(sp.getOption() != null ? OptionResponse.from(sp.getOption()) : null)
                 .stockQuantity(stock != null ? stock.getQuantity() : 0)
                 .build();
