@@ -55,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
                     // 주문 상세 생성
                     return OrderDetail.builder()
+                            .order(order)
                             .saleProduct(saleProduct)
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
