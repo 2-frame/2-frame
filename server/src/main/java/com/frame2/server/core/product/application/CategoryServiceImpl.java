@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(readOnly = true)
     public List<ProductListResponse> getProductsByCategory(Long id){
         categoryRepository.findOne(id);
-        List<Product> products = productRepository.findByCategoryIdIn(id);
+        List<Product> products = productRepository.findByCategoryId(id);
         return products.stream()
                 .map(ProductListResponse::from)
                 .toList();
