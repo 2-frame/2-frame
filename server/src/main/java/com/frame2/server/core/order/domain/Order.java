@@ -59,6 +59,11 @@ public class Order extends BaseEntity {
         this.orderStatus = OrderStatus.ORDER_RECIEVED;
     }
 
+    // 주문에 주문 상세 추가
+    public void addOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails.addAll(orderDetails);
+    }
+
     // 대표상품명 업데이트
     public void updateProductName(String productName) {
         this.productName = productName;

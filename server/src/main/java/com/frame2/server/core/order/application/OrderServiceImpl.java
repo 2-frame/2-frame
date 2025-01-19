@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,37 +32,37 @@ public class OrderServiceImpl implements OrderService {
         // 판매상품 id 리스트
         List<Long> saleProductIdList = request.orderDetails().stream()
                 .map(orderDetail -> orderDetail.saleProductId())
+                .distinct()
                 .toList();
 
         // 판매상품 id 리스트로 판매상품을 리스트로 받아옴
         List<SaleProduct> saleProductList = saleProductRepository.findAllById(saleProductIdList);
 
+        // TODO: Exception 정의 필요
         // 주문 요청의 판매상품 개수와 레포지토리에서 가져온 판매상품 개수 비교
         if(saleProductIdList.size() != saleProductList.size()) {
             throw new IllegalArgumentException("판매상품 중 일부가 존재하지 않습니다.");
         }
 
-        request.orderDetails().stream()
+        // <ID, SaleProduct>를 미리 매핑
+        Map<Long, SaleProduct> saleProductMap = saleProductList.stream()
+                .collect(Collectors.toMap(SaleProduct::getId, sp -> sp));
+
+        List<OrderDetail> orderDetails = request.orderDetails().stream()
                 .map(orderDetail -> {
                     // 주문 상세와 판매상품을 매핑
-                    SaleProduct saleProduct = saleProductList.stream()
-                            .filter(sp -> sp.getId().equals(orderDetail.saleProductId()))
-                            .findFirst()
-                            .orElseThrow(() -> new IllegalArgumentException("판매상품 ID가 유효하지 않습니다."));
+                    SaleProduct saleProduct = saleProductMap.get(orderDetail.saleProductId());
 
                     // 주문 상세 생성
-                    OrderDetail orderDetailEntity = OrderDetail.builder()
-                            .order(order)
+                    return OrderDetail.builder()
                             .saleProduct(saleProduct)
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
                             .build();
 
-                    // 주문에 주문 상세 추가
-                    order.getOrderDetails().add(orderDetailEntity);
-
-                    return orderDetailEntity;
                 }).toList();
+
+        order.addOrderDetails(orderDetails);
 
         return new IdResponse(order.getId());
     }
