@@ -1,6 +1,5 @@
 package com.frame2.server.core.board.application;
 
-import com.frame2.server.core.board.domain.AnswerStatus;
 import com.frame2.server.core.board.domain.ProductQnA;
 import com.frame2.server.core.board.infrastructure.ProductQnARepository;
 import com.frame2.server.core.board.payload.SimpleProductQnA;
@@ -9,7 +8,6 @@ import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
-import com.frame2.server.core.example.payload.SimpleExample;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +44,7 @@ public class ProductQnAServiceImpl implements ProductQnAdService{
         return productQnA.createAnswer(
                 requestProductQnA.getAnswer(),
                 requestProductQnA.getManager(),
-                requestProductQnA.getAnswer_YN()
+                requestProductQnA.getAnswerYN()
                 );
     }
 

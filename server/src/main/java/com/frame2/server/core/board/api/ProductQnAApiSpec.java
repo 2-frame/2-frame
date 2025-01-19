@@ -20,13 +20,13 @@ public interface ProductQnAApiSpec {
 
     ResponseEntity<ProductQnAResponse> getProductQnA(@PathVariable Long id);
 
-    void createQuestion(ProductQnARegisterRequest productQnARequest);
+    void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest);
 
-    void update(@PathVariable Long id, ProductQnAModifyRequest productQnAModifyRequest);
+    void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest);
 
     void delete(@PathVariable Long id);
 
-    void answerCreate(ProductQnAAnswerRequest productQnAAnswerRequest);
+    void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest);
 
-    void answerUpdate(ProductQnAAnswerRequest productQnAAnswerRequest);
+    void answerUpdate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest);
 }

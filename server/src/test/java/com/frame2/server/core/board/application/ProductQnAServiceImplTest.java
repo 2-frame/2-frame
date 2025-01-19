@@ -15,7 +15,6 @@ import com.frame2.server.core.product.infrastructure.ProductRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
@@ -114,7 +113,7 @@ class ProductQnAServiceImplTest {
         SimpleProductQnA simpleProductQnA = findProductQnA.simpleProductQnA();
 
         assertEquals(answer.getAnswer(),simpleProductQnA.answer());
-        assertEquals(answer.getAnswer_YN(), simpleProductQnA.answer_YN());
+        assertEquals(answer.getAnswerYN(), simpleProductQnA.answerYN());
 
 
     }

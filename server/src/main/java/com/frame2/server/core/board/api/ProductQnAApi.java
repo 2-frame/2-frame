@@ -2,14 +2,12 @@ package com.frame2.server.core.board.api;
 
 
 import com.frame2.server.core.board.application.ProductQnAdService;
-import com.frame2.server.core.board.domain.ProductQnA;
 import com.frame2.server.core.board.payload.SimpleProductQnA;
 import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
-import com.frame2.server.core.product.api.ProductApiSpec;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,15 +38,14 @@ public class ProductQnAApi implements ProductQnAApiSpec {
 
     // 질문 생성
     @PostMapping("/add")
-    public void createQuestion(ProductQnARegisterRequest productQnARequest){
-        ProductQnA productQnA = productQnAService.questionCreate(productQnARequest);
+    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest){
+        productQnAService.questionCreate(productQnARequest);
     }
 
     // 질문 수정
     @PatchMapping("/{productQnAId}")
-    public void update( @PathVariable("productQnAId") Long id,
-                        ProductQnAModifyRequest productQnAModifyRequest) {
-        ProductQnA productQnA = productQnAService.questionModify(productQnAModifyRequest);
+    public void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest) {
+        productQnAService.questionModify(productQnAModifyRequest);
     }
 
     // 질문 삭제
@@ -59,14 +56,14 @@ public class ProductQnAApi implements ProductQnAApiSpec {
 
     // 답변 생성 : 답변이란 엔티티가 따로 존재하지 않기 때문에
     // 기존의 qna객체를 업데이트한다.
-    @PatchMapping("/answer-add")
-    public void answerCreate(ProductQnAAnswerRequest  productQnAAnswerRequest) {
+    @PatchMapping("/answer")
+    public void answerCreate(@RequestBody ProductQnAAnswerRequest  productQnAAnswerRequest) {
         productQnAService.answer(productQnAAnswerRequest);
     }
 
     // 답변 수정
-    @PatchMapping("/answer")
-    public void answerUpdate(ProductQnAAnswerRequest productQnAAnswerRequest) {
+    @PatchMapping("/answer/{productQnAId}")
+    public void answerUpdate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
         productQnAService.answerModify(productQnAAnswerRequest);
     }
 }

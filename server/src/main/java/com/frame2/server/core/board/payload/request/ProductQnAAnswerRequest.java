@@ -12,7 +12,7 @@ public record ProductQnAAnswerRequest(
         return ProductQnA.builder()
                 .answer(answer)
                 .manager(manager)
-                .answer_YN(AnswerStatus.Y)
+                .answerYN(AnswerStatus.Y)
                 .build();
     }
 }
