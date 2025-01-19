@@ -14,7 +14,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
                 .orElseThrow(() -> new DomainException(ExceptionType.CART_ITEM_NOT_FOUND));
     }
 
-    Optional<CartItem> findByMemberId(Long memberId);
+    Optional<CartItem> findByMemberIdAndSaleProductId(Long memberId, Long saleProductId);
 
     List<CartItem> findAllByMemberId(Long memberId);
 }
