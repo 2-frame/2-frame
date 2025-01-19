@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SaleProductRepository extends JpaRepository<SaleProduct, Long> {
     
-    default SaleProduct findSaleProduct(Long id) {
+    default SaleProduct findOne(Long id) {
         return findById(id)
                 .orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_NOT_FOUND));
     }
