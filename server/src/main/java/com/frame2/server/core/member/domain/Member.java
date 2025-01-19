@@ -20,13 +20,11 @@ public class Member extends BaseEntity {
 
     private String email;
 
-    private AccountStatus accountStatus;
 
     @Builder
     public Member(String name, String nickname, String email) {
         this.name = name;
         this.nickname = nickname;
         this.email = email;
-        this.accountStatus = AccountStatus.INIT;
     }
 }

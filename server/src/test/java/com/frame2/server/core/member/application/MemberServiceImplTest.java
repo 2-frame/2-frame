@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.frame2.server.core.member.infrastructure.BasicAuthenticationRepository;
+import com.frame2.server.core.member.infrastructure.MemberCredentialRepository;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.member.payload.request.SignInRequest;
 import com.frame2.server.core.member.payload.request.SignupRequest;
 import com.frame2.server.core.support.exception.DomainException;
-import com.frame2.server.fixture.BasicAuthenticationFixture;
+import com.frame2.server.fixture.MemberCredentialFixture;
 import com.frame2.server.fixture.MemberFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -34,7 +34,7 @@ class MemberServiceImplTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private BasicAuthenticationRepository basicAuthenticationRepository;
+    private MemberCredentialRepository memberCredentialRepository;
 
     @Test
     @DisplayName("회원가입 성공한다")
@@ -78,7 +78,7 @@ class MemberServiceImplTest {
         @Test
         void 로그인_성공하는_경우_회원_아이디를_가집니다() {
             var member = memberRepository.save(MemberFixture.create("sample@gmail.com"));
-            basicAuthenticationRepository.save(BasicAuthenticationFixture.create(member, "password"));
+            memberCredentialRepository.save(MemberCredentialFixture.create(member, "password"));
 
             var signInInfo = memberService.signIn(new SignInRequest("sample@gmail.com", "password"));
 
@@ -88,11 +88,11 @@ class MemberServiceImplTest {
         @Test
         void 이메일이_존재하지_않거나_비밀번호가_다른_경우_로그인에_실패합니다() {
             var member = memberRepository.save(MemberFixture.create("sample@gmail.com"));
-            basicAuthenticationRepository.save(BasicAuthenticationFixture.create(member, "password"));
+            memberCredentialRepository.save(MemberCredentialFixture.create(member, "password"));
 
             assertAll(
                     () -> assertThatThrownBy(
-                            () -> memberService.signIn(new SignInRequest("uunknown@gmail.com", "password")))
+                            () -> memberService.signIn(new SignInRequest("unknown@gmail.com", "password")))
                             .isInstanceOf(DomainException.class)
                             .hasMessageContaining(LOGIN_FAIL.getMessage()),
                     () -> assertThatThrownBy(

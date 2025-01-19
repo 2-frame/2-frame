@@ -1,0 +1,3 @@
+[submodule "server/secret"]
+	path = server/secret
+	url = https://github.com/2-frame/2-frame-server-secret
