@@ -6,7 +6,6 @@ import com.frame2.server.core.product.infrastructure.CategoryRepository;
 import com.frame2.server.core.product.infrastructure.ProductRepository;
 import com.frame2.server.core.product.payload.response.CategoryResponse;
 import com.frame2.server.core.product.payload.response.ProductListResponse;
-import com.frame2.server.core.product.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
