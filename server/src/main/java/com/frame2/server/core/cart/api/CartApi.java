@@ -9,6 +9,7 @@ import com.frame2.server.core.support.request.User;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,9 @@ public class CartApi implements CartApiSpec {
     @Override
     @MemberOnly
     @PostMapping
-    public void addCartItem(@Auth User user, @RequestBody CartItemRequest cartItemRequest) {
+    public List<CartItemListResponse> addCartItem(@Auth User user, @RequestBody @Valid CartItemRequest cartItemRequest) {
         cartService.addCartItem(user.id(), cartItemRequest);
+
+        return cartService.getCartItems(user.id());
     }
 }
