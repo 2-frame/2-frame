@@ -24,8 +24,8 @@ public class ProductApi implements ProductApiSpec {
 
     @Override
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable("productId") Long id){
-        ProductResponse response = productServiceImpl.getProduct(id);
+    public ResponseEntity<ProductDetailResponse> getProduct(@PathVariable("productId") Long id){
+        ProductDetailResponse response = productServiceImpl.getProduct(id);
         return ResponseEntity.ok().body(response);
     }
 

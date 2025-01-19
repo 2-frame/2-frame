@@ -3,8 +3,6 @@ package com.frame2.server.core.product.api;
 import com.frame2.server.core.product.payload.response.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -13,7 +11,7 @@ public interface ProductApiSpec {
 
     ResponseEntity<List<ProductListResponse>> getAllProducts();
 
-    ResponseEntity<ProductResponse> getProduct(Long id);
+    ResponseEntity<ProductDetailResponse> getProduct(Long id);
 
     ResponseEntity<List<ProductSearchResponse>> searchProduct(String keyword);
 
