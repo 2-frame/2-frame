@@ -73,6 +73,17 @@ public class OrderServiceImpl implements OrderService {
 
         order.updateTotalPrice(totalPrice);
 
+        // 대표 상품명 생성
+        String mainProductName;
+        if(orderDetails.size() == 1) {
+            mainProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
+        } else {
+            String firstProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
+            mainProductName = firstProductName + " 외 " + (orderDetails.size()-1) + "건";
+        }
+
+        order.updateProductName(mainProductName);
+
         return new IdResponse(order.getId());
     }
 }
