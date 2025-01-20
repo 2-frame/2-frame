@@ -11,7 +11,9 @@ public record OptionResponse(
     int additionalPrice
 ) {
     public static OptionResponse from(Option option) {
-        if (option == null) return null;
+        if (option == null) {
+            return null;
+        }
         return OptionResponse.builder()
                 .optionId(option.getId())
                 .name(option.getName())
