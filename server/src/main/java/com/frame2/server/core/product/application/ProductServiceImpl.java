@@ -30,7 +30,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getProduct(Long id) {
-        Product product = productRepository.findProduct(id);
+        Product product = productRepository.findOne(id);
         return ProductResponse.from(product);
     }
 

@@ -60,10 +60,11 @@ public class OrderServiceImpl implements OrderService {
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
                             .build();
-
                 }).toList();
 
         order.addOrderDetails(orderDetails);
+        order.updateTotalPrice();
+        order.updateProductName();
 
         return new IdResponse(order.getId());
     }
