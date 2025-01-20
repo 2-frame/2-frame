@@ -32,7 +32,8 @@ public enum ExceptionType {
 
     // - 장바구니 -
     CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.C01, "존재하지 않는 상품입니다.", ERROR),
-    EXCEEDS_MAX_ORDER_QUANTITY(ExceptionCode.C02, "최대 10개까지 주문 가능합니다.");
+    EXCEEDS_MAX_ORDER_QUANTITY(ExceptionCode.C02, "최대 10개까지 주문 가능합니다."),
+    BELOW_MIN_ORDER_QUANTITY(ExceptionCode.C03, "최소 1개 이상 구매해야 합니다.");
 
 
     private final HttpStatus status;

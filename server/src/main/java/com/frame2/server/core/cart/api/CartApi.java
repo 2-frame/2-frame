@@ -6,12 +6,11 @@ import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.support.annotations.Auth;
 import com.frame2.server.core.support.annotations.MemberOnly;
 import com.frame2.server.core.support.request.User;
-
-import java.util.List;
-
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +33,19 @@ public class CartApi implements CartApiSpec {
     @Override
     @MemberOnly
     @PostMapping
-    public List<CartItemListResponse> addCartItem(@Auth User user, @RequestBody @Valid CartItemRequest cartItemRequest) {
+    public List<CartItemListResponse> addCartItem(@Auth User user,
+                                                  @RequestBody @Valid CartItemRequest cartItemRequest) {
         cartService.addCartItem(user.id(), cartItemRequest);
+
+        return cartService.getCartItems(user.id());
+    }
+
+    @Override
+    @MemberOnly
+    @PatchMapping
+    public List<CartItemListResponse> changeCartItemQuantity(@Auth User user,
+                                                             @RequestBody @Valid CartItemRequest cartItemRequest) {
+        cartService.changeCartItemQuantity(user.id(), cartItemRequest);
 
         return cartService.getCartItems(user.id());
     }

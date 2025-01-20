@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class CartItem extends BaseEntity {
 
     private static final int MAX_QUANTITY = 10;
+    private static final int MIN_QUANTITY = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -42,26 +43,21 @@ public class CartItem extends BaseEntity {
         this.quantity = quantity;
     }
 
-    // 수량 검증 로직
-    public void tryUpdateQuantity(int quantity, boolean isDirectChange) {
-        // 장바구니에서 수량을 직접 변경하는 경우
-        if (isDirectChange) {
-            updateQuantity(quantity);
-        }
+    // 동일상품 추가
+    public void addSameItemToCart(int quantity) {
         // 판매상품 페이지에서 장바구니로 상품을 추가하는 경우
-        else {
-            int newQuantity = this.quantity + quantity;
+        int newQuantity = this.quantity + quantity;
 
-            // 현재 수량에 새로운 수량을 더한 값이 최대 수량을 초과하면 예외를 던짐
-            if (newQuantity > MAX_QUANTITY) {
-                throw new DomainException(ExceptionType.EXCEEDS_MAX_ORDER_QUANTITY);
-            }
-            updateQuantity(newQuantity);
+        // 현재 수량에 새로운 수량을 더한 값이 최대 수량을 초과하면 예외를 던짐
+        if (newQuantity > MAX_QUANTITY) {
+            throw new DomainException(ExceptionType.EXCEEDS_MAX_ORDER_QUANTITY);
         }
+
+        this.quantity = newQuantity;
     }
 
-    // 수량 변경 로직
-    private void updateQuantity(int newQuantity) {
-        this.quantity = newQuantity;
+    // 수량을 직접 입력하는 경우
+    public void changeQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
