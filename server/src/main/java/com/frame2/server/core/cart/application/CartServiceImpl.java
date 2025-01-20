@@ -1,8 +1,8 @@
 package com.frame2.server.core.cart.application;
 
 import com.frame2.server.core.cart.infrastructure.CartItemRepository;
-import com.frame2.server.core.cart.payload.request.CartItemQuantityRequest;
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
+import com.frame2.server.core.cart.payload.request.QuantityRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
@@ -49,9 +49,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void changeCartItemQuantity(Long memberId, CartItemQuantityRequest cartItemQuantityRequest) {
-        cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemQuantityRequest.saleProductId())
-                .ifPresentOrElse(item -> item.changeQuantity(cartItemQuantityRequest.quantity()),
+    public void changeCartItemQuantity(Long memberId, QuantityRequest quantityRequest) {
+        cartItemRepository.findByMemberIdAndSaleProductId(memberId, quantityRequest.saleProductId())
+                .ifPresentOrElse(item -> item.changeQuantity(quantityRequest.quantity()),
                         () -> {
                             throw new DomainException(ExceptionType.CART_ITEM_NOT_FOUND);
                         });
