@@ -28,7 +28,6 @@ public class OrderServiceImpl implements OrderService {
     private final SaleProductRepository saleProductRepository;
 
     public IdResponse createOrder(OrderCreateRequest request) {
-        
         // 주문 생성
         Order order = request.toEntity();
         orderRepository.save(order);
@@ -76,7 +75,6 @@ public class OrderServiceImpl implements OrderService {
     // 주문 내역 단건 조회 - 주문id로 단건 조회
     @Override
     public OrderResponse getOrder(Long orderId) {
-
         Order order = orderRepository.findOne(orderId);
         return OrderResponse.from(order);
     }
@@ -85,16 +83,14 @@ public class OrderServiceImpl implements OrderService {
     // 주문 내역 전체조회 - 멤버id로 전체 조회
     @Override
     public List<OrderResponse> getOrders(Long memberId) {
-
         return orderRepository.findAllByMemberId(memberId).stream()
                 .map(OrderResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
     @Override
     public OrderDetailResponse getOderDetail(Long orderDetailId) {
-
         OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
         return OrderDetailResponse.from(orderDetail);
     }
@@ -103,9 +99,8 @@ public class OrderServiceImpl implements OrderService {
     // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
     @Override
     public List<OrderDetailResponse> getOrderDetails(Long orderId) {
-
         return orderDetailRepository.findAllByOrderId(orderId).stream()
                 .map(OrderDetailResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

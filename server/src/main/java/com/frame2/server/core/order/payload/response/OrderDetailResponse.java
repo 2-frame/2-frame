@@ -4,7 +4,6 @@ import com.frame2.server.core.order.domain.OrderDetail;
 import java.time.LocalDate;
 
 public record OrderDetailResponse(
-
         Long orderId,
         Long orderDetailId,
         String productName,
@@ -17,7 +16,6 @@ public record OrderDetailResponse(
         boolean exchangeReturnRequested
 ) {
     public static OrderDetailResponse from(OrderDetail orderDetail) {
-
         return new OrderDetailResponse(
                 orderDetail.getOrder().getId(),
                 orderDetail.getId(),

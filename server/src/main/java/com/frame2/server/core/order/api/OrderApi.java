@@ -25,7 +25,6 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @PostMapping
     public IdResponse createOrder(@RequestBody @Valid OrderCreateRequest request) {
-
         return orderServiceImpl.createOrder(request);
     }
     
@@ -34,7 +33,6 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/{orderId}")
     public OrderResponse getOrder(@PathVariable Long orderId) {
-
         return orderServiceImpl.getOrder(orderId);
     }
     
@@ -43,7 +41,6 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/member/{memberId}")
     public List<OrderResponse> getOrders(@PathVariable Long memberId) {
-
         return orderServiceImpl.getOrders(memberId);
     }
     
@@ -52,7 +49,6 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/detail/{orderDetailId}")
     public OrderDetailResponse getOderDetail(@PathVariable Long orderDetailId){
-
         return orderServiceImpl.getOderDetail(orderDetailId);
     }
     
@@ -61,7 +57,6 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/{orderId}/detail")
     public List<OrderDetailResponse> getOrderDetails(@PathVariable Long orderId){
-
         return orderServiceImpl.getOrderDetails(orderId);
     }
 }
