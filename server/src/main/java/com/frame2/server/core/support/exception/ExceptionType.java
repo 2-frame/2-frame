@@ -39,6 +39,7 @@ public enum ExceptionType {
     ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.O02, "존재하지 않는 주문 상세 내역입니다.", ERROR);
 
 
+
     private final HttpStatus status;
 
     private final ExceptionCode code;
