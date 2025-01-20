@@ -12,4 +12,6 @@ public interface CartService {
     void addCartItem(Long memberId, CartItemRequest cartItemRequest);
 
     void changeCartItemQuantity(Long memberId, QuantityRequest quantityRequest);
+
+    void createCartItem(Long memberId, CartItemRequest cartItemRequest);
 }

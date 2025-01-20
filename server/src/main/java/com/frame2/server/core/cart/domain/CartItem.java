@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 public class CartItem extends BaseEntity {
 
     private static final int MAX_QUANTITY = 10;
-    private static final int MIN_QUANTITY = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
@@ -53,7 +52,7 @@ public class CartItem extends BaseEntity {
             throw new DomainException(ExceptionType.EXCEEDS_MAX_ORDER_QUANTITY);
         }
 
-        this.quantity = newQuantity;
+        changeQuantity(newQuantity);
     }
 
     // 수량을 직접 입력하는 경우

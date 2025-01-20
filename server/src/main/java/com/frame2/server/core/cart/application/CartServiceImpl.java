@@ -39,11 +39,7 @@ public class CartServiceImpl implements CartService {
                 .ifPresentOrElse(item -> item.addSameItemToCart(cartItemRequest.quantity()),
                         // 장바구니에 상품이 없으면 새로 생성하여 저장
                         () -> {
-                            var member = memberRepository.findOne(memberId);
-                            var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
-
-                            // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
-                            cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
+                            createCartItem(memberId, cartItemRequest);
                         });
     }
 
@@ -51,9 +47,17 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void changeCartItemQuantity(Long memberId, QuantityRequest quantityRequest) {
         cartItemRepository.findByMemberIdAndSaleProductId(memberId, quantityRequest.saleProductId())
-                .ifPresentOrElse(item -> item.changeQuantity(quantityRequest.quantity()),
-                        () -> {
-                            throw new DomainException(ExceptionType.CART_ITEM_NOT_FOUND);
-                        });
+                .orElseThrow(() -> new DomainException(ExceptionType.CART_ITEM_NOT_FOUND))
+                .changeQuantity(quantityRequest.quantity());
+    }
+
+    @Override
+    @Transactional
+    public void createCartItem(Long memberId, CartItemRequest cartItemRequest) {
+        var member = memberRepository.findOne(memberId);
+        var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
+
+        // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
+        cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
     }
 }
