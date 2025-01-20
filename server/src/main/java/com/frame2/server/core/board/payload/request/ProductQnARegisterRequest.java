@@ -6,7 +6,6 @@ import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.Product;
 
 public record ProductQnARegisterRequest(
-        Long memberId,
         Long productId,
         String title,
         String question
