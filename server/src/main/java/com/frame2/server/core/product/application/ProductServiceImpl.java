@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -61,8 +62,8 @@ public class ProductServiceImpl implements ProductService{
     @Transactional(readOnly = true)
     public SaleProductDetailResponse getSaleProduct(Long saleProductId) {
         SaleProduct saleProduct = saleProductRepository.findOne(saleProductId);
-        Stock stock = stockRepository.findBySaleProductId(saleProductId);
-        return SaleProductDetailResponse.of(saleProduct, stock);
+        Optional<Stock> stock = stockRepository.findBySaleProductId(saleProductId);
+        return SaleProductDetailResponse.of(saleProduct, stock.orElse(null));
     }
 
     private Sort getSort(String sortParam) {
