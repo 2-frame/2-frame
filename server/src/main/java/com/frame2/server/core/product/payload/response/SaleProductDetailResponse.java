@@ -4,6 +4,7 @@ import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.product.domain.Stock;
 import lombok.Builder;
 
+@Builder
 public record SaleProductDetailResponse(
     Long saleProductId,
     String saleProductName,
@@ -16,20 +17,17 @@ public record SaleProductDetailResponse(
     OptionResponse option,
     int stockQuantity
 ) {
-    @Builder
-    public SaleProductDetailResponse {}
-
-    public static SaleProductDetailResponse of(SaleProduct sp, Stock stock) {
+    public static SaleProductDetailResponse of(SaleProduct saleProduct, Stock stock) {
         return SaleProductDetailResponse.builder()
-                .saleProductId(sp.getId())
-                .saleProductName(sp.getName())
-                .salePrice(sp.getSalePrice())
-                .saleCount(sp.getSaleCount())
-                .mainImage(sp.getMainImage())
-                .subImage(sp.getSubImage())
-                .descriptionImage(sp.getDescriptionImage())
-                .product(ProductDetailResponse.from(sp.getProduct()))
-                .option(sp.getOption() != null ? OptionResponse.from(sp.getOption()) : null)
+                .saleProductId(saleProduct.getId())
+                .saleProductName(saleProduct.getName())
+                .salePrice(saleProduct.getSalePrice())
+                .saleCount(saleProduct.getSaleCount())
+                .mainImage(saleProduct.getMainImage())
+                .subImage(saleProduct.getSubImage())
+                .descriptionImage(saleProduct.getDescriptionImage())
+                .product(ProductDetailResponse.from(saleProduct.getProduct()))
+                .option(saleProduct.getOption() != null ? OptionResponse.from(saleProduct.getOption()) : null)
                 .stockQuantity(stock != null ? stock.getQuantity() : 0)
                 .build();
     }
