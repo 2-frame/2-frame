@@ -62,8 +62,7 @@ public class ProductServiceImpl implements ProductService{
     @Transactional(readOnly = true)
     public SaleProductDetailResponse getSaleProduct(Long saleProductId) {
         SaleProduct saleProduct = saleProductRepository.findOne(saleProductId);
-        Optional<Stock> stock = stockRepository.findBySaleProductId(saleProductId);
-        return SaleProductDetailResponse.of(saleProduct, stock.orElse(null));
+        return SaleProductDetailResponse.from(saleProduct);
     }
 
     private Sort getSort(String sortParam) {

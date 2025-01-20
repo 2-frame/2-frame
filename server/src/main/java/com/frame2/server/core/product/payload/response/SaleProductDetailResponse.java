@@ -1,7 +1,6 @@
 package com.frame2.server.core.product.payload.response;
 
 import com.frame2.server.core.product.domain.SaleProduct;
-import com.frame2.server.core.product.domain.Stock;
 import lombok.Builder;
 
 @Builder
@@ -17,7 +16,7 @@ public record SaleProductDetailResponse(
     OptionResponse option,
     int stockQuantity
 ) {
-    public static SaleProductDetailResponse of(SaleProduct saleProduct, Stock stock) {
+    public static SaleProductDetailResponse from(SaleProduct saleProduct) {
         return SaleProductDetailResponse.builder()
                 .saleProductId(saleProduct.getId())
                 .saleProductName(saleProduct.getName())
@@ -28,7 +27,7 @@ public record SaleProductDetailResponse(
                 .descriptionImage(saleProduct.getDescriptionImage())
                 .product(ProductDetailResponse.from(saleProduct.getProduct()))
                 .option(OptionResponse.from(saleProduct.getOption()))
-                .stockQuantity(stock != null ? stock.getQuantity() : 0)
+                .stockQuantity(saleProduct.getStock().getQuantity())
                 .build();
     }
 }
