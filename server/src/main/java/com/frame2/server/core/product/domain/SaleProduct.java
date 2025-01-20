@@ -1,13 +1,7 @@
 package com.frame2.server.core.product.domain;
 
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +21,9 @@ public class SaleProduct extends BaseEntity {
     @JoinColumn(name = "option_id")
     private Option option;
 
+    @OneToOne(mappedBy = "saleProduct")
+    private Stock stock;
+
     private String name;
     private String mainImage;
     private String subImage;
@@ -39,9 +36,23 @@ public class SaleProduct extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductDisclosure productDisclosure;
 
+    // 필터링을 위한 컬럼들
+    private int salePrice;
+    private int saleCount;
+
     @Builder
-    public SaleProduct(String name, String mainImg) {
+    public SaleProduct(Stock stock, String name, String mainImg, String subImage, String descriptionImage,
+                       String unit, int salePrice, int saleCount,
+                       ProductStatus productStatus, ProductDisclosure productDisclosure) {
+        this.stock = stock;
         this.name = name;
         this.mainImage = mainImg;
+        this.subImage = subImage;
+        this.descriptionImage = descriptionImage;
+        this.unit = unit;
+        this.productStatus = productStatus;
+        this.productDisclosure = productDisclosure;
+        this.salePrice = salePrice;
+        this.saleCount = saleCount;
     }
 }
