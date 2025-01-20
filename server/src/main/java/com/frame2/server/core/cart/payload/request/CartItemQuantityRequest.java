@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record CartItemRequest(
+public record CartItemQuantityRequest(
         @NotNull(message = "필수 옵션을 선택해주세요.")
         Long saleProductId,
 
