@@ -5,15 +5,13 @@ import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record CategoryResponse(
         Long id,
         String categoryName,
         List<CategoryResponse> subCategories
 )
 {
-    @Builder
-    public CategoryResponse{}
-
     public static CategoryResponse from(Category category) {
         return CategoryResponse.builder()
                 .id(category.getId())

@@ -1,6 +1,7 @@
 package com.frame2.server.core.cart.api;
 
 import com.frame2.server.core.cart.application.CartService;
+import com.frame2.server.core.cart.payload.request.CartItemQuantityRequest;
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.support.annotations.Auth;
@@ -44,8 +45,8 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @PatchMapping
     public List<CartItemListResponse> changeCartItemQuantity(@Auth User user,
-                                                             @RequestBody @Valid CartItemRequest cartItemRequest) {
-        cartService.changeCartItemQuantity(user.id(), cartItemRequest);
+                                                             @RequestBody @Valid CartItemQuantityRequest cartItemQuantityRequest) {
+        cartService.changeCartItemQuantity(user.id(), cartItemQuantityRequest);
 
         return cartService.getCartItems(user.id());
     }

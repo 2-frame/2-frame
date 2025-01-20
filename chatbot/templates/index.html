@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>2frame_Chatbot</title>
+</head>
+<body>
+  <h1>쇼핑몰 FAQ 챗봇</h1>
+  
+  <!-- 채팅 내용 표시 영역 -->
+  <div id="chatbox" style="border:1px solid #999; width: 500px; height: 300px; overflow-y:auto; padding:10px;">
+  </div>
+
+  <!-- 사용자 입력 영역 -->
+  <div style="margin-top:10px;">
+    <input type="text" id="userinput" style="width:400px;" placeholder="질문을 입력하세요"/>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script>
+    async function sendMessage() {
+      const question = document.getElementById("userinput").value;
+      if (!question.trim()) return;
+
+      // 1) 사용자 메시지 표시
+      const chatbox = document.getElementById("chatbox");
+      chatbox.innerHTML += `<p><strong>YOU:</strong> ${question}</p>`;
+
+      // 2) 서버에 POST 요청
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+
+      // 3) JSON 응답 파싱
+      const data = await response.json();
+      const botAnswer = data.answer || "(no answer)";
+
+      // 4) 봇 답변 표시
+      chatbox.innerHTML += `<p><strong>BOT:</strong> ${botAnswer}</p>`;
+
+      // 5) 입력창 초기화
+      document.getElementById("userinput").value = "";
+      chatbox.scrollTop = chatbox.scrollHeight;  // 스크롤 맨 아래로
+    }
+  </script>
+</body>
+</html>

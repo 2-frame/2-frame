@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record OrderCreateRequest(
-
         @NotNull
         Long memberId,
 

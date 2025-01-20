@@ -1,10 +1,13 @@
 package com.frame2.server.core.cart.application;
 
 import com.frame2.server.core.cart.infrastructure.CartItemRepository;
+import com.frame2.server.core.cart.payload.request.CartItemQuantityRequest;
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
+import com.frame2.server.core.support.exception.DomainException;
+import com.frame2.server.core.support.exception.ExceptionType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,54 +34,26 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void addCartItem(Long memberId, CartItemRequest cartItemRequest) {
-        // 1번 코드
-
-        var cartItem = cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemRequest.saleProductId());
-
-        // 이미 있는 상품이라면, 수량만 업데이트 한다.
-        cartItem.ifPresent(item -> item.addSameItemToCart(cartItemRequest.quantity()));
-
-        // empty 라면, 새로 저장한다
-        if (cartItem.isEmpty()) {
-            var member = memberRepository.findOne(memberId);
-            var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
-
-            // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
-            cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
-        }
-
-        // ======================================================================================== //
-        // 2번 코드
-
         cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemRequest.saleProductId())
-                .map(item -> { // 이미 장바구니에 해당 상품이 있다면 수량만 업데이트
-                    item.addSameItemToCart(cartItemRequest.quantity());
-                    return item;
-                })
-                .orElseGet(() -> { // 장바구니에 상품이 없으면 새로 생성하여 저장
-                    var member = memberRepository.findOne(memberId);
-                    var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
+                // 이미 장바구니에 해당 상품이 있다면 수량만 업데이트
+                .ifPresentOrElse(item -> item.addSameItemToCart(cartItemRequest.quantity()),
+                        // 장바구니에 상품이 없으면 새로 생성하여 저장
+                        () -> {
+                            var member = memberRepository.findOne(memberId);
+                            var saleProduct = saleProductRepository.findOne(cartItemRequest.saleProductId());
 
-                    // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
-                    return cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
-                });
+                            // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
+                            cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
+                        });
     }
 
     @Override
     @Transactional
-    public void changeCartItemQuantity(Long memberId, CartItemRequest cartItemRequest) {
-        // 1번 코드
-        var cartItem = cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemRequest.saleProductId());
-
-        cartItem.ifPresent(item -> item.changeQuantity(cartItemRequest.quantity()));
-
-        // ======================================================================================== //
-        // 2번 코드
-
-        cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemRequest.saleProductId())
-                .map(item -> {
-                    item.changeQuantity(cartItemRequest.quantity());
-                    return item;
-                });
+    public void changeCartItemQuantity(Long memberId, CartItemQuantityRequest cartItemQuantityRequest) {
+        cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemQuantityRequest.saleProductId())
+                .ifPresentOrElse(item -> item.changeQuantity(cartItemQuantityRequest.quantity()),
+                        () -> {
+                            throw new DomainException(ExceptionType.CART_ITEM_NOT_FOUND);
+                        });
     }
 }
