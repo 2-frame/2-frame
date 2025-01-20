@@ -1,9 +1,8 @@
 package com.frame2.server.core.order.payload.response;
 
-import lombok.Builder;
+import com.frame2.server.core.order.domain.OrderDetail;
 import java.time.LocalDate;
 
-@Builder
 public record OrderDetailResponse(
 
         Long orderId,
@@ -17,5 +16,19 @@ public record OrderDetailResponse(
         boolean exchangeReturnPossible,
         boolean exchangeReturnRequested
 ) {
+    public static OrderDetailResponse from(OrderDetail orderDetail) {
 
+        return new OrderDetailResponse(
+                orderDetail.getOrder().getId(),
+                orderDetail.getId(),
+                orderDetail.getSaleProduct().getName(),
+                orderDetail.getQuantity(),
+                orderDetail.getPrice(),
+                orderDetail.getDeliveryStatus().name(),
+                orderDetail.getDeliveryStartDate(),
+                orderDetail.getDeliveryEndDate(),
+                orderDetail.isExchangeReturnPossible(),
+                orderDetail.isExchaneReturnRequested()
+        );
+    }
 }

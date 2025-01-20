@@ -3,7 +3,6 @@ package com.frame2.server.core.order.infrastructure;
 import com.frame2.server.core.order.domain.Order;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
-import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -78,14 +78,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse getOrder(Long orderId) {
 
         Order order = orderRepository.findOne(orderId);
-
-        return OrderResponse.builder()
-                .orderId(order.getId())
-                .orderDate(order.getCreatedAt())
-                .orderStatus(order.getOrderStatus().name())
-                .mainProductName(order.getMainProductName())
-                .totalPrice(order.getTotalPrice())
-                .build();
+        return OrderResponse.from(order);
     }
 
     // TODO : 페이징 처리
@@ -94,15 +87,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderResponse> getOrders(Long memberId) {
 
         return orderRepository.findAllByMemberId(memberId).stream()
-                .map(order ->{
-                    return OrderResponse.builder()
-                            .orderId(order.getId())
-                            .orderDate(order.getCreatedAt())
-                            .orderStatus(order.getOrderStatus().name())
-                            .mainProductName(order.getMainProductName())
-                            .totalPrice(order.getTotalPrice())
-                            .build();
-                })
+                .map(OrderResponse::from)
                 .collect(Collectors.toList());
     }
 
@@ -111,19 +96,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDetailResponse getOderDetail(Long orderDetailId) {
 
         OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
-
-        return OrderDetailResponse.builder()
-                .orderId(orderDetail.getOrder().getId())
-                .orderDetailId(orderDetail.getId())
-                .productName(orderDetail.getSaleProduct().getProduct().getName())
-                .quantity(orderDetail.getQuantity())
-                .price(orderDetail.getPrice())
-                .deliveryStatus(orderDetail.getDeliveryStatus().name())
-                .deliveryStartDate(orderDetail.getDeliveryStartDate())
-                .deliveryEndDate(orderDetail.getDeliveryEndDate())
-                .exchangeReturnPossible(orderDetail.isExchangeReturnPossible())
-                .exchangeReturnRequested(orderDetail.isExchaneReturnRequested())
-                .build();
+        return OrderDetailResponse.from(orderDetail);
     }
 
     // TODO : 페이징 처리
@@ -132,20 +105,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDetailResponse> getOrderDetails(Long orderId) {
 
         return orderDetailRepository.findAllByOrderId(orderId).stream()
-                .map(orderDetail -> {
-                    return OrderDetailResponse.builder()
-                            .orderId(orderDetail.getOrder().getId())
-                            .orderDetailId(orderDetail.getId())
-                            .productName(orderDetail.getSaleProduct().getProduct().getName())
-                            .quantity(orderDetail.getQuantity())
-                            .price(orderDetail.getPrice())
-                            .deliveryStatus(orderDetail.getDeliveryStatus().name())
-                            .deliveryStartDate(orderDetail.getDeliveryStartDate())
-                            .deliveryEndDate(orderDetail.getDeliveryEndDate())
-                            .exchangeReturnPossible(orderDetail.isExchangeReturnPossible())
-                            .exchangeReturnRequested(orderDetail.isExchaneReturnRequested())
-                            .build();
-                })
+                .map(OrderDetailResponse::from)
                 .collect(Collectors.toList());
     }
 }
