@@ -29,7 +29,12 @@ public enum ExceptionType {
 
     // - 장바구니 -
     CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.C01, "존재하지 않는 상품입니다.", ERROR),
-    QUANTITY_EXCEEDS_STOCK(ExceptionCode.C02, "상품의 수량이 재고 수량보다 많습니다. \n 재고: 10개");
+    QUANTITY_EXCEEDS_STOCK(ExceptionCode.C02, "상품의 수량이 재고 수량보다 많습니다. \n 재고: 10개"),
+
+    // -주문-
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.O01, "존재하지 않는 주문 내역입니다", ERROR),
+    ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.O02, "존재하지 않는 주문 상세 내역입니다.", ERROR);
+
 
 
     private final HttpStatus status;
