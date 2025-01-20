@@ -67,7 +67,7 @@ public class ProductQnAApi implements ProductQnAApiSpec {
     public void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
         productQnAService.answer(productQnAAnswerRequest);
     }
-
+    
     // 답변 수정
     @MemberOnly
     @PatchMapping("/answer/{productQnAId}")
