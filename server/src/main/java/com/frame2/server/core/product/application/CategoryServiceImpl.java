@@ -6,7 +6,6 @@ import com.frame2.server.core.product.infrastructure.CategoryRepository;
 import com.frame2.server.core.product.infrastructure.ProductRepository;
 import com.frame2.server.core.product.payload.response.CategoryResponse;
 import com.frame2.server.core.product.payload.response.ProductListResponse;
-import com.frame2.server.core.product.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,8 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<ProductListResponse> getProductsByCategory(Long id){
-        categoryRepository.findOne(id);
-        List<Product> products = productRepository.findByCategoryIdIn(id);
+        List<Product> products = productRepository.findByCategoryId(id);
         return products.stream()
                 .map(ProductListResponse::from)
                 .toList();
