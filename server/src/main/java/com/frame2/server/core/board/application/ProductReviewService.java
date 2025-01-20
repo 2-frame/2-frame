@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductReviewService {
     // 생성
-    ProductReview productReviewCreate(ProductReviewRequest request);
+    ProductReview productReviewCreate(ProductReviewRequest request, Long memberId);
 
     // 수정
     ProductReview productReviewModify(ProductReviewModifyRequest request);
