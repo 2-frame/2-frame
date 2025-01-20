@@ -3,7 +3,8 @@ package com.frame2.server.core.order.infrastructure;
 import com.frame2.server.core.order.domain.OrderDetail;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
-import org.springframework.boot.web.embedded.netty.NettyWebServer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +20,5 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     }
 
     @Query("SELECT od FROM OrderDetail od WHERE od.order.id = :orderId")
-    List<OrderDetail> findAllByOrderId(@Param("orderId") Long orderId);
+    Page<OrderDetail> findAllByOrderId(@Param("orderId") Long orderId, Pageable pageable);
 }
