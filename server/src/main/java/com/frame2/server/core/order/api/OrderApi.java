@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderApi implements OrderApiSpec{
 
     private final OrderService orderServiceImpl;
@@ -39,7 +39,7 @@ public class OrderApi implements OrderApiSpec{
     // 주문 전체 조회
     @Override
     @MemberOnly
-    @GetMapping("/member/{memberId}")
+    @GetMapping("/members/{memberId}")
     public List<OrderResponse> getOrders(@PathVariable Long memberId) {
         return orderServiceImpl.getOrders(memberId);
     }
@@ -47,7 +47,7 @@ public class OrderApi implements OrderApiSpec{
     // 주문 상세 단건 조회
     @Override
     @MemberOnly
-    @GetMapping("/detail/{orderDetailId}")
+    @GetMapping("/details/{orderDetailId}")
     public OrderDetailResponse getOderDetail(@PathVariable Long orderDetailId){
         return orderServiceImpl.getOderDetail(orderDetailId);
     }
@@ -55,7 +55,7 @@ public class OrderApi implements OrderApiSpec{
     // 주문 상세 전체 조회
     @Override
     @MemberOnly
-    @GetMapping("/{orderId}/detail")
+    @GetMapping("/{orderId}/details")
     public List<OrderDetailResponse> getOrderDetails(@PathVariable Long orderId){
         return orderServiceImpl.getOrderDetails(orderId);
     }
