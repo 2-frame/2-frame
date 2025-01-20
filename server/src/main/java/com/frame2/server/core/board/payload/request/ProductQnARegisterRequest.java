@@ -6,12 +6,12 @@ import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.Product;
 
 public record ProductQnARegisterRequest(
-        Member member,
-        Product product,
+        Long memberId,
+        Long productId,
         String title,
         String question
 ) {
-    public ProductQnA toEntity() {
+    public ProductQnA toEntity(Member member, Product product) {
         return ProductQnA.builder()
                 .member(member)
                 .product(product)

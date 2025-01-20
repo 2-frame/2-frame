@@ -23,7 +23,7 @@ public class ProductQnAApi implements ProductQnAApiSpec {
 
     // 질문 리스트 전체 조회
     @GetMapping
-    public ResponseEntity<List<SimpleProductQnA>> qnaList(){
+    public ResponseEntity<List<SimpleProductQnA>> qnaList() {
         ProductQnAListResponse productQnAListResponse = productQnAService.getProductQnAList();
         List<SimpleProductQnA> simpleProductQnAList = productQnAListResponse.simpleProductQnAList();
         return ResponseEntity.ok().body(simpleProductQnAList);
@@ -37,27 +37,27 @@ public class ProductQnAApi implements ProductQnAApiSpec {
     }
 
     // 질문 생성
-    @PostMapping("/add")
-    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest){
+    @PostMapping
+    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest) {
         productQnAService.questionCreate(productQnARequest);
     }
 
     // 질문 수정
-    @PatchMapping("/{productQnAId}")
+    @PatchMapping
     public void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest) {
         productQnAService.questionModify(productQnAModifyRequest);
     }
 
     // 질문 삭제
     @DeleteMapping("/{productQnAId}")
-    public void delete(@PathVariable("productQnAId") Long id){
+    public void delete(@PathVariable("productQnAId") Long id) {
         productQnAService.remove(id);
     }
 
     // 답변 생성 : 답변이란 엔티티가 따로 존재하지 않기 때문에
     // 기존의 qna객체를 업데이트한다.
     @PatchMapping("/answer")
-    public void answerCreate(@RequestBody ProductQnAAnswerRequest  productQnAAnswerRequest) {
+    public void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
         productQnAService.answer(productQnAAnswerRequest);
     }
 

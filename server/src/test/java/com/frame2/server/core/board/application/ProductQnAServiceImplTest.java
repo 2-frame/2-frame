@@ -51,7 +51,7 @@ class ProductQnAServiceImplTest {
 
         for (int i = 1; i <= 10; i++) {
             ProductQnARegisterRequest request = new ProductQnARegisterRequest(
-                    member, product, "test Title" + i, "test Question" + i );
+                    member.getId(), product.getId(), "test Title" + i, "test Question" + i);
             ProductQnA productQnA = productQnAService.questionCreate(request);
         }
     }
@@ -66,7 +66,7 @@ class ProductQnAServiceImplTest {
         productRepository.save(product);
 
         ProductQnARegisterRequest request = new ProductQnARegisterRequest(
-                member, product, "test Title", "test Question" );
+                member.getId(), product.getId(), "test Title", "test Question");
         ProductQnA productQnA = productQnAService.questionCreate(request);
 
         ProductQnA productQnA1 = productQnARepository.findById(productQnA.getId()).orElseThrow();
@@ -103,16 +103,17 @@ class ProductQnAServiceImplTest {
 
         assertEquals(10, list.size());
     }
+
     @Test
     @DisplayName("답변 생성")
-    public void answer(){
+    public void answer() {
         ProductQnAAnswerRequest request = new ProductQnAAnswerRequest(1L, "답변입니다.", "관리자");
         ProductQnA answer = productQnAService.answer(request);
 
         ProductQnAResponse findProductQnA = productQnAService.getProductQnA(answer.getId());
         SimpleProductQnA simpleProductQnA = findProductQnA.simpleProductQnA();
 
-        assertEquals(answer.getAnswer(),simpleProductQnA.answer());
+        assertEquals(answer.getAnswer(), simpleProductQnA.answer());
         assertEquals(answer.getAnswerYN(), simpleProductQnA.answerYN());
 
 

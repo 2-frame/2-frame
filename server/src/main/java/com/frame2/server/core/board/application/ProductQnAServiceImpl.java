@@ -4,10 +4,14 @@ import com.frame2.server.core.board.domain.ProductQnA;
 import com.frame2.server.core.board.infrastructure.ProductQnARepository;
 import com.frame2.server.core.board.payload.SimpleProductQnA;
 import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
-import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
+import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
+import com.frame2.server.core.member.domain.Member;
+import com.frame2.server.core.member.infrastructure.MemberRepository;
+import com.frame2.server.core.product.domain.Product;
+import com.frame2.server.core.product.infrastructure.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +21,19 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ProductQnAServiceImpl implements ProductQnAdService{
+public class ProductQnAServiceImpl implements ProductQnAdService {
 
     private final ProductQnARepository productQnARepository;
+    private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
 
     // 질문 생성
     @Override
     public ProductQnA questionCreate(ProductQnARegisterRequest request) {
-        ProductQnA productQnA = request.toEntity();
+        Member member = memberRepository.findById(request.memberId()).orElseThrow();
+        Product product = productRepository.findProduct(request.productId());
+
+        ProductQnA productQnA = request.toEntity(member, product);
         return productQnARepository.save(productQnA);
     }
 
@@ -43,9 +52,8 @@ public class ProductQnAServiceImpl implements ProductQnAdService{
         ProductQnA productQnA = productQnARepository.findbyidProductQnA(answerRegisterRequest.id());
         return productQnA.createAnswer(
                 requestProductQnA.getAnswer(),
-                requestProductQnA.getManager(),
-                requestProductQnA.getAnswerYN()
-                );
+                requestProductQnA.getManager()
+        );
     }
 
     // 답변 수정
