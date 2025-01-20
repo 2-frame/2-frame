@@ -5,6 +5,8 @@ import com.frame2.server.core.order.domain.OrderDetail;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 
 @Entity
@@ -28,6 +30,8 @@ public class ProductReview extends BaseEntity {
     private OrderDetail orderDetail;
 
     // 평점
+    @Min(1)
+    @Max(5)
     @Column(nullable = false)
     private int rating;
 
@@ -37,7 +41,7 @@ public class ProductReview extends BaseEntity {
 
     private String image;
 
-    public ProductReview updateProductReview(ProductReview newProductReview){
+    public ProductReview updateProductReview(ProductReview newProductReview) {
         this.rating = newProductReview.getRating();
         this.contents = newProductReview.getContents();
         this.image = newProductReview.getImage();
