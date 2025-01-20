@@ -58,4 +58,10 @@ public class CartServiceImpl implements CartService {
         // quantity 값은 cartItemRequest 안에 담겨 있다.(== this.quantity)
         cartItemRepository.save(cartItemRequest.toEntity(member, saleProduct));
     }
+
+    @Override
+    @Transactional
+    public void removeCartItem(Long cartItemId) {
+        cartItemRepository.findOne(cartItemId).changeDeleteStatus();
+    }
 }

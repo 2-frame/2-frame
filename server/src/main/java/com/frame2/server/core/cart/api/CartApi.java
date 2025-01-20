@@ -2,6 +2,7 @@ package com.frame2.server.core.cart.api;
 
 import com.frame2.server.core.cart.application.CartService;
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
+import com.frame2.server.core.cart.payload.request.IdRequest;
 import com.frame2.server.core.cart.payload.request.QuantityRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.support.annotations.Auth;
@@ -10,6 +11,7 @@ import com.frame2.server.core.support.request.User;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +37,8 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @PostMapping
     public List<CartItemListResponse> addCartItem(@Auth User user,
-                                                  @RequestBody @Valid CartItemRequest cartItemRequest) {
-        cartService.addCartItem(user.id(), cartItemRequest);
+                                                  @RequestBody @Valid CartItemRequest request) {
+        cartService.addCartItem(user.id(), request);
 
         return cartService.getCartItems(user.id());
     }
@@ -45,8 +47,17 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @PatchMapping
     public List<CartItemListResponse> changeCartItemQuantity(@Auth User user,
-                                                             @RequestBody @Valid QuantityRequest quantityRequest) {
-        cartService.changeCartItemQuantity(user.id(), quantityRequest);
+                                                             @RequestBody @Valid QuantityRequest request) {
+        cartService.changeCartItemQuantity(user.id(), request);
+
+        return cartService.getCartItems(user.id());
+    }
+
+    @Override
+    @MemberOnly
+    @DeleteMapping
+    public List<CartItemListResponse> removeCartItem(@Auth User user, @RequestBody IdRequest request) {
+        cartService.removeCartItem(request.cartItemtId());
 
         return cartService.getCartItems(user.id());
     }
