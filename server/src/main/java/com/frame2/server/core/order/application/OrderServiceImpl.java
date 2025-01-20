@@ -2,8 +2,11 @@ package com.frame2.server.core.order.application;
 
 import com.frame2.server.core.order.domain.Order;
 import com.frame2.server.core.order.domain.OrderDetail;
+import com.frame2.server.core.order.infrastructure.OrderDetailRepository;
 import com.frame2.server.core.order.infrastructure.OrderRepository;
 import com.frame2.server.core.order.payload.request.OrderCreateRequest;
+import com.frame2.server.core.order.payload.response.OrderDetailResponse;
+import com.frame2.server.core.order.payload.response.OrderResponse;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
 import com.frame2.server.core.support.response.IdResponse;
@@ -16,13 +19,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final SaleProductRepository saleProductRepository;
 
-    @Transactional
     public IdResponse createOrder(OrderCreateRequest request) {
         
         // 주문 생성
@@ -67,5 +71,81 @@ public class OrderServiceImpl implements OrderService {
         order.updateProductName();
 
         return new IdResponse(order.getId());
+    }
+    
+    // 주문 내역 단건 조회 - 주문id로 단건 조회
+    @Override
+    public OrderResponse getOrder(Long orderId) {
+
+        Order order = orderRepository.findOne(orderId);
+
+        return OrderResponse.builder()
+                .orderId(order.getId())
+                .orderDate(order.getCreatedAt())
+                .orderStatus(order.getOrderStatus().name())
+                .mainProductName(order.getMainProductName())
+                .totalPrice(order.getTotalPrice())
+                .build();
+    }
+
+    // TODO : 페이징 처리
+    // 주문 내역 전체조회 - 멤버id로 전체 조회
+    @Override
+    public List<OrderResponse> getOrders(Long memberId) {
+
+        return orderRepository.findAllByMemberId(memberId).stream()
+                .map(order ->{
+                    return OrderResponse.builder()
+                            .orderId(order.getId())
+                            .orderDate(order.getCreatedAt())
+                            .orderStatus(order.getOrderStatus().name())
+                            .mainProductName(order.getMainProductName())
+                            .totalPrice(order.getTotalPrice())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
+    // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
+    @Override
+    public OrderDetailResponse getOderDetail(Long orderDetailId) {
+
+        OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
+
+        return OrderDetailResponse.builder()
+                .orderId(orderDetail.getOrder().getId())
+                .orderDetailId(orderDetail.getId())
+                .productName(orderDetail.getSaleProduct().getProduct().getName())
+                .quantity(orderDetail.getQuantity())
+                .price(orderDetail.getPrice())
+                .deliveryStatus(orderDetail.getDeliveryStatus().name())
+                .deliveryStartDate(orderDetail.getDeliveryStartDate())
+                .deliveryEndDate(orderDetail.getDeliveryEndDate())
+                .exchangeReturnPossible(orderDetail.isExchangeReturnPossible())
+                .exchangeReturnRequested(orderDetail.isExchaneReturnRequested())
+                .build();
+    }
+
+    // TODO : 페이징 처리
+    // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
+    @Override
+    public List<OrderDetailResponse> getOrderDetails(Long orderId) {
+
+        return orderDetailRepository.findAllByOrderId(orderId).stream()
+                .map(orderDetail -> {
+                    return OrderDetailResponse.builder()
+                            .orderId(orderDetail.getOrder().getId())
+                            .orderDetailId(orderDetail.getId())
+                            .productName(orderDetail.getSaleProduct().getProduct().getName())
+                            .quantity(orderDetail.getQuantity())
+                            .price(orderDetail.getPrice())
+                            .deliveryStatus(orderDetail.getDeliveryStatus().name())
+                            .deliveryStartDate(orderDetail.getDeliveryStartDate())
+                            .deliveryEndDate(orderDetail.getDeliveryEndDate())
+                            .exchangeReturnPossible(orderDetail.isExchangeReturnPossible())
+                            .exchangeReturnRequested(orderDetail.isExchaneReturnRequested())
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }
