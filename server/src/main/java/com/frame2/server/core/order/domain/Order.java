@@ -57,7 +57,7 @@ public class Order extends BaseEntity {
         this.recipientAddress1 = recipientAddress1;
         this.recipientAddress2 = recipientAddress2;
         this.deliveryRequest = deliveryRequest;
-        this.orderStatus = OrderStatus.ORDER_RECIEVED;
+        this.orderStatus = OrderStatus.ORDER_RECEIVED;
     }
 
     // 주문에 주문 상세 추가
