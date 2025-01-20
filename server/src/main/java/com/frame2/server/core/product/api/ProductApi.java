@@ -38,7 +38,7 @@ public class ProductApi implements ProductApiSpec {
     }
 
     @Override
-    @GetMapping("/sale")
+    @GetMapping("/sales")
     public ResponseEntity<List<SaleProductListResponse>> getAllSaleProducts(
             @RequestParam(defaultValue = "0") int minPrice,
             @RequestParam(defaultValue = "999999999") int maxPrice,
@@ -48,7 +48,7 @@ public class ProductApi implements ProductApiSpec {
     }
 
     @Override
-    @GetMapping("/sale/{saleProductId}")
+    @GetMapping("/sales/{saleProductId}")
     public ResponseEntity<SaleProductDetailResponse> getSaleProduct(@PathVariable("saleProductId") Long id) {
         SaleProductDetailResponse response = productServiceImpl.getSaleProduct(id);
         return ResponseEntity.ok().body(response);
