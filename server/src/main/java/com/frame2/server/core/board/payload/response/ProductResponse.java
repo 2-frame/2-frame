@@ -1,7 +1,6 @@
-package com.frame2.server.core.product.payload.response;
+package com.frame2.server.core.board.payload.response;
 
 import com.frame2.server.core.product.domain.Product;
-import lombok.Builder;
 
 public record ProductResponse(
         Long id,

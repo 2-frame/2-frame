@@ -2,8 +2,11 @@ package com.frame2.server.core.order.application;
 
 import com.frame2.server.core.order.domain.Order;
 import com.frame2.server.core.order.domain.OrderDetail;
+import com.frame2.server.core.order.infrastructure.OrderDetailRepository;
 import com.frame2.server.core.order.infrastructure.OrderRepository;
 import com.frame2.server.core.order.payload.request.OrderCreateRequest;
+import com.frame2.server.core.order.payload.response.OrderDetailResponse;
+import com.frame2.server.core.order.payload.response.OrderResponse;
 import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
 import com.frame2.server.core.support.response.IdResponse;
@@ -16,15 +19,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final SaleProductRepository saleProductRepository;
 
-    @Transactional
     public IdResponse createOrder(OrderCreateRequest request) {
-        
         // 주문 생성
         Order order = request.toEntity();
         orderRepository.save(order);
@@ -60,11 +63,44 @@ public class OrderServiceImpl implements OrderService {
                             .quantity(orderDetail.quantity())
                             .price(saleProduct.getProduct().getPrice())
                             .build();
-
                 }).toList();
 
         order.addOrderDetails(orderDetails);
+        order.updateTotalPrice();
+        order.updateProductName();
 
         return new IdResponse(order.getId());
+    }
+    
+    // 주문 내역 단건 조회 - 주문id로 단건 조회
+    @Override
+    public OrderResponse getOrder(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+        return OrderResponse.from(order);
+    }
+
+    // TODO : 페이징 처리
+    // 주문 내역 전체조회 - 멤버id로 전체 조회
+    @Override
+    public List<OrderResponse> getOrders(Long memberId) {
+        return orderRepository.findAllByMemberId(memberId).stream()
+                .map(OrderResponse::from)
+                .toList();
+    }
+
+    // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
+    @Override
+    public OrderDetailResponse getOderDetail(Long orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
+        return OrderDetailResponse.from(orderDetail);
+    }
+
+    // TODO : 페이징 처리
+    // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
+    @Override
+    public List<OrderDetailResponse> getOrderDetails(Long orderId) {
+        return orderDetailRepository.findAllByOrderId(orderId).stream()
+                .map(OrderDetailResponse::from)
+                .toList();
     }
 }

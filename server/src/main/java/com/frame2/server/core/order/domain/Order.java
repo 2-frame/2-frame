@@ -19,7 +19,8 @@ public class Order extends BaseEntity {
     private Long memberId;
 
     // 대표상품명
-    private String productName;
+    @Column(name = "product_name")
+    private String mainProductName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -46,11 +47,11 @@ public class Order extends BaseEntity {
     private List<OrderDetail> orderDetails = new ArrayList<OrderDetail>();
 
     @Builder
-    public Order(Long memberId, String productName, String recipient, String recipientContact,
+    public Order(Long memberId, String mainProductName, String recipient, String recipientContact,
                  String recipientAddress1, String recipientAddress2, String deliveryRequest) {
 
         this.memberId = memberId;
-        this.productName = productName;
+        this.mainProductName = mainProductName;
         this.recipient = recipient;
         this.recipientContact = recipientContact;
         this.recipientAddress1 = recipientAddress1;
@@ -65,12 +66,22 @@ public class Order extends BaseEntity {
     }
 
     // 대표상품명 업데이트
-    public void updateProductName(String productName) {
-        this.productName = productName;
+    public void updateProductName() {
+        if(orderDetails.size() == 1 ) {
+            this.mainProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
+        } else {
+            String firstProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
+            this.mainProductName = firstProductName + " 외 " + (orderDetails.size() - 1) +"건";
+        }
     }
     
     // 총 주문 금액 업데이트
-    public void updateTotalPrice(int totalPrice) {
+    public void updateTotalPrice() {
+        int totalPrice = orderDetails.stream()
+                .mapToInt(orderDetail -> {
+                    return orderDetail.getPrice() * orderDetail.getQuantity();
+                })
+                .sum();
         this.totalPrice = totalPrice;
     }
 }

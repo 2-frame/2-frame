@@ -42,7 +42,7 @@ public class OrderDetail extends BaseEntity{
     private LocalDate deliveryStartDate;
 
     // 배송 종료일
-    private LocalDate deliveryEndtDate;
+    private LocalDate deliveryEndDate;
     
     // 교환, 반품 신청 가능 여부
     private boolean exchangeReturnPossible;
