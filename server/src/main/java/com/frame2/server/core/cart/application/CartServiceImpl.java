@@ -38,9 +38,7 @@ public class CartServiceImpl implements CartService {
                 // 이미 장바구니에 해당 상품이 있다면 수량만 업데이트
                 .ifPresentOrElse(item -> item.addSameItemToCart(cartItemRequest.quantity()),
                         // 장바구니에 상품이 없으면 새로 생성하여 저장
-                        () -> {
-                            createCartItem(memberId, cartItemRequest);
-                        });
+                        () -> createCartItem(memberId, cartItemRequest));
     }
 
     @Override
