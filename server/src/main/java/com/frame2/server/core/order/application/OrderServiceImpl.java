@@ -63,26 +63,8 @@ public class OrderServiceImpl implements OrderService {
                 }).toList();
 
         order.addOrderDetails(orderDetails);
-
-        // 총 금액 계산
-        int totalPrice = orderDetails.stream()
-                .mapToInt(orderDetail -> {
-                    return orderDetail.getPrice() * orderDetail.getQuantity();
-                })
-                .sum();
-
-        order.updateTotalPrice(totalPrice);
-
-        // 대표 상품명 생성
-        String mainProductName;
-        if(orderDetails.size() == 1) {
-            mainProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
-        } else {
-            String firstProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
-            mainProductName = firstProductName + " 외 " + (orderDetails.size()-1) + "건";
-        }
-
-        order.updateProductName(mainProductName);
+        order.updateTotalPrice();
+        order.updateProductName();
 
         return new IdResponse(order.getId());
     }
