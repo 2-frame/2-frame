@@ -67,11 +67,11 @@ public class Order extends BaseEntity {
 
     // 대표상품명 업데이트
     public void updateProductName() {
-        if(orderDetails.size() == 1 ) {
-            this.mainProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
+        String mainProductName = orderDetails.getFirst().getSaleProduct().getName();
+        if(orderDetails.size() == 1){
+            this.mainProductName = mainProductName;
         } else {
-            String firstProductName = orderDetails.get(0).getSaleProduct().getProduct().getName();
-            this.mainProductName = firstProductName + " 외 " + (orderDetails.size() - 1) +"건";
+            this.mainProductName = mainProductName + " 외 " + (orderDetails.size() - 1)+"건";
         }
     }
     
