@@ -24,6 +24,9 @@ public enum ExceptionType {
     REQUIRE_EMAIL_AUTHENTICATION(ExceptionCode.A06, "이메일 인증 전입니다. 이메일 인증을 해주세요"),
     REQUIRE_UNLOCK_DORMANT(ExceptionCode.A07, "현재 계정이 휴면상태입니다."),
 
+    INVALID_SECRET_CODE(ExceptionCode.A08, "유효하지 않은 인증 코드입니다."),
+
+
     // - 상품 -
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR),
 

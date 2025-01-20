@@ -8,8 +8,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @NoArgsConstructor
 @Table(name = "email_verification_codes")
@@ -31,5 +33,9 @@ public class EmailVerificationCode extends BaseEntity {
         this.code = code;
         this.expireTime = expireTime;
         this.member = member;
+    }
+
+    public boolean match(String secretCode) {
+        return this.code.equals(secretCode);
     }
 }
