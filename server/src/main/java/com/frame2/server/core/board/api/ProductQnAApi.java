@@ -8,6 +8,9 @@ import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
+import com.frame2.server.core.support.annotations.Auth;
+import com.frame2.server.core.support.annotations.MemberOnly;
+import com.frame2.server.core.support.request.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,18 +40,21 @@ public class ProductQnAApi implements ProductQnAApiSpec {
     }
 
     // 질문 생성
+    @MemberOnly
     @PostMapping
-    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest) {
-        productQnAService.questionCreate(productQnARequest);
+    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest, @Auth User user) {
+        productQnAService.questionCreate(productQnARequest, user.id());
     }
 
     // 질문 수정
+    @MemberOnly
     @PatchMapping
     public void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest) {
         productQnAService.questionModify(productQnAModifyRequest);
     }
 
     // 질문 삭제
+    @MemberOnly
     @DeleteMapping("/{productQnAId}")
     public void delete(@PathVariable("productQnAId") Long id) {
         productQnAService.remove(id);
@@ -56,12 +62,14 @@ public class ProductQnAApi implements ProductQnAApiSpec {
 
     // 답변 생성 : 답변이란 엔티티가 따로 존재하지 않기 때문에
     // 기존의 qna객체를 업데이트한다.
+    @MemberOnly
     @PatchMapping("/answer")
     public void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
         productQnAService.answer(productQnAAnswerRequest);
     }
 
     // 답변 수정
+    @MemberOnly
     @PatchMapping("/answer/{productQnAId}")
     public void answerUpdate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
         productQnAService.answerModify(productQnAAnswerRequest);

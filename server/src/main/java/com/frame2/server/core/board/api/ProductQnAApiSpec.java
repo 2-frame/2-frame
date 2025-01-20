@@ -5,6 +5,7 @@ import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
 import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
 import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
+import com.frame2.server.core.support.request.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +18,7 @@ public interface ProductQnAApiSpec {
 
     ResponseEntity<ProductQnAResponse> getProductQnA(Long id);
 
-    void createQuestion(ProductQnARegisterRequest productQnARequest);
+    void createQuestion(ProductQnARegisterRequest productQnARequest, User user);
 
     void update(ProductQnAModifyRequest productQnAModifyRequest);
 
