@@ -2,8 +2,8 @@ package com.frame2.server.core.board.payload;
 
 import com.frame2.server.core.board.domain.AnswerStatus;
 import com.frame2.server.core.board.domain.ProductQnA;
+import com.frame2.server.core.board.payload.response.ProductResponse;
 import com.frame2.server.core.member.payload.response.MyInformationResponse;
-import com.frame2.server.core.product.payload.response.ProductResponse;
 
 import java.time.LocalDateTime;
 
