@@ -27,7 +27,7 @@ public record SaleProductDetailResponse(
                 .subImage(saleProduct.getSubImage())
                 .descriptionImage(saleProduct.getDescriptionImage())
                 .product(ProductDetailResponse.from(saleProduct.getProduct()))
-                .option(saleProduct.getOption() != null ? OptionResponse.from(saleProduct.getOption()) : null)
+                .option(OptionResponse.from(saleProduct.getOption()))
                 .stockQuantity(stock != null ? stock.getQuantity() : 0)
                 .build();
     }
