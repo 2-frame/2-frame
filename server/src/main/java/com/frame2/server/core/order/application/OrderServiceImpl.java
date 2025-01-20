@@ -85,9 +85,8 @@ public class OrderServiceImpl implements OrderService {
     // 주문 내역 전체조회 - 멤버id로 전체 조회
     @Override
     public PagedModel<OrderResponse> getOrders(Long memberId, Pageable pageable) {
-        Page<Order> orders = orderRepository.findAllByMemberId(memberId, pageable);
-        Page<OrderResponse> orderResponses = orders.map(OrderResponse::from);
-        return new PagedModel<>(orderResponses);
+        return new PagedModel<>(orderRepository.findAllByMemberId(memberId, pageable)
+                .map(OrderResponse::from));
     }
 
     // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
@@ -99,9 +98,9 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
     @Override
-    public PagedModel<OrderDetailResponse> getOrderDetails(Long orderId, Pageable pageable) {
-        Page<OrderDetail> orderDetails = orderDetailRepository.findAllByOrderId(orderId, pageable);
-        Page<OrderDetailResponse> orderDetailResponses = orderDetails.map(OrderDetailResponse::from);
-        return new PagedModel<>(orderDetailResponses);
+    public List<OrderDetailResponse> getOrderDetails(Long orderId) {
+        return orderDetailRepository.findAllByOrderId(orderId).stream()
+                .map(OrderDetailResponse::from)
+                .toList();
     }
 }
