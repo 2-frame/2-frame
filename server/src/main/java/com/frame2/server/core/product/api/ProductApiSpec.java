@@ -15,7 +15,7 @@ public interface ProductApiSpec {
 
     ResponseEntity<List<ProductListResponse>> getAllProducts();
 
-    ResponseEntity<ProductResponse> getProduct(@PathVariable("") Long id);
+    ResponseEntity<ProductResponse> getProduct(Long id);
 
-    ResponseEntity<List<ProductSearchResponse>> searchProduct(@RequestParam(value = "") String keyword);
+    ResponseEntity<List<ProductSearchResponse>> searchProduct(String keyword);
 }
