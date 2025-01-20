@@ -29,9 +29,9 @@ public class ProductQnAServiceImpl implements ProductQnAdService {
 
     // 질문 생성
     @Override
-    public ProductQnA questionCreate(ProductQnARegisterRequest request) {
-        Member member = memberRepository.findById(request.memberId()).orElseThrow();
-        Product product = productRepository.findProduct(request.productId());
+    public ProductQnA questionCreate(ProductQnARegisterRequest request, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        Product product = productRepository.findOne(request.productId());
 
         ProductQnA productQnA = request.toEntity(member, product);
         return productQnARepository.save(productQnA);

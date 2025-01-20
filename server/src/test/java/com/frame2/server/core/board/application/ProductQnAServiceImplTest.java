@@ -51,8 +51,8 @@ class ProductQnAServiceImplTest {
 
         for (int i = 1; i <= 10; i++) {
             ProductQnARegisterRequest request = new ProductQnARegisterRequest(
-                    member.getId(), product.getId(), "test Title" + i, "test Question" + i);
-            ProductQnA productQnA = productQnAService.questionCreate(request);
+                    product.getId(), "test Title" + i, "test Question" + i);
+            ProductQnA productQnA = productQnAService.questionCreate(request, member.getId());
         }
     }
 
@@ -66,8 +66,8 @@ class ProductQnAServiceImplTest {
         productRepository.save(product);
 
         ProductQnARegisterRequest request = new ProductQnARegisterRequest(
-                member.getId(), product.getId(), "test Title", "test Question");
-        ProductQnA productQnA = productQnAService.questionCreate(request);
+                product.getId(), "test Title", "test Question");
+        ProductQnA productQnA = productQnAService.questionCreate(request, member.getId());
 
         ProductQnA productQnA1 = productQnARepository.findById(productQnA.getId()).orElseThrow();
 

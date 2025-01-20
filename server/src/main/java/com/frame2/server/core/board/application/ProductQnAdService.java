@@ -1,14 +1,16 @@
 package com.frame2.server.core.board.application;
 
 import com.frame2.server.core.board.domain.ProductQnA;
-import com.frame2.server.core.board.payload.request.*;
+import com.frame2.server.core.board.payload.request.ProductQnAAnswerRequest;
+import com.frame2.server.core.board.payload.request.ProductQnAModifyRequest;
+import com.frame2.server.core.board.payload.request.ProductQnARegisterRequest;
 import com.frame2.server.core.board.payload.response.ProductQnAListResponse;
 import com.frame2.server.core.board.payload.response.ProductQnAResponse;
 
 public interface ProductQnAdService {
 
     // 질문 생성
-    ProductQnA questionCreate(ProductQnARegisterRequest request);
+    ProductQnA questionCreate(ProductQnARegisterRequest request, Long memberId);
 
     // 질문 수정
     ProductQnA questionModify(ProductQnAModifyRequest request);
