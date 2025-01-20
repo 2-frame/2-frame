@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
 
-    default ProductReview findProductReview(Long id) {
+    default ProductReview findOne(Long id) {
         return findById(id)
                 .orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_REVIEW_NOT_FOUND));
     }
