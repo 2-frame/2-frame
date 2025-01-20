@@ -1,7 +1,6 @@
 package com.frame2.server.core.cart.api;
 
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
-import com.frame2.server.core.cart.payload.request.IdRequest;
 import com.frame2.server.core.cart.payload.request.QuantityRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.support.request.User;
@@ -22,5 +21,5 @@ public interface CartApiSpec {
     List<CartItemListResponse> changeCartItemQuantity(User user, QuantityRequest request);
 
     @Operation(summary = "장바구니 상품 삭제")
-    List<CartItemListResponse> removeCartItem(User user, IdRequest request);
+    List<CartItemListResponse> removeCartItem(User user, Long cartItemId);
 }

@@ -2,7 +2,6 @@ package com.frame2.server.core.cart.api;
 
 import com.frame2.server.core.cart.application.CartService;
 import com.frame2.server.core.cart.payload.request.CartItemRequest;
-import com.frame2.server.core.cart.payload.request.IdRequest;
 import com.frame2.server.core.cart.payload.request.QuantityRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.support.annotations.Auth;
@@ -14,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,9 +55,9 @@ public class CartApi implements CartApiSpec {
 
     @Override
     @MemberOnly
-    @DeleteMapping
-    public List<CartItemListResponse> removeCartItem(@Auth User user, @RequestBody IdRequest request) {
-        cartService.removeCartItem(request.cartItemtId());
+    @DeleteMapping("/{cartItemId}")
+    public List<CartItemListResponse> removeCartItem(@Auth User user, @PathVariable("cartItemId") Long cartItemId) {
+        cartService.removeCartItem(cartItemId);
 
         return cartService.getCartItems(user.id());
     }

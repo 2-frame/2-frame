@@ -62,6 +62,6 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void removeCartItem(Long cartItemId) {
-        cartItemRepository.findOne(cartItemId).changeDeleteStatus();
+        cartItemRepository.findOne(cartItemId).delete();
     }
 }
