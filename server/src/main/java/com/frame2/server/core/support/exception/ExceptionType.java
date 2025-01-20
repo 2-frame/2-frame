@@ -27,6 +27,9 @@ public enum ExceptionType {
     // - 상품 -
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR),
 
+    // - 카테고리 -
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.CT04, "존재하지 않는 카테고리입니다.", ERROR),
+
     // - 장바구니 -
     CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.C01, "존재하지 않는 상품입니다.", ERROR),
     QUANTITY_EXCEEDS_STOCK(ExceptionCode.C02, "상품의 수량이 재고 수량보다 많습니다. \n 재고: 10개"),
