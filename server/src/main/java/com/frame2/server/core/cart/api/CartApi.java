@@ -10,7 +10,6 @@ import com.frame2.server.core.support.request.User;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +54,7 @@ public class CartApi implements CartApiSpec {
 
     @Override
     @MemberOnly
-    @DeleteMapping("/{cartItemId}")
+    @PatchMapping("/{cartItemId}")
     public void removeCartItem(@Auth User user, @PathVariable("cartItemId") Long cartItemId) {
         cartService.removeCartItem(cartItemId);
     }
