@@ -18,19 +18,17 @@ public class Stock extends BaseEntity {
     private SaleProduct saleProduct;
 
     private int quantity;
-    
-    //재고 차감 메서드
-    public void reduceQuantity(int requestQuantity) {
-        this.quantity -= requestQuantity;
-    }
 
-    // 재고 검증 메서드
-    public void validateQuantity(int requestQuantity) {
+    // 재고 검증 및 차감 메서드
+    public void reduceQuantity(int requestQuantity) {
+        // 재고 검증
         if (requestQuantity > this.quantity) {
             throw new DomainException(ExceptionType.OUT_OF_STOCK,
                     "상품ID: "+this.saleProduct.getId() +", "+
                     "요청 수량: " + requestQuantity +", "+
                     "주문 가능 수량: " + this.quantity);
         }
+        // 재고 차감
+        this.quantity -= requestQuantity;
     }
 }

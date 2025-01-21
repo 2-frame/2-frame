@@ -33,12 +33,6 @@ public class OrderServiceImpl implements OrderService {
     private final SaleProductRepository saleProductRepository;
 
     public IdResponse createOrder(OrderCreateRequest request) {
-        // 요청에 포함된 판매상품의 재고 검증 - 재고 부족 시 Exception발생
-        request.orderDetails().forEach(orderDetail -> {
-            saleProductRepository.findOne(orderDetail.saleProductId())
-                    .getStock().validateQuantity(orderDetail.quantity());
-        });
-
         // 주문 생성
         Order order = request.toEntity();
         orderRepository.save(order);
@@ -66,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
                     // 주문 상세와 판매상품을 매핑
                     SaleProduct saleProduct = saleProductMap.get(orderDetail.saleProductId());
                     
-                    // 판매상품의 재고 차감
+                    // 판매상품의 재고 검증 및 차감
                     Stock stock = saleProduct.getStock();
                     stock.reduceQuantity(orderDetail.quantity());
 
