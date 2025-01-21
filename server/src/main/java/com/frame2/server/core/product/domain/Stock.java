@@ -27,7 +27,7 @@ public class Stock extends BaseEntity {
     // 재고 검증 메서드
     public void validateQuantity(int requestQuantity) {
         if (requestQuantity > this.quantity) {
-            throw new DomainException(ExceptionType.OUT_OF_STOCK);
+            throw new DomainException(ExceptionType.OUT_OF_STOCK,"상품ID: "+this.saleProduct.getId());
         }
     }
 }
