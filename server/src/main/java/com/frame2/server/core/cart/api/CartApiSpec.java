@@ -15,8 +15,11 @@ public interface CartApiSpec {
     List<CartItemListResponse> getCartItems(User user);
 
     @Operation(summary = "장바구니 상품 담기")
-    List<CartItemListResponse> addCartItem(User user, CartItemRequest cartItemRequest);
+    List<CartItemListResponse> addCartItem(User user, CartItemRequest request);
 
     @Operation(summary = "장바구니 상품 수량 변경")
-    List<CartItemListResponse> changeCartItemQuantity(User user, QuantityRequest quantityRequest);
+    List<CartItemListResponse> changeCartItemQuantity(User user, QuantityRequest request);
+
+    @Operation(summary = "장바구니 상품 삭제")
+    void removeCartItem(User user, Long cartItemId);
 }

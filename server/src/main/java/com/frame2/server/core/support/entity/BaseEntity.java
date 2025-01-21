@@ -30,4 +30,7 @@ public class BaseEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public void delete() {
+        this.deleteStatus = true;
+    }
 }

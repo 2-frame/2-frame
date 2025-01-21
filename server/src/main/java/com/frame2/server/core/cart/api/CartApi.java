@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,8 +36,8 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @PostMapping
     public List<CartItemListResponse> addCartItem(@Auth User user,
-                                                  @RequestBody @Valid CartItemRequest cartItemRequest) {
-        cartService.addCartItem(user.id(), cartItemRequest);
+                                                  @RequestBody @Valid CartItemRequest request) {
+        cartService.addCartItem(user.id(), request);
 
         return cartService.getCartItems(user.id());
     }
@@ -45,9 +46,16 @@ public class CartApi implements CartApiSpec {
     @MemberOnly
     @PatchMapping
     public List<CartItemListResponse> changeCartItemQuantity(@Auth User user,
-                                                             @RequestBody @Valid QuantityRequest quantityRequest) {
-        cartService.changeCartItemQuantity(user.id(), quantityRequest);
+                                                             @RequestBody @Valid QuantityRequest request) {
+        cartService.changeCartItemQuantity(user.id(), request);
 
         return cartService.getCartItems(user.id());
+    }
+
+    @Override
+    @MemberOnly
+    @PatchMapping("/{cartItemId}")
+    public void removeCartItem(@Auth User user, @PathVariable("cartItemId") Long cartItemId) {
+        cartService.removeCartItem(cartItemId);
     }
 }
