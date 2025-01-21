@@ -8,9 +8,11 @@ import com.frame2.server.core.support.annotations.MemberOnly;
 import com.frame2.server.core.support.response.IdResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PagedModel;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -40,8 +42,11 @@ public class OrderApi implements OrderApiSpec{
     @Override
     @MemberOnly
     @GetMapping("/members/{memberId}")
-    public List<OrderResponse> getOrders(@PathVariable Long memberId) {
-        return orderServiceImpl.getOrders(memberId);
+    public PagedModel<OrderResponse> getOrders(@PathVariable Long memberId,
+                                               @RequestParam(name = "page", defaultValue = "1") int page,
+                                               @RequestParam(name = "size", defaultValue = "15") int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        return orderServiceImpl.getOrders(memberId, pageable);
     }
     
     // 주문 상세 단건 조회
@@ -56,7 +61,11 @@ public class OrderApi implements OrderApiSpec{
     @Override
     @MemberOnly
     @GetMapping("/{orderId}/details")
-    public List<OrderDetailResponse> getOrderDetails(@PathVariable Long orderId){
-        return orderServiceImpl.getOrderDetails(orderId);
+    public PagedModel<OrderDetailResponse> getOrderDetails(
+            @PathVariable Long orderId,
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "15") int pageSize) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        return orderServiceImpl.getOrderDetails(orderId, pageable);
     }
 }
