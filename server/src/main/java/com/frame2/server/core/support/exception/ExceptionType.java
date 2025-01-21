@@ -1,13 +1,13 @@
 package com.frame2.server.core.support.exception;
 
+import lombok.Getter;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.http.HttpStatus;
+
 import static com.frame2.server.core.support.exception.ExceptionCode.E500;
 import static org.springframework.boot.logging.LogLevel.ERROR;
 import static org.springframework.boot.logging.LogLevel.INFO;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-import lombok.Getter;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ExceptionType {
@@ -30,8 +30,11 @@ public enum ExceptionType {
     // - 상품 -
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR),
 
-    // - 상품 QnA
+    // - 상품 QnA -
     PRODUCT_QNA_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.B01, "존재하지 않는 QnA 입니다.", ERROR),
+
+    // - 상품 리뷰 -
+    PRODUCT_REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.B02, "존재하지 않는 리뷰 입니다.", ERROR),
 
     // - 카테고리 -
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.CT04, "존재하지 않는 카테고리입니다.", ERROR),
@@ -43,7 +46,6 @@ public enum ExceptionType {
     // -주문-
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.O01, "존재하지 않는 주문 내역입니다", ERROR),
     ORDER_DETAIL_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.O02, "존재하지 않는 주문 상세 내역입니다.", ERROR);
-
 
 
     private final HttpStatus status;
