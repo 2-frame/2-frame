@@ -22,16 +22,16 @@ public class ProductReviewApi implements ProductReviewApiSpec {
 
     // create
     @Override
-//    @MemberOnly
+    @MemberOnly
     @PostMapping
     public void createProductReview(@RequestBody ProductReviewRequest productReviewRequest, @Auth User user) {
-        productReviewService.productReviewCreate(productReviewRequest, 1L);
+        productReviewService.productReviewCreate(productReviewRequest, user.id());
     }
 
     // update
     @Override
     @MemberOnly
-    @PatchMapping("/{productReviewId}")
+    @PatchMapping()
     public void update(@RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
         productReviewService.productReviewModify(ProductReviewModifyRequest);
     }
