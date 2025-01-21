@@ -8,7 +8,10 @@ import com.frame2.server.core.order.payload.request.OrderCreateRequest;
 import com.frame2.server.core.order.payload.response.OrderDetailResponse;
 import com.frame2.server.core.order.payload.response.OrderResponse;
 import com.frame2.server.core.product.domain.SaleProduct;
+import com.frame2.server.core.product.domain.Stock;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
+import com.frame2.server.core.support.exception.DomainException;
+import com.frame2.server.core.support.exception.ExceptionType;
 import com.frame2.server.core.support.response.IdResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +46,9 @@ public class OrderServiceImpl implements OrderService {
         // 판매상품 id 리스트로 판매상품을 리스트로 받아옴
         List<SaleProduct> saleProductList = saleProductRepository.findAllById(saleProductIdList);
 
-        // TODO: Exception 정의 필요
         // 주문 요청의 판매상품 개수와 레포지토리에서 가져온 판매상품 개수 비교
         if(saleProductIdList.size() != saleProductList.size()) {
-            throw new IllegalArgumentException("판매상품 중 일부가 존재하지 않습니다.");
+            throw new DomainException(ExceptionType.SALE_PRODUCT_MISMATCH);
         }
 
         // <ID, SaleProduct>를 미리 매핑
@@ -57,6 +59,10 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderDetail -> {
                     // 주문 상세와 판매상품을 매핑
                     SaleProduct saleProduct = saleProductMap.get(orderDetail.saleProductId());
+                    
+                    // 판매상품의 재고 검증 및 차감
+                    Stock stock = saleProduct.getStock();
+                    stock.reduceQuantity(orderDetail.quantity());
 
                     // 주문 상세 생성
                     return OrderDetail.builder()

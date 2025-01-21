@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -61,11 +63,7 @@ public class OrderApi implements OrderApiSpec{
     @Override
     @MemberOnly
     @GetMapping("/{orderId}/details")
-    public PagedModel<OrderDetailResponse> getOrderDetails(
-            @PathVariable Long orderId,
-            @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "size", defaultValue = "15") int pageSize) {
-        Pageable pageable = PageRequest.of(page - 1, pageSize);
-        return orderServiceImpl.getOrderDetails(orderId, pageable);
+    public List<OrderDetailResponse> getOrderDetails(@PathVariable Long orderId) {
+        return orderServiceImpl.getOrderDetails(orderId);
     }
 }

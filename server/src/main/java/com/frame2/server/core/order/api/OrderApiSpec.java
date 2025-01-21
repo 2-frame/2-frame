@@ -16,5 +16,5 @@ public interface OrderApiSpec {
     public OrderResponse getOrder(Long orderId);
     public PagedModel<OrderResponse> getOrders(Long memberId, int page, int pageSize);
     public OrderDetailResponse getOderDetail(Long orderDetailId);
-    public PagedModel<OrderDetailResponse> getOrderDetails(Long orderId, int page, int pageSize);
+    public List<OrderDetailResponse> getOrderDetails(Long orderId);
 }
