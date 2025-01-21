@@ -52,7 +52,9 @@ public class ProductQnAServiceImpl implements ProductQnAdService {
         ProductQnA productQnA = productQnARepository.findbyidProductQnA(answerRegisterRequest.id());
         return productQnA.createAnswer(
                 requestProductQnA.getAnswer(),
-                requestProductQnA.getManager()
+                requestProductQnA.getManager(),
+                requestProductQnA.getAnswerYN(),
+                requestProductQnA.getAnswerDate()
         );
     }
 
