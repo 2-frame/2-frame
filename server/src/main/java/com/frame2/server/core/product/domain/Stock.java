@@ -1,6 +1,8 @@
 package com.frame2.server.core.product.domain;
 
 import com.frame2.server.core.support.entity.BaseEntity;
+import com.frame2.server.core.support.exception.DomainException;
+import com.frame2.server.core.support.exception.ExceptionType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,4 +18,16 @@ public class Stock extends BaseEntity {
     private SaleProduct saleProduct;
 
     private int quantity;
+    
+    //재고 차감 메서드
+    public void reduceQuantity(int requestQuantity) {
+        this.quantity -= requestQuantity;
+    }
+
+    // 재고 검증 메서드
+    public void validateQuantity(int requestQuantity) {
+        if (requestQuantity > this.quantity) {
+            throw new DomainException(ExceptionType.OUT_OF_STOCK);
+        }
+    }
 }
