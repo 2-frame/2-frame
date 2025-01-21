@@ -21,5 +21,5 @@ public interface CartApiSpec {
     List<CartItemListResponse> changeCartItemQuantity(User user, QuantityRequest request);
 
     @Operation(summary = "장바구니 상품 삭제")
-    List<CartItemListResponse> removeCartItem(User user, Long cartItemId);
+    void removeCartItem(User user, Long cartItemId);
 }

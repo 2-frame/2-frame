@@ -30,7 +30,7 @@
     -[X] 위 기능이 실행되려면 필요한 request 정보: memberId(member의 인증 정보 -> 목록 조회 때문에), cartItemId
     -[X] cartItemId로 CartItem찾는다.
     -[X] 해당 상품의 delete_status=true로 update 한다.
-    -[X] 장바구니 상품 목록을 다시 리턴한다.(refresh)
+    -[X] 리턴값은 없으며, 추가 조회는 클라이언트가 진행한다.
     -[ ] delete_status=true 인 CartItem의 장기간 보관 여부에 대해 고민해볼 것
     -[ ] 선택 삭제 기능은 프론트 단에서 check 값 받아서, 반복문 돌리면 되지 않을까? 고민해보기
     -[ ] 추후, 전체 선택도 가능하게 하기

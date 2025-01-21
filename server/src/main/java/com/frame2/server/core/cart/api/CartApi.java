@@ -56,9 +56,7 @@ public class CartApi implements CartApiSpec {
     @Override
     @MemberOnly
     @DeleteMapping("/{cartItemId}")
-    public List<CartItemListResponse> removeCartItem(@Auth User user, @PathVariable("cartItemId") Long cartItemId) {
+    public void removeCartItem(@Auth User user, @PathVariable("cartItemId") Long cartItemId) {
         cartService.removeCartItem(cartItemId);
-
-        return cartService.getCartItems(user.id());
     }
 }
