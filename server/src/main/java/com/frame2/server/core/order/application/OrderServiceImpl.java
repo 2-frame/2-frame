@@ -12,7 +12,6 @@ import com.frame2.server.core.product.infrastructure.SaleProductRepository;
 import com.frame2.server.core.support.response.IdResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
