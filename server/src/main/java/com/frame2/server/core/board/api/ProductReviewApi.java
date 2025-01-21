@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reviews")
+@RequestMapping("/products/{saleProductId}/reviews")
 public class ProductReviewApi implements ProductReviewApiSpec {
 
     private final ProductReviewService productReviewService;
@@ -31,15 +31,16 @@ public class ProductReviewApi implements ProductReviewApiSpec {
     // update
     @Override
     @MemberOnly
-    @PatchMapping()
-    public void update(@RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
+    @PatchMapping("/{productReviewId}")
+    public void updateProductReview(@RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
         productReviewService.productReviewModify(ProductReviewModifyRequest);
     }
 
+    // delete
     @Override
     @MemberOnly
     @DeleteMapping("/{productReviewId}")
-    public void delete(@PathVariable("productReviewId") Long id) {
+    public void deleteProductReview(@PathVariable("productReviewId") Long id) {
         productReviewService.remove(id);
     }
 
@@ -51,11 +52,12 @@ public class ProductReviewApi implements ProductReviewApiSpec {
         return ResponseEntity.ok().body(productReviewResponse);
     }
 
-    // 전체 조회
+    // 한 상품에 대한 전체 리뷰 조회
     @Override
     @GetMapping
-    public ResponseEntity<List<ProductReviewResponse>> getProductReviewList() {
-        List<ProductReviewResponse> productReviewList = productReviewService.getProductReviewList();
+    public ResponseEntity<List<ProductReviewResponse>> getProductReviewList(
+            @PathVariable("saleProductId") Long saleProductId) {
+        List<ProductReviewResponse> productReviewList = productReviewService.getProductReviewList(saleProductId);
         return ResponseEntity.ok().body(productReviewList);
     }
 }

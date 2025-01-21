@@ -15,15 +15,15 @@ public interface ProductReviewApiSpec {
     void createProductReview(ProductReviewRequest productReviewRequest, User user);
 
     // 수정
-    void update(ProductReviewModifyRequest ProductReviewModifyRequest);
+    void updateProductReview(ProductReviewModifyRequest ProductReviewModifyRequest);
 
     // 식제
-    void delete(Long id);
+    void deleteProductReview(Long id);
 
     // 단건 검색
     ResponseEntity<ProductReviewResponse> getProductReview(Long id);
 
     // 전체 검색
-    ResponseEntity<List<ProductReviewResponse>> getProductReviewList();
+    ResponseEntity<List<ProductReviewResponse>> getProductReviewList(Long saleProductId);
 
 }
