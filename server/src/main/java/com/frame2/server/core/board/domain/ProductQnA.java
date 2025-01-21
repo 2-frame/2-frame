@@ -52,10 +52,11 @@ public class ProductQnA extends BaseEntity {
 
     // answer 등록 메서드
     // answer 엔티티가 따로 존재하지 않기 때문에 productQnA를 수정 하는 것에 속함
-    public ProductQnA createAnswer(String answer, String manager) {
+    public ProductQnA createAnswer(String answer, String manager, AnswerStatus answerStatus, LocalDateTime answerDate) {
         this.answer = answer;
         this.manager = manager;
-        this.answerYN = AnswerStatus.Y;
+        this.answerYN = answerStatus;
+        this.answerDate = answerDate;
         return this;
     }
 
