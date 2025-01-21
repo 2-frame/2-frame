@@ -29,42 +29,40 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     // 생성
     @Override
-    public ProductReview productReviewCreate(ProductReviewRequest request, Long memberId) {
+    public void productReviewCreate(ProductReviewRequest request, Long memberId) {
         Member member = memberRepository.findOne(memberId);
         SaleProduct saleProduct = saleProductRepository.findOne(request.saleProductId());
         OrderDetail orderDetail = orderDetailRepository.findOne(request.orderDetailId());
 
         ProductReview productReview = request.toEntity(member, saleProduct, orderDetail);
-        return productReviewRepository.save(productReview);
+        productReviewRepository.save(productReview);
     }
 
     // 수정
     @Override
-    public ProductReview productReviewModify(ProductReviewModifyRequest request) {
-        ProductReview productReview = request.toEntity();
-        ProductReview findProductReview = productReviewRepository.findOne(request.id());
-        return findProductReview.updateProductReview(productReview);
+    public void productReviewModify(ProductReviewModifyRequest request) {
+        productReviewRepository.findOne(request.id()).updateProductReview(request.toEntity());
     }
 
     // 삭제
     @Override
     public void remove(Long id) {
-        productReviewRepository.deleteById(id);
+        productReviewRepository.findOne(id).delete();
     }
 
     // 단건 조회
     @Override
     @Transactional(readOnly = true)
-    public ProductReviewResponse getProductReview(Long id) {
-        ProductReview productReview = productReviewRepository.findOne(id);
+    public ProductReviewResponse getProductReview(Long productReviewId) {
+        ProductReview productReview = productReviewRepository.findOne(productReviewId);
         return ProductReviewResponse.from(productReview);
     }
 
-    // 전체 조회
+    // 한 상품에 대한 전체 리뷰 조회
     @Override
     @Transactional(readOnly = true)
-    public List<ProductReviewResponse> getProductReviewList() {
-        List<ProductReview> productReviewList = productReviewRepository.findAll();
+    public List<ProductReviewResponse> getProductReviewList(Long saleProductId) {
+        List<ProductReview> productReviewList = productReviewRepository.findAllBySaleProduct_Id(saleProductId);
         return productReviewList.stream()
                 .map(ProductReviewResponse::from)
                 .toList();
