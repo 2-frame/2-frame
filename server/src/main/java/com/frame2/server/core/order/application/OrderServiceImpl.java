@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public IdResponse cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
-        order.cancelOrder(order);
+        order.cancelOrder();
         return new IdResponse(order.getId());
     }
 
@@ -125,8 +125,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public IdResponse cancelOrderDetail(Long orderDetailId) {
         OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
-        orderDetail.cancelOrderDetail(orderDetail);
+        orderDetail.cancelOrderDetail();
         return new IdResponse(orderDetail.getId());
     }
-
 }

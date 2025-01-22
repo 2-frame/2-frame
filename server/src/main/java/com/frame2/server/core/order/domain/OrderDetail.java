@@ -4,6 +4,7 @@ import com.frame2.server.core.product.domain.SaleProduct;
 import com.frame2.server.core.product.domain.Stock;
 import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,8 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "order_details")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderDetail extends BaseEntity{
     
     // 주문 id
@@ -62,15 +63,18 @@ public class OrderDetail extends BaseEntity{
         this.exchaneReturnRequested = false;
     }
 
-    // 주문 상세가 취소 -> 주문 상세 필드 변경, 재고 복원, 주문 상태 변경
-    public void cancelOrderDetail(OrderDetail orderDetail) {
-        orderDetail.delete();
-        orderDetail.exchangeReturnPossible = false;
-        orderDetail.exchaneReturnRequested = true;
-
-        Stock stock = orderDetail.getSaleProduct().getStock();
-        stock.restoreQuantity(orderDetail.getQuantity());
-
-        orderDetail.getOrder().updateOrderStatus(OrderStatus.ORDER_PARTICAL_CANCELED);
+    // 주문 상세가 취소
+        // 주문 상세 필드 변경
+        // 재고 복원
+        // 주문 상세 상태 변경
+    public void cancelOrderDetail() {
+        if(!isDeleteStatus()){
+            this.delete();
+            this.exchangeReturnPossible = false;
+            this.exchaneReturnRequested = true;
+            Stock stock = this.saleProduct.getStock();
+            stock.restoreQuantity(quantity);
+            this.order.updateOrderStatus();
+        }
     }
 }
