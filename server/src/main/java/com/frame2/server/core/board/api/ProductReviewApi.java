@@ -25,23 +25,31 @@ public class ProductReviewApi implements ProductReviewApiSpec {
     @Override
     @MemberOnly
     @PostMapping
-    public void createProductReview(@Valid @RequestBody ProductReviewRequest productReviewRequest, @Auth User user) {
-        productReviewService.productReviewCreate(productReviewRequest, user.id());
+    public void createProductReview(
+            @Valid @RequestBody ProductReviewRequest productReviewRequest,
+            @Auth User user,
+            @PathVariable("saleProductId") Long saleProductId
+    ) {
+        productReviewService.productReviewCreate(productReviewRequest, user.id(), saleProductId);
     }
 
     // update
     @Override
     @MemberOnly
     @PatchMapping("/{productReviewId}")
-    public void updateProductReview(@Valid @RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
-        productReviewService.productReviewModify(ProductReviewModifyRequest);
+    public void updateProductReview(
+            @Valid @RequestBody ProductReviewModifyRequest ProductReviewModifyRequest,
+            @Auth User user,
+            @PathVariable("productReviewId") Long productReviewId
+    ) {
+        productReviewService.productReviewModify(ProductReviewModifyRequest, productReviewId);
     }
 
     // delete
     @Override
     @MemberOnly
     @DeleteMapping("/{productReviewId}")
-    public void deleteProductReview(@PathVariable("productReviewId") Long id) {
+    public void deleteProductReview(@PathVariable("productReviewId") Long id, @Auth User user) {
         productReviewService.remove(id);
     }
 

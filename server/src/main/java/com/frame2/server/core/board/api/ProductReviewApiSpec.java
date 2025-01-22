@@ -12,13 +12,13 @@ import java.util.List;
 @Category("상품 리뷰 api")
 public interface ProductReviewApiSpec {
     // 생성
-    void createProductReview(ProductReviewRequest productReviewRequest, User user);
+    void createProductReview(ProductReviewRequest productReviewRequest, User user, Long saleProductId);
 
     // 수정
-    void updateProductReview(ProductReviewModifyRequest ProductReviewModifyRequest);
+    void updateProductReview(ProductReviewModifyRequest ProductReviewModifyRequest, User user, Long productReviewId);
 
     // 식제
-    void deleteProductReview(Long id);
+    void deleteProductReview(Long id, User user);
 
     // 단건 검색
     ResponseEntity<ProductReviewResponse> getProductReview(Long id);
