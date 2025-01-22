@@ -84,4 +84,16 @@ public class Order extends BaseEntity {
                 .sum();
         this.totalPrice = totalPrice;
     }
+    
+    // 주문이 취소되면 모든 주문 상세가 취소되고, 주문 상태 변경
+    public void cancelOrder() {
+        this.delete();
+        orderDetails.stream().forEach(OrderDetail::delete);
+        this.orderStatus = OrderStatus.ORDER_CANCELED;
+    }
+
+    // 주문 상태 변경 메서드
+    public void updateOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
 }

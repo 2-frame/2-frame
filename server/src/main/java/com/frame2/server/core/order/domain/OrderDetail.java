@@ -57,7 +57,18 @@ public class OrderDetail extends BaseEntity{
         this.quantity = quantity;
         this.price = price;
         this.deliveryStatus = DeliveryStatus.PACKAGING;
-        this.exchaneReturnRequested = false;
         this.exchangeReturnPossible = true;
+        this.exchaneReturnRequested = false;
+    }
+
+    // 주문 상세가 취소되면
+        // 교환, 반품 신청 가능여부는 false로 변경
+        // 교환, 반품 신청 여부는 true로 변경
+        // 주문(Order) 상태 변경 - 주문 부분 취소
+    public void cancelOrderDetail() {
+        this.delete();
+        this.exchangeReturnPossible = false;
+        this.exchaneReturnRequested = true;
+        this.order.updateOrderStatus(OrderStatus.ORDER_PARTICAL_CANCELED);
     }
 }
