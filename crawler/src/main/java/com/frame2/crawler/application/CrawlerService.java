@@ -1,8 +1,10 @@
 package com.frame2.crawler.application;
 
 import com.frame2.crawler.domain.Option;
+import com.frame2.crawler.domain.Product;
 import com.frame2.crawler.domain.SaleProduct;
 import com.frame2.crawler.infrastructure.OptionRepository;
+import com.frame2.crawler.infrastructure.ProductRepository;
 import com.frame2.crawler.infrastructure.SaleProductRepository;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class CrawlerService {
 
     private final FileService fileService;
     private final SaleProductRepository saleProductRepository;
+    private final ProductRepository productRepository;
     private final OptionRepository optionRepository;
 
     // application.properties에서 URL 목록 가져오기
@@ -36,7 +39,7 @@ public class CrawlerService {
     // SaleProducts 크롤링 메서드
     @Transactional
     public List<SaleProduct> crawlSaleProducts() throws IOException {
-        List<SaleProduct> allProducts = new ArrayList<>();
+        List<SaleProduct> allSaleProducts = new ArrayList<>();
 
         // baseUrlListProperty 값을 List<String>으로 변환
         List<String> baseUrlList = List.of(baseUrlListProperty.split(","));
@@ -50,7 +53,7 @@ public class CrawlerService {
             String productName = document.select("meta[property=og:title]").attr("content").trim();
             String imageUrl = document.select("meta[property=og:image]").attr("content").trim();
             if (imageUrl.isEmpty()) {
-                imageUrl = "https://toffee.co.kr/web/product/big/default_image.jpg";  // 기본 이미지 경로
+                imageUrl = "default_image.jpg";  // 기본 이미지 경로
             }
 
 //            // 설명 이미지 URL 추출 (ec-data-src 속성) - 단 하나의 이미지만 사용
@@ -117,7 +120,7 @@ public class CrawlerService {
                         .build();
 
                 // 각 baseUrl에 대해 크롤링한 상품을 목록에 추가
-                allProducts.add(product);
+                allSaleProducts.add(product);
             }
         }
 
@@ -125,15 +128,15 @@ public class CrawlerService {
 //        fileService.saveToDocs(allProducts);
 
         // 크롤링된 데이터를 DB에 저장 (엔티티로 저장)
-        saleProductRepository.saveAll(allProducts);
+        saleProductRepository.saveAll(allSaleProducts);
 
         // 크롤링된 상품 목록 반환
-        return allProducts;
+        return allSaleProducts;
     }
 
     // Options 크롤링 메서드
     @Transactional
-    public List<Option> crawlProductOptions() throws IOException {
+    public List<Option> crawlOptions() throws IOException {
         List<Option> options = new ArrayList<>();  // 여러 Option 객체를 저장할 리스트
 
         // baseUrlListProperty 값을 List<String>으로 변환
@@ -173,4 +176,53 @@ public class CrawlerService {
         return options;
     }
 
+    @Transactional
+    public List<Product> crawlProducts() throws IOException {
+        List<Product> allProducts = new ArrayList<>();
+
+        // baseUrlListProperty 값을 List<String>으로 변환
+        List<String> baseUrlList = List.of(baseUrlListProperty.split(","));
+
+        // 여러 개의 baseUrl을 반복하여 크롤링 처리
+        for (String baseUrl : baseUrlList) {
+            // 각 baseUrl에 대해 HTML 문서 가져오기
+            Document document = Jsoup.connect(baseUrl).get();
+
+            // 메타 데이터를 가져오기
+            String productName = document.select("meta[property=og:title]").attr("content").trim();
+            String priceString = document.select("meta[property=product:price:amount]").attr("content").trim();
+            String description = document.select("meta[property=og:description]").attr("content").trim();
+            String imageUrl = document.select("meta[property=og:image]").attr("content").trim();
+
+            if (imageUrl.isEmpty()) {
+                imageUrl = "default_image.jpg";  // 기본 이미지 경로
+            }
+
+            int price = 0;
+            if (!priceString.isEmpty()) {
+                try {
+                    price = Integer.parseInt(priceString);
+                } catch (NumberFormatException e) {
+                    price = 0;  // 가격 파싱 오류가 발생하면 0으로 처리
+                }
+            }
+
+            // Product 객체 생성
+            Product product = Product.builder()
+                    .name(productName)  // og:title에서 추출한 상품 이름
+                    .price(price)  // 가격
+                    .description(description)  // og:description에서 추출한 상품 설명
+                    .image(imageUrl)  // og:image에서 추출한 이미지 URL
+                    .build();
+
+            // 크롤링한 상품을 목록에 추가
+            allProducts.add(product);
+        }
+
+        // 크롤링된 데이터를 DB에 저장
+        productRepository.saveAll(allProducts);
+
+        // 크롤링된 상품 목록 반환
+        return allProducts;
+    }
 }

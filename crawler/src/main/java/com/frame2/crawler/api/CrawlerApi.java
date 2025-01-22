@@ -2,7 +2,7 @@ package com.frame2.crawler.api;
 
 import com.frame2.crawler.application.CrawlerService;
 import com.frame2.crawler.application.UrlService;
-import com.frame2.crawler.domain.Option;
+import com.frame2.crawler.domain.Product;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +24,11 @@ public class CrawlerApi {
     // 크롤링을 트리거할 GET 엔드포인트
     @GetMapping("/start-crawl")
 //    public List<SaleProduct> startCrawl() {
-    public List<Option> startCrawl() {
+    public List<Product> startCrawl() {
         try {
             // 크롤링 메서드 호출
 //            return crawlerService.crawlSaleProducts();
-            return crawlerService.crawlProductOptions();
+            return crawlerService.crawlProducts();
         } catch (IOException e) {
             e.printStackTrace();
             return null;  // 예외 발생 시 null 반환
