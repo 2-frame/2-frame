@@ -6,10 +6,7 @@ import com.frame2.server.core.board.domain.ProductReview;
 import jakarta.validation.constraints.*;
 
 public record ProductReviewModifyRequest(
-
-        @NotNull(message = "상품리뷰 id 값은 필수입니다.")
-        Long id,
-
+        
         @Min(1)
         @Max(5)
         @NotNull(message = "리뷰 평점은 1~5점까지 가능합니다.")

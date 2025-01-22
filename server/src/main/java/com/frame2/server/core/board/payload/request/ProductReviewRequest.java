@@ -8,10 +8,7 @@ import com.frame2.server.core.product.domain.SaleProduct;
 import jakarta.validation.constraints.*;
 
 public record ProductReviewRequest(
-
-        @NotNull(message = "판매 상품 id값이 담기지 않았습니다.")
-        Long saleProductId,
-
+        
         @NotNull(message = "주문 상세 id값이 담기지 않았습니다.")
         Long orderDetailId,
 
