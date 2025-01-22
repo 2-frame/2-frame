@@ -1,3 +1,9 @@
 [submodule "server/secret"]
 	path = server/secret
 	url = https://github.com/2-frame/2-frame-server-secret
+[submodule "chatbot/2-frame-chatbot-secret"]
+	path = chatbot/secret
+	url = https://github.com/2-frame/2-frame-chatbot-secret.git
+[submodule "chatbot/secret"]
+	path = chatbot/secret
+	url = https://github.com/2-frame/2-frame-chatbot-secret.git
