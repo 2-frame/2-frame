@@ -1,6 +1,6 @@
 import Typo from "../components/@common/Typo";
 import ProductReviewCard from "../components/ProductReviewCard/ProductReviewCard.tsx";
-import {Spacer} from "@nextui-org/react";
+import {Spacer} from "@heroui/react";
 import ProductReviewTable from "../components/ProductReviewTable/ProductReviewTable.tsx";
 import SlideContainer from "../components/SlideContainer/SlideContainer.tsx";
 

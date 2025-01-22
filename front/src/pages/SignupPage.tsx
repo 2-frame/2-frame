@@ -1,4 +1,4 @@
-import {Button, Card, CardBody, CardHeader, Divider} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Divider} from "@heroui/react";
 import {CenterWrapper} from "../components/@common/CenterWrapper";
 import Input from "../components/@common/Input";
 import Typo from "../components/@common/Typo";

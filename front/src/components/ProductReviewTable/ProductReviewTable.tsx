@@ -1,4 +1,4 @@
-import {Accordion, AccordionItem, Image, Pagination} from "@nextui-org/react";
+import {Accordion, AccordionItem, Image, Pagination} from "@heroui/react";
 import {CenterWrapper} from "../@common/CenterWrapper";
 
 

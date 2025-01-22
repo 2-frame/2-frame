@@ -1,4 +1,4 @@
-import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
+import {Card, CardBody, CardFooter, Image} from "@heroui/react";
 import Typo from "../@common/Typo";
 import {BiSolidStar} from "react-icons/bi";
 import {ProductReview} from "../../api/type.ts";

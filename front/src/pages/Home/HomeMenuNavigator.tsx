@@ -1,4 +1,4 @@
-import {Tab, Tabs} from "@nextui-org/react";
+import {Tab, Tabs} from "@heroui/react";
 import Typo from "../../components/@common/Typo";
 import SlideContainer from "../../components/SlideContainer/SlideContainer";
 import ProductCard from "../../components/ProductCard/ProductCard";

@@ -1,5 +1,5 @@
 import ProductCard from "../components/ProductCard/ProductCard.tsx";
-import {Pagination, Skeleton, Spacer} from "@nextui-org/react";
+import {Pagination, Skeleton, Spacer} from "@heroui/react";
 import Typo from "../components/@common/Typo/index.tsx";
 import {CenterWrapper} from "../components/@common/CenterWrapper";
 import {useSearchParams} from "react-router";
