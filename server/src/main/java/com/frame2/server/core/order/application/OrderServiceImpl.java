@@ -108,4 +108,23 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderDetailResponse::from)
                 .toList();
     }
+    
+    // 주문 전체 취소 - 주문id로 전체 취소
+    @Override
+    public IdResponse cancelOrder(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+        order.cancelOrder();
+        return new IdResponse(order.getId());
+    }
+
+    // 주문 부분 취소 - 주문 상세id로 취소
+        // 주문 상세 취소
+        // 주문 상태 변경(ORDER_PARTICAL_CANCELED)
+    @Override
+    public IdResponse cancelOrderDetail(Long orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
+        orderDetail.cancelOrderDetail();
+        return new IdResponse(orderDetail.getId());
+    }
+
 }

@@ -16,4 +16,6 @@ public interface OrderService {
     public PagedModel<OrderResponse> getOrders(Long memberId, Pageable pageable);
     public OrderDetailResponse getOderDetail(Long orderDetailId);
     public List<OrderDetailResponse> getOrderDetails(Long orderId);
+    public IdResponse cancelOrder(Long orderId);
+    public IdResponse cancelOrderDetail(Long orderDetailId);
 }
