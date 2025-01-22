@@ -7,6 +7,7 @@ import com.frame2.server.core.board.payload.response.ProductReviewResponse;
 import com.frame2.server.core.support.annotations.Auth;
 import com.frame2.server.core.support.annotations.MemberOnly;
 import com.frame2.server.core.support.request.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ProductReviewApi implements ProductReviewApiSpec {
     @Override
     @MemberOnly
     @PostMapping
-    public void createProductReview(@RequestBody ProductReviewRequest productReviewRequest, @Auth User user) {
+    public void createProductReview(@Valid @RequestBody ProductReviewRequest productReviewRequest, @Auth User user) {
         productReviewService.productReviewCreate(productReviewRequest, user.id());
     }
 
@@ -32,7 +33,7 @@ public class ProductReviewApi implements ProductReviewApiSpec {
     @Override
     @MemberOnly
     @PatchMapping("/{productReviewId}")
-    public void updateProductReview(@RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
+    public void updateProductReview(@Valid @RequestBody ProductReviewModifyRequest ProductReviewModifyRequest) {
         productReviewService.productReviewModify(ProductReviewModifyRequest);
     }
 
