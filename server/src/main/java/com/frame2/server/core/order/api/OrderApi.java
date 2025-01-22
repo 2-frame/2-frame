@@ -69,7 +69,7 @@ public class OrderApi implements OrderApiSpec{
 
     // 주문 전체 취소
     @Override
-    //@MemberOnly
+    @MemberOnly
     @PatchMapping("/{orderId}")
     public IdResponse cancelOrder(@PathVariable Long orderId) {
         return orderServiceImpl.cancelOrder(orderId);
@@ -77,7 +77,7 @@ public class OrderApi implements OrderApiSpec{
 
     // 주문 부분 취소
     @Override
-    //@MemberOnly
+    @MemberOnly
     @PatchMapping("/details/{orderDetailId}")
     public IdResponse cancelOrderDetail(@PathVariable Long orderDetailId) {
         return orderServiceImpl.cancelOrderDetail(orderDetailId);
