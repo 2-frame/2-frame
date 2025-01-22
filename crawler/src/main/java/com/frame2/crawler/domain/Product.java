@@ -29,14 +29,14 @@ public class Product extends BaseEntity {
     private String image;
 
     @Builder
-    public Product(Category category, String name, int price, String description, String brand, String manufacturer,
-                   String origin) {
+    public Product(Category category, String name, int price, String description, String image) {
         this.category = category;
         this.name = name;
         this.price = price;
         this.description = description;
-        this.brand = brand;
-        this.manufacturer = manufacturer;
-        this.origin = origin;
+        this.brand = "2fram";
+        this.manufacturer = "2fram";
+        this.origin = "2fram";
+        this.image = image;
     }
 }
