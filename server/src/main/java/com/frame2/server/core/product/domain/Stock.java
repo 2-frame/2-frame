@@ -30,4 +30,9 @@ public class Stock extends BaseEntity {
         // 재고 차감
         this.quantity -= requestQuantity;
     }
+
+    // 재고 가산 메서드
+    public void restoreQuantity(int requestQuantity) {
+        this.quantity += requestQuantity;
+    }
 }

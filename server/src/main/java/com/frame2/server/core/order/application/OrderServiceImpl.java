@@ -110,20 +110,22 @@ public class OrderServiceImpl implements OrderService {
     }
     
     // 주문 전체 취소 - 주문id로 전체 취소
+        // 주문이 취소되면 모든 주문 상세도 취소
+        // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
     public IdResponse cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
-        order.cancelOrder();
+        order.cancelOrder(order);
         return new IdResponse(order.getId());
     }
 
     // 주문 부분 취소 - 주문 상세id로 취소
-        // 주문 상세 취소
-        // 주문 상태 변경(ORDER_PARTICAL_CANCELED)
+        // 주문 상세 취소 -> 주문 상태 변경(ORDER_PARTICAL_CANCELED)
+        // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
     public IdResponse cancelOrderDetail(Long orderDetailId) {
         OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
-        orderDetail.cancelOrderDetail();
+        orderDetail.cancelOrderDetail(orderDetail);
         return new IdResponse(orderDetail.getId());
     }
 

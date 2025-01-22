@@ -1,6 +1,7 @@
 package com.frame2.server.core.order.domain;
 
 import com.frame2.server.core.product.domain.SaleProduct;
+import com.frame2.server.core.product.domain.Stock;
 import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -61,14 +62,15 @@ public class OrderDetail extends BaseEntity{
         this.exchaneReturnRequested = false;
     }
 
-    // 주문 상세가 취소되면
-        // 교환, 반품 신청 가능여부는 false로 변경
-        // 교환, 반품 신청 여부는 true로 변경
-        // 주문(Order) 상태 변경 - 주문 부분 취소
-    public void cancelOrderDetail() {
-        this.delete();
-        this.exchangeReturnPossible = false;
-        this.exchaneReturnRequested = true;
-        this.order.updateOrderStatus(OrderStatus.ORDER_PARTICAL_CANCELED);
+    // 주문 상세가 취소 -> 주문 상세 필드 변경, 재고 복원, 주문 상태 변경
+    public void cancelOrderDetail(OrderDetail orderDetail) {
+        orderDetail.delete();
+        orderDetail.exchangeReturnPossible = false;
+        orderDetail.exchaneReturnRequested = true;
+
+        Stock stock = orderDetail.getSaleProduct().getStock();
+        stock.restoreQuantity(orderDetail.getQuantity());
+
+        orderDetail.getOrder().updateOrderStatus(OrderStatus.ORDER_PARTICAL_CANCELED);
     }
 }

@@ -1,5 +1,6 @@
 package com.frame2.server.core.order.domain;
 
+import com.frame2.server.core.product.domain.Stock;
 import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -85,11 +86,15 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
     }
     
-    // 주문이 취소되면 모든 주문 상세가 취소되고, 주문 상태 변경
-    public void cancelOrder() {
-        this.delete();
-        orderDetails.stream().forEach(OrderDetail::delete);
-        this.orderStatus = OrderStatus.ORDER_CANCELED;
+    // 주문이 취소되면 모든 주문 상세가 취소 -> 재고 복원, 주문 상태 변경
+    public void cancelOrder(Order order) {
+        order.delete();
+        order.orderDetails.stream().forEach(orderDetail -> {
+            orderDetail.delete();
+            Stock stock = orderDetail.getSaleProduct().getStock();
+            stock.restoreQuantity(orderDetail.getQuantity());
+        });
+        order.updateOrderStatus(OrderStatus.ORDER_CANCELED);
     }
 
     // 주문 상태 변경 메서드
