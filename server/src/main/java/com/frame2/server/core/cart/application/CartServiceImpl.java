@@ -25,7 +25,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional(readOnly = true)
     public List<CartItemListResponse> getCartItems(Long memberId) {
-        return cartItemRepository.findAllByMemberId(memberId)
+        return cartItemRepository.findAllByMemberIdAndDeleteStatusFalse(memberId)
                 .stream()
                 .map(CartItemListResponse::from)
                 .toList();
@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void addCartItem(Long memberId, CartItemRequest cartItemRequest) {
-        cartItemRepository.findByMemberIdAndSaleProductId(memberId, cartItemRequest.saleProductId())
+        cartItemRepository.findByMemberIdAndSaleProductIdAndDeleteStatusFalse(memberId, cartItemRequest.saleProductId())
                 // 이미 장바구니에 해당 상품이 있다면 수량만 업데이트
                 .ifPresentOrElse(item -> item.addSameItemToCart(cartItemRequest.quantity()),
                         // 장바구니에 상품이 없으면 새로 생성하여 저장
@@ -44,7 +44,7 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void changeCartItemQuantity(Long memberId, QuantityRequest quantityRequest) {
-        cartItemRepository.findByMemberIdAndSaleProductId(memberId, quantityRequest.saleProductId())
+        cartItemRepository.findByMemberIdAndSaleProductIdAndDeleteStatusFalse(memberId, quantityRequest.saleProductId())
                 .orElseThrow(() -> new DomainException(ExceptionType.CART_ITEM_NOT_FOUND))
                 .changeQuantity(quantityRequest.quantity());
     }

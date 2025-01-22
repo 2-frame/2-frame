@@ -1,3 +1,11 @@
+---
+name: "[AI] AI 이슈"
+about: AI 이슈
+title: "[AI]"
+labels: '🤖 AI'
+assignees: ''
+---
+
 ### 🔍 설명
 - 
 
