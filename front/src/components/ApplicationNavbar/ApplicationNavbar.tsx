@@ -1,4 +1,4 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Spacer} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Spacer} from "@heroui/react";
 import {Link, useLocation, useNavigate} from "react-router";
 import Typo from "../@common/Typo";
 import {BiShoppingBag} from "react-icons/bi";

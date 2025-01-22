@@ -1,4 +1,4 @@
-import {Accordion, AccordionItem} from "@nextui-org/react";
+import {Accordion, AccordionItem} from "@heroui/react";
 import Typo from "../../components/@common/Typo";
 import {term as terms} from "./ProductInfo.ts";
 

@@ -1,5 +1,5 @@
 import Typo from "../components/@common/Typo";
-import {Button, Divider, Image, Select, SelectItem, Spacer, Tab, Tabs} from "@nextui-org/react";
+import {Button, Divider, Image, Select, SelectItem, Spacer, Tab, Tabs} from "@heroui/react";
 import Flex from "../components/@common/FlexWrapper/Flex.tsx";
 import {CiHeart, CiShoppingCart} from "react-icons/ci";
 import ProductGuide from "./ProductDetails/ProductGuide.tsx";

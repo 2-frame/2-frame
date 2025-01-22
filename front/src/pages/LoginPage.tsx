@@ -1,4 +1,4 @@
-import {Button, Card, CardBody, CardHeader, Divider} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Divider} from "@heroui/react";
 import Input from "../components/@common/Input";
 import {Link} from "react-router";
 import {CenterWrapper} from "../components/@common/CenterWrapper";

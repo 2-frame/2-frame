@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {getProductsReview} from "../../api/index.ts";
 import {useState} from "react";
-import {Accordion, AccordionItem, Button, Pagination} from "@nextui-org/react";
+import {Accordion, AccordionItem, Button, Pagination} from "@heroui/react";
 import {CenterWrapper} from "../../components/@common/CenterWrapper";
 import Flex from "../../components/@common/FlexWrapper/Flex.tsx";
 
