@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ProductReviewService {
     // 생성
-    void productReviewCreate(ProductReviewRequest request, Long memberId);
+    void productReviewCreate(ProductReviewRequest request, Long memberId, Long saleProductId);
 
     // 수정
-    void productReviewModify(ProductReviewModifyRequest request);
+    void productReviewModify(ProductReviewModifyRequest request, Long productReviewId);
 
     // 삭제
     void remove(Long id);

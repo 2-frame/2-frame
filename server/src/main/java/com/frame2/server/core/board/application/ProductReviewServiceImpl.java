@@ -29,9 +29,9 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     // 생성
     @Override
-    public void productReviewCreate(ProductReviewRequest request, Long memberId) {
+    public void productReviewCreate(ProductReviewRequest request, Long memberId, Long saleProductId) {
         Member member = memberRepository.findOne(memberId);
-        SaleProduct saleProduct = saleProductRepository.findOne(request.saleProductId());
+        SaleProduct saleProduct = saleProductRepository.findOne(saleProductId);
         OrderDetail orderDetail = orderDetailRepository.findOne(request.orderDetailId());
 
         ProductReview productReview = request.toEntity(member, saleProduct, orderDetail);
@@ -40,8 +40,8 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     // 수정
     @Override
-    public void productReviewModify(ProductReviewModifyRequest request) {
-        productReviewRepository.findByIdAndDeleteStatusFalse(request.id()).updateProductReview(request.toEntity());
+    public void productReviewModify(ProductReviewModifyRequest request, Long productReviewId) {
+        productReviewRepository.findByIdAndDeleteStatusFalse(productReviewId).updateProductReview(request.toEntity());
     }
 
     // 삭제
