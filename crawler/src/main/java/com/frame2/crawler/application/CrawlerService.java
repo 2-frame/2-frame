@@ -1,6 +1,8 @@
 package com.frame2.crawler.application;
 
+import com.frame2.crawler.domain.Option;
 import com.frame2.crawler.domain.SaleProduct;
+import com.frame2.crawler.infrastructure.OptionRepository;
 import com.frame2.crawler.infrastructure.SaleProductRepository;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,19 +27,19 @@ public class CrawlerService {
 
     private final FileService fileService;
     private final SaleProductRepository saleProductRepository;
+    private final OptionRepository optionRepository;
 
     // application.properties에서 URL 목록 가져오기
     @Value("${baseUrlList}")
     private String baseUrlListProperty;
 
-    // 크롤링 로직을 처리하는 메서드
+    // SaleProducts 크롤링 메서드
     @Transactional
-    public List<SaleProduct> crawlProducts() throws IOException {
+    public List<SaleProduct> crawlSaleProducts() throws IOException {
         List<SaleProduct> allProducts = new ArrayList<>();
 
         // baseUrlListProperty 값을 List<String>으로 변환
         List<String> baseUrlList = List.of(baseUrlListProperty.split(","));
-        System.out.println("baseUrlList = " + baseUrlList);
 
         // 여러 개의 baseUrl을 반복하여 크롤링 처리
         for (String baseUrl : baseUrlList) {
@@ -127,6 +129,48 @@ public class CrawlerService {
 
         // 크롤링된 상품 목록 반환
         return allProducts;
+    }
+
+    // Options 크롤링 메서드
+    @Transactional
+    public List<Option> crawlProductOptions() throws IOException {
+        List<Option> options = new ArrayList<>();  // 여러 Option 객체를 저장할 리스트
+
+        // baseUrlListProperty 값을 List<String>으로 변환
+        List<String> baseUrlList = List.of(baseUrlListProperty.split(","));
+
+        // 여러 개의 baseUrl을 반복하여 크롤링 처리
+        for (String baseUrl : baseUrlList) {
+            // 각 baseUrl에 대해 HTML 문서 가져오기
+            Document document = Jsoup.connect(baseUrl).get();
+
+            // <optgroup> 내의 <option> 태그들 추출
+            Elements optgroupElements = document.select("optgroup[label]");
+
+            for (Element optgroupElement : optgroupElements) {
+                String optionTitle = optgroupElement.attr("label");  // optgroup의 label 속성값을 옵션 이름으로 사용
+
+                // <optgroup> 내의 <option> 태그에서 value와 텍스트 추출
+                Elements optionTags = optgroupElement.select("option[value]:not([disabled])");
+                for (Element optionTag : optionTags) {
+                    String optionText = optionTag.text();
+
+                    // 각 옵션에 대해 Option 객체를 생성하여 리스트에 추가
+                    Option option = Option.builder()
+                            .name(optionTitle)
+                            .value(optionText)
+                            .build();
+
+                    options.add(option);
+                }
+            }
+        }
+
+        // 크롤링된 데이터를 DB에 저장 (엔티티로 저장)
+        optionRepository.saveAll(options);
+
+        // 크롤링된 Option 리스트 반환
+        return options;
     }
 
 }
