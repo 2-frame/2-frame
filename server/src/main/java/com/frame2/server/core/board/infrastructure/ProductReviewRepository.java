@@ -8,18 +8,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
 
-    // deleteStatus가 false이고, 주어진 리뷰 id값 데이터 조회
-    default ProductReview findByIdAndDeleteStatusFalse(Long id) {
-        ProductReview productReview = findById(id)
-                .orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_REVIEW_NOT_FOUND));
-        if (productReview.isDeleteStatus()) {
-            throw new DomainException(ExceptionType.PRODUCT_REVIEW_NOT_FOUND);
-        }
-        return productReview;
+
+    default ProductReview findOne(Long id) {
+        return findById(id).orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_REVIEW_NOT_FOUND));
     }
+
+    @Override
+    @Query("SELECT pr FROM ProductReview pr WHERE pr.id = :id and pr.deleteStatus = false")
+    Optional<ProductReview> findById(@Param("id") Long id);
 
     // deleteStatus가 false이고, saleProduct의 id가 주어진 값인 데이터를 조회
     @Query("SELECT pr FROM ProductReview pr WHERE pr.deleteStatus = false AND pr.saleProduct.id = :saleProductId")
