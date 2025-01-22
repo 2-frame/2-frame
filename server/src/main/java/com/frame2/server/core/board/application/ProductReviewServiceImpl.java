@@ -41,20 +41,20 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     // 수정
     @Override
     public void productReviewModify(ProductReviewModifyRequest request, Long productReviewId) {
-        productReviewRepository.findByIdAndDeleteStatusFalse(productReviewId).updateProductReview(request.toEntity());
+        productReviewRepository.findOne(productReviewId).updateProductReview(request.toEntity());
     }
 
     // 삭제
     @Override
     public void remove(Long id) {
-        productReviewRepository.findByIdAndDeleteStatusFalse(id).delete();
+        productReviewRepository.findOne(id).delete();
     }
 
     // 단건 조회
     @Override
     @Transactional(readOnly = true)
     public ProductReviewResponse getProductReview(Long productReviewId) {
-        ProductReview productReview = productReviewRepository.findByIdAndDeleteStatusFalse(productReviewId);
+        ProductReview productReview = productReviewRepository.findOne(productReviewId);
         return ProductReviewResponse.from(productReview);
     }
 
