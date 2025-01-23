@@ -46,8 +46,8 @@ public class ProductReviewServiceImpl implements ProductReviewService {
 
     // 삭제
     @Override
-    public void remove(Long id) {
-        productReviewRepository.findOne(id).delete();
+    public void remove(Long productReviewId) {
+        productReviewRepository.findOne(productReviewId).delete();
     }
 
     // 단건 조회

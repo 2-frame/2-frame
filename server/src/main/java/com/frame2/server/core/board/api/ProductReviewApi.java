@@ -56,8 +56,8 @@ public class ProductReviewApi implements ProductReviewApiSpec {
     // 단건 조회
     @Override
     @GetMapping("/{productReviewId}")
-    public ResponseEntity<ProductReviewResponse> getProductReview(@PathVariable("productReviewId") Long id) {
-        ProductReviewResponse productReviewResponse = productReviewService.getProductReview(id);
+    public ResponseEntity<ProductReviewResponse> getProductReview(@PathVariable("productReviewId") Long productReviewId) {
+        ProductReviewResponse productReviewResponse = productReviewService.getProductReview(productReviewId);
         return ResponseEntity.ok().body(productReviewResponse);
     }
 

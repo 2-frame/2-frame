@@ -18,10 +18,10 @@ public interface ProductReviewApiSpec {
     void updateProductReview(ProductReviewModifyRequest ProductReviewModifyRequest, User user, Long productReviewId);
 
     // 식제
-    void deleteProductReview(Long id, User user);
+    void deleteProductReview(Long productReviewId, User user);
 
     // 단건 검색
-    ResponseEntity<ProductReviewResponse> getProductReview(Long id);
+    ResponseEntity<ProductReviewResponse> getProductReview(Long productReviewId);
 
     // 전체 검색
     ResponseEntity<List<ProductReviewResponse>> getProductReviewList(Long saleProductId);

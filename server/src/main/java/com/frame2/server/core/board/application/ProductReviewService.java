@@ -14,10 +14,10 @@ public interface ProductReviewService {
     void productReviewModify(ProductReviewModifyRequest request, Long productReviewId);
 
     // 삭제
-    void remove(Long id);
+    void remove(Long productReviewId);
 
     // 단건 조회
-    ProductReviewResponse getProductReview(Long id);
+    ProductReviewResponse getProductReview(Long productReviewId);
 
     // 한 판매상품에 대한 전체 맂뷰 조회
     List<ProductReviewResponse> getProductReviewList(Long saleProductId);
