@@ -49,7 +49,10 @@ public enum ExceptionType {
     SALE_PRODUCT_MISMATCH(HttpStatus.NOT_FOUND, ExceptionCode.O03, "요청한 판매상품 중 일부가 존재하지 않습니다", ERROR),
 
     // - 재고 -
-    OUT_OF_STOCK(ExceptionCode.S01, "상품 재고가 부족합니다.");
+    OUT_OF_STOCK(ExceptionCode.S01, "상품 재고가 부족합니다."),
+
+    // - 챗봇 -
+    CHATBOT_CALL_FAIL(HttpStatus.BAD_REQUEST, ExceptionCode.CH04, "챗봇 호출에 실패했습니다.", ERROR),;
 
     private final HttpStatus status;
 
