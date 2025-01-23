@@ -6,7 +6,7 @@ import {useCallback, useEffect, useState} from "react";
 import {useRecoilState} from "recoil";
 import {signInUser} from "../../store/auth.ts";
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {getCategories, postSignOut} from "../../api/index.ts";
+import {getCategories, postSignOut} from "../../api";
 import {toast} from "sonner";
 
 const ApplicationNavbar = () => {
@@ -37,7 +37,7 @@ const ApplicationNavbar = () => {
   return <Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setMenuOpen} maxWidth="full" className="flex flex-between ">
     <NavbarBrand>
       <Link to={"/"}>
-        <Typo.H6 text="THREE-CHEERS" className="font-bold"/>
+        <Typo.H6 text="2-FRAME" className="font-bold"/>
       </Link>
     </NavbarBrand>
     <NavbarContent justify="end" className="w-full">

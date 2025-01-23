@@ -1,6 +1,7 @@
 import {Button, Tooltip} from "@heroui/react";
 import ChatRoom from "../ChatRoom/ChatRoom.tsx";
 import {useState} from "react";
+import {IoChatbubbleEllipsesOutline} from "react-icons/io5";
 
 const FloatingButton = () => {
   const [isOpen, setOpen] = useState(false);
@@ -14,7 +15,9 @@ const FloatingButton = () => {
           content: ["p-0 shadow-xl", "text-black bg-none"],
         }}
       >
-        <Button onPress={() => setOpen(!isOpen)}>AI에게 물어보기</Button>
+        <Button color="danger" variant="shadow" className="w-[50px] h-[50px]" onPress={() => setOpen(!isOpen)} isIconOnly>
+          {<IoChatbubbleEllipsesOutline size={30}/>}
+        </Button>
       </Tooltip>
     </div>
   )

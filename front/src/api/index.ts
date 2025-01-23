@@ -46,3 +46,14 @@ export const getProductsBoard = ({productId}: { productId: number }) =>
 export const postProductsBoard = () => async (request: ProductBoardRequest & { productId: number }) => await $.post(`/products/${request.productId}/boards`, request)
 
 export const getProfile = async () => boxing(() => $.get<{ name: string, email: string }>("/mypage"))
+
+export const postQuestion = async ({question}: {question: string}) => {
+  const {data} = await $.post<{answer: string}>("/chatbot/asks", {question})
+  return data;
+  // return new Promise((resolve) => {
+  //   setTimeout(() => {
+  //     resolve({answer: "답변띠"})
+  //   }, 5000);
+  // });
+  // return {answer: "답변띠"}
+}
