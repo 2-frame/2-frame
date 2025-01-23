@@ -22,14 +22,14 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderApi implements OrderApiSpec{
 
-    private final OrderService orderServiceImpl;
+    private final OrderService orderService;
     
     // 주문 생성
     @Override
     @MemberOnly
     @PostMapping
     public IdResponse createOrder(@RequestBody @Valid OrderCreateRequest request) {
-        return orderServiceImpl.createOrder(request);
+        return orderService.createOrder(request);
     }
     
     // 주문 단건 조회
@@ -37,7 +37,7 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/{orderId}")
     public OrderResponse getOrder(@PathVariable Long orderId) {
-        return orderServiceImpl.getOrder(orderId);
+        return orderService.getOrder(orderId);
     }
     
     // 주문 전체 조회
@@ -48,7 +48,7 @@ public class OrderApi implements OrderApiSpec{
                                                @RequestParam(name = "page", defaultValue = "1") int page,
                                                @RequestParam(name = "size", defaultValue = "15") int pageSize) {
         Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-        return orderServiceImpl.getOrders(memberId, pageable);
+        return orderService.getOrders(memberId, pageable);
     }
     
     // 주문 상세 단건 조회
@@ -56,7 +56,7 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/details/{orderDetailId}")
     public OrderDetailResponse getOderDetail(@PathVariable Long orderDetailId){
-        return orderServiceImpl.getOderDetail(orderDetailId);
+        return orderService.getOderDetail(orderDetailId);
     }
     
     // 주문 상세 전체 조회
@@ -64,6 +64,22 @@ public class OrderApi implements OrderApiSpec{
     @MemberOnly
     @GetMapping("/{orderId}/details")
     public List<OrderDetailResponse> getOrderDetails(@PathVariable Long orderId) {
-        return orderServiceImpl.getOrderDetails(orderId);
+        return orderService.getOrderDetails(orderId);
+    }
+
+    // 주문 전체 취소
+    @Override
+    @MemberOnly
+    @PatchMapping("/{orderId}")
+    public IdResponse cancelOrder(@PathVariable Long orderId) {
+        return orderService.cancelOrder(orderId);
+    }
+
+    // 주문 부분 취소
+    @Override
+    @MemberOnly
+    @PatchMapping("/details/{orderDetailId}")
+    public IdResponse cancelOrderDetail(@PathVariable Long orderDetailId) {
+        return orderService.cancelOrderDetail(orderDetailId);
     }
 }
