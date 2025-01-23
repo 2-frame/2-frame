@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
-
-
+    
     default ProductReview findOne(Long id) {
         return findById(id).orElseThrow(() -> new DomainException(ExceptionType.PRODUCT_REVIEW_NOT_FOUND));
     }
