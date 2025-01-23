@@ -5,7 +5,6 @@ import ChatList from "../ChatList/ChatList.tsx";
 import {ChatHistory, useChatRoom} from "./useChatRoom";
 import Typo from "../@common/Typo";
 import {IoArrowBack} from "react-icons/io5";
-import {useEffect} from "react";
 
 
 export const ChatIcon = (props) => {
@@ -28,6 +27,7 @@ const HistoryList = ({histories, select}: {histories: ChatHistory[], select: (hi
   return  <Listbox
     aria-label="User Menu"
     className="p-0 divide-y gap-5 divide-default-300/50 overflow-visible rounded-medium"
+    emptyContent={"새 채팅을 눌러 시작해주세요."}
     itemClasses={{
       base: "px-3 border-1 gap-4 h-12 data-[hover=true]:bg-default-100/80",
     }}
@@ -51,12 +51,7 @@ const HistoryList = ({histories, select}: {histories: ChatHistory[], select: (hi
 
 const ChatRoom = () => {
 
-  const {isHistory, backHistory, handleSelectHistory, chatHistories, computedChatList, text, setText, appendChat, appendHistories} = useChatRoom();
-
-  useEffect(() => {
-    backHistory()
-  }, []);
-
+  const {isHistory, backHistory, handleSelectHistory, chatHistories, computedChatList,handleSubmit, text, setText, appendHistories} = useChatRoom();
   return <>
     <Card className={"h-[600px] w-[500px]"}>
       <CardHeader>
@@ -74,7 +69,7 @@ const ChatRoom = () => {
         {!isHistory && (
           <>
           <Input.Basic placeholder="채팅을 입력해주세요" value={text} className="p-5" onValueChange={setText}/>
-          <Button isIconOnly variant="light"  onPress={() => appendChat(text, "USER")}>
+          <Button isIconOnly variant="light"  onPress={() => handleSubmit()}>
             <IoMdSend size={20}/>
           </Button>
           </>

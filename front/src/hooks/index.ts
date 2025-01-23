@@ -1,5 +1,5 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
-import {getAllReviews, getProfile, postSignIn, postSignUp} from "../api";
+import {getAllReviews, getProfile, postQuestion, postSignIn, postSignUp} from "../api";
 
 export const useGetMyProfile = () => {
   return useQuery({
@@ -25,4 +25,9 @@ export const useSignupMutation = () => useMutation({
 export const useSignInMutation = () => useMutation({
   mutationKey: ['signin mutation'],
   mutationFn: postSignIn
+})
+
+export const useQuestionMutation = () => useMutation({
+  mutationKey: ['signin mutation'],
+  mutationFn: postQuestion
 })

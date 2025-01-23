@@ -1,21 +1,32 @@
-
-const DEFAULT_MESSAGE = `안녕하세요. 2-frame AI 챗봇입니다. 무엇이 필요하신가요?`;
+import {useQuestionMutation} from "../../hooks";
 import {useCallback, useMemo, useRef, useState} from "react";
 
+const DEFAULT_MESSAGE = `안녕하세요. 2-frame AI 챗봇입니다. 무엇이 필요하신가요?`;
+
 export const useChatRoom = () => {
-  const [chatHistories, setHistories] = useState<ChatHistory[]>(createInit());
+  const [chatHistories, setHistories] = useState<ChatHistory[]>([]);
   const [selectedHistory, selectHistory] = useState<number | undefined>(undefined);
   const [text, setText] = useState<string>("");
-  const [currentRoomStatus, setCurrentRoomStatus] = useState<RoomStatus>("CHAT");
+  const [currentRoomStatus, setCurrentRoomStatus] = useState<RoomStatus>("HISTORY");
   const historyIdRef = useRef<number>(1); // historyId를 안전하게 관리
+  const chatIdRef = useRef<number>(1); // historyId를 안전하게 관리
 
-
-  console.log(chatHistories);
-
+  const chatMutation = useQuestionMutation();
 
   const handleSubmit = useCallback(() => {
-    setText("");
-  }, [setText]);
+    appendChat(text, "USER");
+    const waitChatId = appendChat(text, "BOT-WAIT")
+    chatMutation.mutate({question: text}, {
+      onSuccess: ({answer}) => {
+        setHistories(histories => histories.map(history => history.id === selectedHistory ? {
+          ...history,
+          chatList: history.chatList.filter(h => h.id !== waitChatId)
+        } : history))
+        appendChat(answer, "BOT");
+        setText("");
+      }
+    })
+  }, [text, setText]);
 
   const handleSelectHistory = useCallback((historyId: number) => {
     setCurrentRoomStatus("CHAT");
@@ -24,14 +35,13 @@ export const useChatRoom = () => {
 
   const appendHistories = useCallback(() => {
     const newHistoryId = historyIdRef.current++;
-    console.log(newHistoryId);
     setHistories((histories) => [
       ...histories,
       {
         id: newHistoryId,
         lastOpenDate: new Date(),
         lastMessage: DEFAULT_MESSAGE,
-        chatList: [createNewChat(DEFAULT_MESSAGE, "BOT")],
+        chatList: [createNewChat(chatIdRef.current++, DEFAULT_MESSAGE, "BOT")],
       },
     ]);
     handleSelectHistory(newHistoryId);
@@ -40,19 +50,18 @@ export const useChatRoom = () => {
   const appendChat = useCallback((question: string, type: ChatType) => {
     if (selectedHistory === undefined) return;
 
-    console.log(">>>>>", selectedHistory);
-
+    const newChat = createNewChat(chatIdRef.current++, question, type);
     setHistories((histories) =>
       histories.map((history) =>
         history.id === selectedHistory
           ? {
             ...history,
-            chatList: [...history.chatList, createNewChat(question, type)],
+            chatList: [...history.chatList, newChat],
           }
           : history
       )
     );
-    handleSubmit();
+    return newChat.id;
   }, [selectedHistory, setHistories, handleSubmit]);
 
 
@@ -90,21 +99,23 @@ const createInit = (): ChatHistory[] => {
       id: 0,
       lastOpenDate: new Date(),
       lastMessage: "Welcome to the chat!",
-      chatList: [createNewChat("Welcome to the chat!", "BOT")],
+      chatList: [createNewChat(0, "안녕하세요~ 2-frame 운영 챗봇입니다. 무엇이 궁금하신가요?", "BOT")],
     },
   ];
 };
 
-const createNewChat = (message: string, type: ChatType): Chat => ({
+const createNewChat = (id:number, message: string, type: ChatType): Chat => ({
+  id,
   message,
   type,
   timestamp: new Date(),
 });
 
-export type ChatType = "BOT" | "USER";
+export type ChatType = "BOT" | "USER" | "BOT-WAIT";
 export type RoomStatus = "CHAT" | "HISTORY";
 
 export interface Chat {
+  id: number;
   message: string;
   type: ChatType;
   timestamp: Date;
