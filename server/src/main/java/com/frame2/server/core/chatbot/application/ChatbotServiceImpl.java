@@ -37,7 +37,7 @@ public class ChatbotServiceImpl implements ChatbotService {
                     .uri("http://127.0.0.1:8000/chat")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
-                    .body(objectMapper.writeValueAsBytes(new T("안녕")))
+                    .body(objectMapper.writeValueAsBytes(new T(userQuestion)))
                     .retrieve()
                     .onStatus(
                             HttpStatusCode::is4xxClientError,
