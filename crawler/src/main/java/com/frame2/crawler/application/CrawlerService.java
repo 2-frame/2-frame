@@ -1,11 +1,14 @@
 package com.frame2.crawler.application;
 
+import com.frame2.crawler.domain.Category;
 import com.frame2.crawler.domain.Option;
 import com.frame2.crawler.domain.Product;
 import com.frame2.crawler.domain.SaleProduct;
+import com.frame2.crawler.infrastructure.CategoryRepository;
 import com.frame2.crawler.infrastructure.OptionRepository;
 import com.frame2.crawler.infrastructure.ProductRepository;
 import com.frame2.crawler.infrastructure.SaleProductRepository;
+import jakarta.persistence.EntityManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +31,11 @@ public class CrawlerService {
     private String FQDN;
 
     private final FileService fileService;
+    private final CategoryRepository categoryRepository;
     private final SaleProductRepository saleProductRepository;
     private final ProductRepository productRepository;
     private final OptionRepository optionRepository;
+    private EntityManager entityManager;
 
     // application.properties에서 URL 목록 가져오기
     @Value("${baseUrlList}")
@@ -224,5 +229,140 @@ public class CrawlerService {
 
         // 크롤링된 상품 목록 반환
         return allProducts;
+    }
+
+    // 카테고리 저장
+    @Transactional
+    public List<Category> generateCategories() {
+        List<Category> categories = new ArrayList<>();
+
+        // Root 카테고리 배열
+        String[] rootCategories = {
+                "주방잡화",
+                "조리기구",
+                "보관/밀폐용기",
+                "주방가전/측정기구"
+        };
+
+        // Root 카테고리 배열을 반복문으로 처리
+        for (String name : rootCategories) {
+            Category rootCategory = Category.builder()
+                    .rootCategory(null) // 루트 카테고리는 null로 설정
+                    .parentCategory(null)
+                    .categoryName(name)
+                    .build();
+
+            // 리스트에 Root 카테고리 추가
+            categories.add(rootCategory);
+
+            // switch 문을 사용하여 하위 카테고리 배열 처리
+            switch (name) {
+                case "주방잡화":
+                    // 주방잡화 하위 목록 배열
+                    String[] sub1 = {
+                            "고무장갑/기타장갑",
+                            "수세미/행주",
+                            "쟁반/트레이",
+                            "주방정리소품",
+                            "장식용품",
+                            "핸드카트/운반기",
+                            "기타용품"
+                    };
+                    // 하위 카테고리 객체 생성
+                    for (String categoryName : sub1) {
+                        Category subCategory = Category.builder()
+                                .rootCategory(rootCategory) // Root 카테고리를 상속
+                                .parentCategory(rootCategory)
+                                .categoryName(categoryName)
+                                .build();
+                        categories.add(subCategory);
+                    }
+                    break;
+
+                case "조리기구":
+                    // 조리기구 하위 목록 배열
+                    String[] sub2 = {
+                            "거품기",
+                            "국자/스쿠프",
+                            "깔때기",
+                            "다시망/건지기",
+                            "뒤집개/볶음스푼",
+                            "믹싱볼",
+                            "바구니/채반",
+                            "솔/브러쉬",
+                            "스퀴저",
+                            "오프너",
+                            "주걱/헤라/스패츄라",
+                            "집게",
+                            "기타조리도구"
+                    };
+                    // 하위 카테고리 객체 생성
+                    for (String categoryName : sub2) {
+                        Category subCategory = Category.builder()
+                                .rootCategory(rootCategory) // Root 카테고리를 상속
+                                .parentCategory(rootCategory)
+                                .categoryName(categoryName)
+                                .build();
+                        categories.add(subCategory);
+                    }
+                    break;
+
+                case "보관/밀폐용기":
+                    // 보관/밀폐용기 하위 목록 배열
+                    String[] sub3 = {
+                            "김치통",
+                            "도시락/찬합",
+                            "도자기/유리용기",
+                            "물병/물통",
+                            "플라스틱용기",
+                            "스텐용기",
+                            "보온/보냉/도시락용기",
+                            "밧드/가니쉬케이스",
+                            "양념통/소스용기",
+                            "기타보관용기"
+                    };
+                    // 하위 카테고리 객체 생성
+                    for (String categoryName : sub3) {
+                        Category subCategory = Category.builder()
+                                .rootCategory(rootCategory) // Root 카테고리를 상속
+                                .parentCategory(rootCategory)
+                                .categoryName(categoryName)
+                                .build();
+                        categories.add(subCategory);
+                    }
+                    break;
+
+                case "주방가전/측정기구":
+                    // 주방가전/측정기구 하위 목록 배열
+                    String[] sub4 = {
+                            "그릴/하이라이트/인덕션",
+                            "믹서기/핸드블렌더",
+                            "에어프라이어/오븐",
+                            "전기밥솥",
+                            "전기포트/멀티포트",
+                            "측정기구/타이머",
+                            "토스터기",
+                            "기타 가전"
+                    };
+                    // 하위 카테고리 객체 생성
+                    for (String categoryName : sub4) {
+                        Category subCategory = Category.builder()
+                                .rootCategory(rootCategory) // Root 카테고리를 상속
+                                .parentCategory(rootCategory)
+                                .categoryName(categoryName)
+                                .build();
+                        categories.add(subCategory);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // 크롤링된 데이터를 DB에 저장
+        categoryRepository.saveAll(categories);
+
+        return categories;
     }
 }
