@@ -14,16 +14,16 @@ import java.util.List;
 @Tag(name = "상품QnA api")
 public interface ProductQnAApiSpec {
 
-    ResponseEntity<List<SimpleProductQnA>> qnaList();
+    ResponseEntity<List<SimpleProductQnA>> qnaList(Long productId);
 
-    ResponseEntity<ProductQnAResponse> getProductQnA(Long id);
+    ResponseEntity<ProductQnAResponse> getProductQnA(Long productId, Long id);
 
     void createQuestion(ProductQnARegisterRequest productQnARequest, User user, Long productId);
 
-    void update(ProductQnAModifyRequest productQnAModifyRequest, User user, Long productQnAId);
+    void update(ProductQnAModifyRequest productQnAModifyRequest, User user, Long productId, Long productQnAId);
 
-    void delete(Long id, User user);
+    void delete(Long productId, Long id, User user);
 
-    void answerCreate(ProductQnAAnswerRequest productQnAAnswerRequest, User user, Long productQnAId);
+    void answerCreate(ProductQnAAnswerRequest productQnAAnswerRequest, User user, Long productId, Long productQnAId);
 
 }
