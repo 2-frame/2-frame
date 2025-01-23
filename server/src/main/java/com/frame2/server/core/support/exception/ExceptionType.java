@@ -30,8 +30,11 @@ public enum ExceptionType {
     // - 상품 -
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.P04, "존재하지 않는 상품입니다.", ERROR),
 
-    // - 상품 QnA
+    // - 상품 QnA -
     PRODUCT_QNA_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.B01, "존재하지 않는 QnA 입니다.", ERROR),
+
+    // - 상품 리뷰 -
+    PRODUCT_REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.B02, "존재하지 않는 리뷰 입니다.", ERROR),
 
     // - 카테고리 -
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.CT04, "존재하지 않는 카테고리입니다.", ERROR),

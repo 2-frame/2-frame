@@ -1,7 +1,9 @@
 package com.frame2.server.core.order.domain;
 
+import com.frame2.server.core.product.domain.Stock;
 import com.frame2.server.core.support.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +13,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "orders")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseEntity {
 
     @Column(nullable = false)
@@ -83,5 +85,23 @@ public class Order extends BaseEntity {
                 })
                 .sum();
         this.totalPrice = totalPrice;
+    }
+    
+    // 주문 취소 -> 모든 주문 상세가 순차적으로 취소
+        // 주문은 주문 상세에게 삭제 명령만 내리도록 수정
+        // 재고 복원, 주문 상태 변경
+    public void cancelOrder() {
+        orderDetails.forEach(OrderDetail::cancelOrderDetail);
+    }
+
+    // 주문 상태 변경 메서드
+        // 주문 상세가 모두 삭제되면 ORDER_CANCELED
+        // 주문 상세가 일부 삭제되면 ORDER_PARTICAL_CANCELED
+    public void updateOrderStatus() {
+        boolean allCanceled = orderDetails.stream().allMatch(OrderDetail::isDeleteStatus);
+        orderStatus = allCanceled ? OrderStatus.ORDER_CANCELED : OrderStatus.ORDER_PARTICAL_CANCELED;
+        if(allCanceled){
+            this.delete();
+        }
     }
 }

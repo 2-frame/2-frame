@@ -19,4 +19,12 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
     @Query("SELECT od FROM OrderDetail od WHERE od.order.id = :orderId")
     List<OrderDetail> findAllByOrderId(@Param("orderId") Long orderId);
+
+    @Query("SELECT od " +
+            "FROM OrderDetail od " +
+            "JOIN FETCH od.order o " +
+            "JOIN FETCH od.saleProduct sp " +
+            "JOIN FETCH sp.stock s " +
+            "WHERE od.id = :orderDetailId")
+    OrderDetail findWithOrderAndSaleProduct(@Param("orderDetailId") Long orderDetailId);
 }

@@ -38,6 +38,7 @@ public class ProductQnA extends BaseEntity {
 
     // 답변 상태 : 기본값 N
     @Enumerated(EnumType.STRING)
+    @Column(name = "answer_YN")
     private AnswerStatus answerYN;
 
     // 답변 작성일 : null 가능
