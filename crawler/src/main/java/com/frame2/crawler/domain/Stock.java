@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "stocks")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Stock extends BaseEntity {
+    
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_product_id")
     private SaleProduct saleProduct;

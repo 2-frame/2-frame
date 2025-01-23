@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.util.Random;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,9 +48,10 @@ public class SaleProduct extends BaseEntity {
     private int saleCount;
 
     @Builder
-    public SaleProduct(Stock stock, String name, String mainImg, String subImage, String descriptionImage,
-                       int salePrice, int saleCount) {
-        this.stock = stock;
+    public SaleProduct(Product product, Option option, String name, String mainImg, String subImage,
+                       String descriptionImage, int salePrice) {
+        this.product = product;
+        this.option = option;
         this.name = name;
         this.mainImage = mainImg;
         this.subImage = subImage;
@@ -57,8 +59,8 @@ public class SaleProduct extends BaseEntity {
         this.unit = "EA";
         this.productStatus = ProductStatus.SELL;
         this.productDisclosure = ProductDisclosure.Y;
-        this.salePrice = salePrice;
-        this.saleCount = saleCount;
+        this.saleCount = new Random().nextInt(1000) + 1;
+        this.salePrice = salePrice * this.saleCount;
     }
 
     public enum ProductDisclosure {

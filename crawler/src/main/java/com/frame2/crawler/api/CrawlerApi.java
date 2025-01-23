@@ -2,7 +2,7 @@ package com.frame2.crawler.api;
 
 import com.frame2.crawler.application.CrawlerService;
 import com.frame2.crawler.application.UrlService;
-import com.frame2.crawler.domain.Category;
+import com.frame2.crawler.domain.SaleProduct;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +21,23 @@ public class CrawlerApi {
     @Value("${baseUrl}")
     String baseUrl;
 
-    // 크롤링을 트리거할 GET 엔드포인트
-    @GetMapping("/start-crawl")
-//    public List<SaleProduct> startCrawl() {
-    public List<Category> startCrawl() {
-        return crawlerService.generateCategories();
-//        try {
-        // 크롤링 메서드 호출
-//            return crawlerService.crawlSaleProducts();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return null;  // 예외 발생 시 null 반환
-//        }
+    // 1. 카테고리 생성 (크롤링 X)
+    @GetMapping("/generate-categories")
+    public void generateCategories() throws IOException {
+
+        crawlerService.generateCategories(); // 카테고리 서비스는 한 번만 실행되면 된다
     }
 
-    // baseUrl 수집 api
+    // 2. baseUrl 수집 크롤링
     @GetMapping("/crawl-url")
     public List<String> crawlUrls() throws IOException {
         // product 링크 크롤링
         return urlService.crawlProductLinks(baseUrl);
+    }
+
+    // 3. 옵션, 상품, 판매상품 크롤링
+    @GetMapping("/start-crawl")
+    public List<SaleProduct> startCrawl() throws IOException {
+        return crawlerService.crawlSaleProducts();
     }
 }
