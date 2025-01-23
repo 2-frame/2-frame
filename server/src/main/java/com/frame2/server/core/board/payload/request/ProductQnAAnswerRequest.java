@@ -1,12 +1,10 @@
 package com.frame2.server.core.board.payload.request;
 
-import com.frame2.server.core.board.domain.AnswerStatus;
 import com.frame2.server.core.board.domain.ProductQnA;
 
 import java.time.LocalDateTime;
 
 public record ProductQnAAnswerRequest(
-        Long id,
         String answer,
         String manager
 ) {
@@ -14,7 +12,7 @@ public record ProductQnAAnswerRequest(
         return ProductQnA.builder()
                 .answer(answer)
                 .manager(manager)
-                .answerYN(AnswerStatus.Y)
+                .answerYN(true)
                 .answerDate(LocalDateTime.now())
                 .build();
     }
