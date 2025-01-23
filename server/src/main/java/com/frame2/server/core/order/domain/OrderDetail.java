@@ -72,8 +72,10 @@ public class OrderDetail extends BaseEntity{
             this.delete();
             this.exchangeReturnPossible = false;
             this.exchaneReturnRequested = true;
+
             Stock stock = this.saleProduct.getStock();
             stock.restoreQuantity(quantity);
+
             this.order.updateOrderStatus();
         }
     }

@@ -13,11 +13,11 @@ import com.frame2.server.core.product.infrastructure.SaleProductRepository;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
 import com.frame2.server.core.support.response.IdResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
                 .map(orderDetail -> {
                     // 주문 상세와 판매상품을 매핑
                     SaleProduct saleProduct = saleProductMap.get(orderDetail.saleProductId());
-                    
+
                     // 판매상품의 재고 검증 및 차감
                     Stock stock = saleProduct.getStock();
                     stock.reduceQuantity(orderDetail.quantity());
@@ -79,9 +79,10 @@ public class OrderServiceImpl implements OrderService {
 
         return new IdResponse(order.getId());
     }
-    
+
     // 주문 내역 단건 조회 - 주문id로 단건 조회
     @Override
+    @Transactional(readOnly = true)
     public OrderResponse getOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         return OrderResponse.from(order);
@@ -89,6 +90,7 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 내역 전체조회 - 멤버id로 전체 조회
     @Override
+    @Transactional(readOnly = true)
     public PagedModel<OrderResponse> getOrders(Long memberId, Pageable pageable) {
         return new PagedModel<>(orderRepository.findAllByMemberId(memberId, pageable)
                 .map(OrderResponse::from));
@@ -96,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
     @Override
+    @Transactional(readOnly = true)
     public OrderDetailResponse getOderDetail(Long orderDetailId) {
         OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
         return OrderDetailResponse.from(orderDetail);
@@ -103,18 +106,19 @@ public class OrderServiceImpl implements OrderService {
 
     // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetailResponse> getOrderDetails(Long orderId) {
         return orderDetailRepository.findAllByOrderId(orderId).stream()
                 .map(OrderDetailResponse::from)
                 .toList();
     }
-    
+
     // 주문 전체 취소 - 주문id로 전체 취소
         // 주문이 취소되면 모든 주문 상세도 취소
         // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
     public IdResponse cancelOrder(Long orderId) {
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderRepository.findWithOrderDetails(orderId);
         order.cancelOrder();
         return new IdResponse(order.getId());
     }
@@ -124,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
         // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
     public IdResponse cancelOrderDetail(Long orderDetailId) {
-        OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
+        OrderDetail orderDetail = orderDetailRepository.findWithOrderAndSaleProduct(orderDetailId);
         orderDetail.cancelOrderDetail();
         return new IdResponse(orderDetail.getId());
     }

@@ -91,10 +91,8 @@ public class Order extends BaseEntity {
         // 주문은 주문 상세에게 삭제 명령만 내리도록 수정
         // 재고 복원, 주문 상태 변경
     public void cancelOrder() {
-        orderDetails.stream().forEach(orderDetail -> {
-            orderDetail.cancelOrderDetail();
-        });
-        updateOrderStatus();
+        orderDetails.forEach(OrderDetail::cancelOrderDetail);
+        this.updateOrderStatus();
     }
 
     // 주문 상태 변경 메서드
