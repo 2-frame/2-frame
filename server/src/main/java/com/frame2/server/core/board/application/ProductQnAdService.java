@@ -10,16 +10,13 @@ import com.frame2.server.core.board.payload.response.ProductQnAResponse;
 public interface ProductQnAdService {
 
     // 질문 생성
-    ProductQnA questionCreate(ProductQnARegisterRequest request, Long memberId);
+    ProductQnA questionCreate(ProductQnARegisterRequest request, Long memberId, Long productId);
 
     // 질문 수정
-    ProductQnA questionModify(ProductQnAModifyRequest request);
+    ProductQnA questionModify(ProductQnAModifyRequest request, Long productQnAId);
 
     // 답변
-    ProductQnA answer(ProductQnAAnswerRequest request);
-
-    // 답변 수정
-    ProductQnA answerModify(ProductQnAAnswerRequest request);
+    ProductQnA answer(ProductQnAAnswerRequest request, Long productQnAId);
 
     // 질문 삭제
     void remove(Long id);

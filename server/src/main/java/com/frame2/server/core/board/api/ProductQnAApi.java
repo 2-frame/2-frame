@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/qna")
+@RequestMapping("/products/{productId}/qna")
 public class ProductQnAApi implements ProductQnAApiSpec {
 
     private final ProductQnAdService productQnAService;
@@ -42,36 +42,38 @@ public class ProductQnAApi implements ProductQnAApiSpec {
     // 질문 생성
     @MemberOnly
     @PostMapping
-    public void createQuestion(@RequestBody ProductQnARegisterRequest productQnARequest, @Auth User user) {
-        productQnAService.questionCreate(productQnARequest, user.id());
+    public void createQuestion(
+            @RequestBody ProductQnARegisterRequest productQnARequest,
+            @Auth User user,
+            @PathVariable("productId") Long productId
+    ) {
+        productQnAService.questionCreate(productQnARequest, user.id(), productId);
     }
 
     // 질문 수정
     @MemberOnly
-    @PatchMapping
-    public void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest) {
-        productQnAService.questionModify(productQnAModifyRequest);
+    @PatchMapping("/{productQnAId}")
+    public void update(@RequestBody ProductQnAModifyRequest productQnAModifyRequest,
+                       @Auth User user,
+                       @PathVariable("productQnAId") Long productQnAId) {
+        productQnAService.questionModify(productQnAModifyRequest, productQnAId);
     }
 
     // 질문 삭제
     @MemberOnly
     @DeleteMapping("/{productQnAId}")
-    public void delete(@PathVariable("productQnAId") Long id) {
+    public void delete(@PathVariable("productQnAId") Long id, @Auth User user) {
         productQnAService.remove(id);
     }
 
     // 답변 생성 : 답변이란 엔티티가 따로 존재하지 않기 때문에
     // 기존의 qna객체를 업데이트한다.
     @MemberOnly
-    @PatchMapping("/answer")
-    public void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
-        productQnAService.answer(productQnAAnswerRequest);
+    @PatchMapping("/{productQnAId}/answer")
+    public void answerCreate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest,
+                             @Auth User user,
+                             @PathVariable("productQnAId") Long productQnAId) {
+        productQnAService.answer(productQnAAnswerRequest, productQnAId);
     }
-    
-    // 답변 수정
-    @MemberOnly
-    @PatchMapping("/answer/{productQnAId}")
-    public void answerUpdate(@RequestBody ProductQnAAnswerRequest productQnAAnswerRequest) {
-        productQnAService.answerModify(productQnAAnswerRequest);
-    }
+
 }

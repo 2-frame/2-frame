@@ -18,13 +18,12 @@ public interface ProductQnAApiSpec {
 
     ResponseEntity<ProductQnAResponse> getProductQnA(Long id);
 
-    void createQuestion(ProductQnARegisterRequest productQnARequest, User user);
+    void createQuestion(ProductQnARegisterRequest productQnARequest, User user, Long productId);
 
-    void update(ProductQnAModifyRequest productQnAModifyRequest);
+    void update(ProductQnAModifyRequest productQnAModifyRequest, User user, Long productQnAId);
 
-    void delete(Long id);
+    void delete(Long id, User user);
 
-    void answerCreate(ProductQnAAnswerRequest productQnAAnswerRequest);
+    void answerCreate(ProductQnAAnswerRequest productQnAAnswerRequest, User user, Long productQnAId);
 
-    void answerUpdate(ProductQnAAnswerRequest productQnAAnswerRequest);
 }
