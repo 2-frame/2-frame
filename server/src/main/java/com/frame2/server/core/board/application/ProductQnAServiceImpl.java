@@ -29,28 +29,28 @@ public class ProductQnAServiceImpl implements ProductQnAdService {
 
     // 질문 생성
     @Override
-    public ProductQnA questionCreate(ProductQnARegisterRequest request, Long memberId, Long productId) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+    public void questionCreate(ProductQnARegisterRequest request, Long memberId, Long productId) {
+        Member member = memberRepository.findOne(memberId);
         Product product = productRepository.findOne(productId);
 
         ProductQnA productQnA = request.toEntity(member, product);
-        return productQnARepository.save(productQnA);
+        productQnARepository.save(productQnA);
     }
 
     // 질문 수정
     @Override
-    public ProductQnA questionModify(ProductQnAModifyRequest request, Long productQnAId) {
-        ProductQnA productQnA = productQnARepository.findOne(productQnAId);
-        return productQnA.updateQuestion(request.title(), request.question());
+    public void questionModify(ProductQnAModifyRequest request, Long productId, Long productQnAId) {
+        ProductQnA productQnA = productQnARepository.findOne(productId, productQnAId);
+        productQnA.updateQuestion(request.title(), request.question());
     }
 
     // 답변 등록
     @Override
-    public ProductQnA answer(ProductQnAAnswerRequest answerRegisterRequest, Long productQnAId) {
+    public void answer(ProductQnAAnswerRequest answerRegisterRequest, Long productId, Long productQnAId) {
         ProductQnA requestProductQnA = answerRegisterRequest.toEntity();
 
-        ProductQnA productQnA = productQnARepository.findOne(productQnAId);
-        return productQnA.createAnswer(
+        ProductQnA productQnA = productQnARepository.findOne(productId, productQnAId);
+        productQnA.createAnswer(
                 requestProductQnA.getAnswer(),
                 requestProductQnA.getManager(),
                 true,
@@ -60,15 +60,15 @@ public class ProductQnAServiceImpl implements ProductQnAdService {
 
     // 질문 삭제
     @Override
-    public void remove(Long id) {
-        productQnARepository.findOne(id).delete();
+    public void remove(Long productId, Long id) {
+        productQnARepository.findOne(productId, id).delete();
     }
 
     // 질문 단건 조회
     @Override
     @Transactional(readOnly = true)
-    public ProductQnAResponse getProductQnA(Long id) {
-        ProductQnA productQnA = productQnARepository.findOne(id);
+    public ProductQnAResponse getProductQnA(Long productId, Long productQnAId) {
+        ProductQnA productQnA = productQnARepository.findOne(productId, productQnAId);
         SimpleProductQnA simpleProductQnA = SimpleProductQnA.from(productQnA);
         return new ProductQnAResponse(simpleProductQnA);
     }
@@ -76,8 +76,8 @@ public class ProductQnAServiceImpl implements ProductQnAdService {
     // 질문 전체 조회
     @Override
     @Transactional(readOnly = true)
-    public ProductQnAListResponse getProductQnAList() {
-        List<ProductQnA> productQnAList = productQnARepository.findAll();
+    public ProductQnAListResponse getProductQnAList(Long productId) {
+        List<ProductQnA> productQnAList = productQnARepository.findByProductIdAndDeleteStatusFalse(productId);
         return ProductQnAListResponse.of(productQnAList);
     }
 
