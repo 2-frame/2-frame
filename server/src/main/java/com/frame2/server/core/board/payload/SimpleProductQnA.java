@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 public record SimpleProductQnA(
         Long id,
-        MyInformationResponse memberResponse,
-        ProductResponse productResponse,
+        MyInformationResponse member,
+        ProductResponse product,
         String title,
         String question,
         String answer,
