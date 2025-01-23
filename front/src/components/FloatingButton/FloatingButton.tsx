@@ -3,7 +3,7 @@ import ChatRoom from "../ChatRoom/ChatRoom.tsx";
 import {useState} from "react";
 
 const FloatingButton = () => {
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpen] = useState(true);
 
   return (
     <div className="fixed bottom-[20px] right-[20px]">

@@ -2,6 +2,7 @@ import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, ScrollShadow} fr
 import Input from "../@common/Input";
 import {IoMdSend} from "react-icons/io";
 import Typo from "../@common/Typo";
+import ChatList from "../ChatList/ChatList.tsx";
 
 
 const ChatMessage = () => {
@@ -34,6 +35,7 @@ const UserMessage = () => {
   )
 }
 
+
 const ChatRoom = () => {
 
   return <>
@@ -41,17 +43,18 @@ const ChatRoom = () => {
       <CardHeader>챗봇</CardHeader>
       <CardBody>
         <ScrollShadow className="flex gap-3 flex-col h-full">
-          <ChatMessage/>
-          <UserMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-          <ChatMessage/>
-        <ChatMessage/>
+          <ChatList/>
+        {/*  <ChatMessage/>*/}
+        {/*  <UserMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*  <ChatMessage/>*/}
+        {/*<ChatMessage/>*/}
         </ScrollShadow>
       </CardBody>
       <CardFooter className="gap-2">
