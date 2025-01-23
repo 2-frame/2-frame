@@ -32,9 +32,10 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final SaleProductRepository saleProductRepository;
 
-    public IdResponse createOrder(OrderCreateRequest request) {
+
+    public IdResponse createOrder(Long memberId, OrderCreateRequest request) {
         // 주문 생성
-        Order order = request.toEntity();
+        Order order = request.toEntity(memberId);
         orderRepository.save(order);
 
         // 판매상품 id 리스트
@@ -83,8 +84,8 @@ public class OrderServiceImpl implements OrderService {
     // 주문 내역 단건 조회 - 주문id로 단건 조회
     @Override
     @Transactional(readOnly = true)
-    public OrderResponse getOrder(Long orderId) {
-        Order order = orderRepository.findOne(orderId);
+    public OrderResponse getOrder(Long memberId, Long orderId) {
+        Order order = orderRepository.findOne(memberId, orderId);
         return OrderResponse.from(order);
     }
 
@@ -99,16 +100,16 @@ public class OrderServiceImpl implements OrderService {
     // 주문 상세 내역 단건 조회 - 주문상세id로 단건 조회
     @Override
     @Transactional(readOnly = true)
-    public OrderDetailResponse getOderDetail(Long orderDetailId) {
-        OrderDetail orderDetail = orderDetailRepository.findOne(orderDetailId);
+    public OrderDetailResponse getOderDetail(Long memberId, Long orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findOne(memberId, orderDetailId);
         return OrderDetailResponse.from(orderDetail);
     }
 
     // 주문 상세 내역 전체조회 - 주문id로 주문 상세 내역 전체조회
     @Override
     @Transactional(readOnly = true)
-    public List<OrderDetailResponse> getOrderDetails(Long orderId) {
-        return orderDetailRepository.findAllByOrderId(orderId).stream()
+    public List<OrderDetailResponse> getOrderDetails(Long memberId, Long orderId) {
+        return orderDetailRepository.findAllByMemberIdAndOrderId(memberId, orderId).stream()
                 .map(OrderDetailResponse::from)
                 .toList();
     }
@@ -117,8 +118,8 @@ public class OrderServiceImpl implements OrderService {
         // 주문이 취소되면 모든 주문 상세도 취소
         // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
-    public IdResponse cancelOrder(Long orderId) {
-        Order order = orderRepository.findWithOrderDetails(orderId);
+    public IdResponse cancelOrder(Long memberId, Long orderId) {
+        Order order = orderRepository.findWithOrderDetailsByMemberId(memberId, orderId);
         order.cancelOrder();
         return new IdResponse(order.getId());
     }
@@ -127,8 +128,8 @@ public class OrderServiceImpl implements OrderService {
         // 주문 상세 취소 -> 주문 상태 변경(ORDER_PARTICAL_CANCELED)
         // 주문 상세에 포함된 상품 재고를 주문 수량만큼 가산
     @Override
-    public IdResponse cancelOrderDetail(Long orderDetailId) {
-        OrderDetail orderDetail = orderDetailRepository.findWithOrderAndSaleProduct(orderDetailId);
+    public IdResponse cancelOrderDetail(Long memberId, Long orderDetailId) {
+        OrderDetail orderDetail = orderDetailRepository.findWithOrderAndSaleProductByMemberId(memberId, orderDetailId);
         orderDetail.cancelOrderDetail();
         return new IdResponse(orderDetail.getId());
     }
