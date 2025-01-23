@@ -4,7 +4,10 @@ package com.frame2.server.core.board.domain;
 import com.frame2.server.core.member.domain.Member;
 import com.frame2.server.core.product.domain.Product;
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -37,9 +40,8 @@ public class ProductQnA extends BaseEntity {
     private String answer;
 
     // 답변 상태 : 기본값 N
-    @Enumerated(EnumType.STRING)
     @Column(name = "answer_YN")
-    private AnswerStatus answerYN;
+    private boolean answerYN;
 
     // 답변 작성일 : null 가능
     private LocalDateTime answerDate;
@@ -53,10 +55,10 @@ public class ProductQnA extends BaseEntity {
 
     // answer 등록 메서드
     // answer 엔티티가 따로 존재하지 않기 때문에 productQnA를 수정 하는 것에 속함
-    public ProductQnA createAnswer(String answer, String manager, AnswerStatus answerStatus, LocalDateTime answerDate) {
+    public ProductQnA createAnswer(String answer, String manager, boolean answerYN, LocalDateTime answerDate) {
         this.answer = answer;
         this.manager = manager;
-        this.answerYN = answerStatus;
+        this.answerYN = answerYN;
         this.answerDate = answerDate;
         return this;
     }
