@@ -2,7 +2,7 @@ import {Button, Card, CardBody, CardFooter, CardHeader, Listbox, ListboxItem, Sc
 import Input from "../@common/Input";
 import {IoMdSend} from "react-icons/io";
 import ChatList from "../ChatList/ChatList.tsx";
-import {ChatHistory, useChatRoom} from "./useChatRoom.ts";
+import {ChatHistory, useChatRoom} from "./useChatRoom";
 import Typo from "../@common/Typo";
 import {IoArrowBack} from "react-icons/io5";
 import {useEffect} from "react";
@@ -73,8 +73,8 @@ const ChatRoom = () => {
       <CardFooter className="gap-1">
         {!isHistory && (
           <>
-          <Input.Basic placeholder="채팅을 입력해주세요" className="p-5" onValueChange={setText}/>
-          <Button isIconOnly variant="light" onPress={() => appendChat(text, "USER")}>
+          <Input.Basic placeholder="채팅을 입력해주세요" value={text} className="p-5" onValueChange={setText}/>
+          <Button isIconOnly variant="light"  onPress={() => appendChat(text, "USER")}>
             <IoMdSend size={20}/>
           </Button>
           </>

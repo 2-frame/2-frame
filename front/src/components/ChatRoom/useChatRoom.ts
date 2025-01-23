@@ -1,108 +1,72 @@
-import {useMemo, useState} from "react";
-
-export type ChatType = "BOT" | "USER";
-
-export type Chat = {
-  id: number;
-  message: string;
-  type: ChatType
-}
-
-
-export type ChatHistory = {
-  id: number;
-  lastOpenDate: Date;
-  lastMessage: string;
-  chatList: Chat[]
-}
-
-
-export type RoomStatus = "HISTORY" | "CHAT";
-
-let historyId = 1;
-let chatId = 1;
-
 
 const DEFAULT_MESSAGE = `안녕하세요. 2-frame AI 챗봇입니다. 무엇이 필요하신가요?`;
-
-const createNewChat = (question: string, type: ChatType ): Chat=> {
-  return {
-    id: chatId++,
-    message: question,
-    type,
-  }
-}
-
-const createNewHistory = () => {
-  return (
-    {
-      id: historyId++,
-      lastOpenDate: new Date(),
-      lastMessage: DEFAULT_MESSAGE,
-      chatList: [createNewChat(DEFAULT_MESSAGE, "BOT")]
-    }
-  )
-}
-
-const createInit = (): ChatHistory[] => {
-  return [
-    createNewHistory()
-  ]
-}
-
+import {useCallback, useMemo, useRef, useState} from "react";
 
 export const useChatRoom = () => {
   const [chatHistories, setHistories] = useState<ChatHistory[]>(createInit());
-  const [selectedHistory, selectHistory] = useState<number>();
+  const [selectedHistory, selectHistory] = useState<number | undefined>(undefined);
   const [text, setText] = useState<string>("");
   const [currentRoomStatus, setCurrentRoomStatus] = useState<RoomStatus>("CHAT");
+  const historyIdRef = useRef<number>(1); // historyId를 안전하게 관리
 
 
+  console.log(chatHistories);
 
-  const appendHistories = () => {
-    setHistories(histories => ([...histories, {
-      id: historyId++,
-      lastOpenDate: new Date(),
-      lastMessage: DEFAULT_MESSAGE,
-      chatList: [
-        createNewChat(DEFAULT_MESSAGE, "BOT")
-      ]
-    }]));
-    handleSelectHistory(historyId)
-  }
 
-  const appendChat= (question: string, type: ChatType) => {
-    setHistories(histories => histories.map(history => {
-      if(selectedHistory === historyId) return history;
+  const handleSubmit = useCallback(() => {
+    setText("");
+  }, [setText]);
 
-      return {
-        ...history,
-        chatList: [...history.chatList, createNewChat(question, type)]
-      }
-    }));
-    handleSubmit();
-  }
-
-  const handleSelectHistory = (historyId: number) => {
+  const handleSelectHistory = useCallback((historyId: number) => {
     setCurrentRoomStatus("CHAT");
     selectHistory(historyId);
-  }
+  }, [setCurrentRoomStatus, selectHistory]);
+
+  const appendHistories = useCallback(() => {
+    const newHistoryId = historyIdRef.current++;
+    console.log(newHistoryId);
+    setHistories((histories) => [
+      ...histories,
+      {
+        id: newHistoryId,
+        lastOpenDate: new Date(),
+        lastMessage: DEFAULT_MESSAGE,
+        chatList: [createNewChat(DEFAULT_MESSAGE, "BOT")],
+      },
+    ]);
+    handleSelectHistory(newHistoryId);
+  }, [setHistories, handleSelectHistory, historyIdRef]);
+
+  const appendChat = useCallback((question: string, type: ChatType) => {
+    if (selectedHistory === undefined) return;
+
+    console.log(">>>>>", selectedHistory);
+
+    setHistories((histories) =>
+      histories.map((history) =>
+        history.id === selectedHistory
+          ? {
+            ...history,
+            chatList: [...history.chatList, createNewChat(question, type)],
+          }
+          : history
+      )
+    );
+    handleSubmit();
+  }, [selectedHistory, setHistories, handleSubmit]);
+
+
 
   const computedChatList = useMemo(() => {
     if (selectedHistory === undefined) return [];
-    const findResult = chatHistories.filter(history => history.id == selectedHistory)
-    if(findResult.length === 0) return [];
-    return findResult[0].chatList;
-  }, [selectedHistory, chatHistories, currentRoomStatus])
+    const selectedHistoryObj = chatHistories.find((history) => history.id === selectedHistory);
+    return selectedHistoryObj ? selectedHistoryObj.chatList : [];
+  }, [selectedHistory, chatHistories]);
 
-  const backHistory = () => setCurrentRoomStatus("HISTORY");
-
-  const isHistory = currentRoomStatus === "HISTORY";
-
-  const handleSubmit = () => {
-
-    setText("");
-  }
+  const backHistory = useCallback(() => {
+    selectHistory(undefined);
+    setCurrentRoomStatus("HISTORY");
+  }, [selectHistory, setCurrentRoomStatus]);
 
 
   return {
@@ -112,8 +76,43 @@ export const useChatRoom = () => {
     computedChatList,
     handleSelectHistory,
     backHistory,
-    isHistory,
-    text, setText, handleSubmit
-  }
+    isHistory: currentRoomStatus === "HISTORY",
+    text,
+    setText,
+    handleSubmit,
+  };
+};
 
+// 초기 상태 생성 함수 (샘플 구현)
+const createInit = (): ChatHistory[] => {
+  return [
+    {
+      id: 0,
+      lastOpenDate: new Date(),
+      lastMessage: "Welcome to the chat!",
+      chatList: [createNewChat("Welcome to the chat!", "BOT")],
+    },
+  ];
+};
+
+const createNewChat = (message: string, type: ChatType): Chat => ({
+  message,
+  type,
+  timestamp: new Date(),
+});
+
+export type ChatType = "BOT" | "USER";
+export type RoomStatus = "CHAT" | "HISTORY";
+
+export interface Chat {
+  message: string;
+  type: ChatType;
+  timestamp: Date;
+}
+
+export interface ChatHistory {
+  id: number;
+  lastOpenDate: Date;
+  lastMessage: string;
+  chatList: Chat[];
 }

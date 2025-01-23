@@ -37,7 +37,7 @@ const ChatList = ({chatList}: {chatList: Chat[]}) => {
 
   return (
     <>
-      {chatList.map(chat=> chat.type === "BOT" ? <ChatMessage key={chat.id}/> : <UserMessage key={chat.id }/>)}
+      {chatList.map((chat, index)=> chat.type === "BOT" ? <ChatMessage key={index}/> : <UserMessage key={index  }/>)}
     </>
   )
 }
