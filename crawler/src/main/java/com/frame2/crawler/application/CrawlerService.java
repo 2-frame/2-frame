@@ -231,7 +231,7 @@ public class CrawlerService {
         return allProducts;
     }
 
-    // 최상위 카테고리 저장: 트랜잭션 분리
+    // 카테고리 저장
     @Transactional
     public List<Category> generateCategories() {
         List<Category> categories = new ArrayList<>();
