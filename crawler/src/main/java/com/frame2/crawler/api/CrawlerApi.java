@@ -38,8 +38,8 @@ public class CrawlerApi {
 
     // 3. 옵션, 상품, 판매상품 크롤링
     @GetMapping("/start-crawl")
-    public List<SaleProduct> startCrawl() throws IOException {
+    public void startCrawl() throws IOException {
 
-        return crawlerService.crawlSaleProducts();
+        crawlerService.crawlSaleProducts();
     }
 }

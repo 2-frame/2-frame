@@ -4,17 +4,20 @@ import com.frame2.crawler.domain.Category;
 import com.frame2.crawler.domain.Option;
 import com.frame2.crawler.domain.Product;
 import com.frame2.crawler.domain.SaleProduct;
+import com.frame2.crawler.domain.Stock;
 import com.frame2.crawler.infrastructure.CategoryRepository;
 import com.frame2.crawler.infrastructure.OptionRepository;
 import com.frame2.crawler.infrastructure.ProductRepository;
 import com.frame2.crawler.infrastructure.SaleProductRepository;
 
+import com.frame2.crawler.infrastructure.StockRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,6 +37,7 @@ public class CrawlerService {
     private final SaleProductRepository saleProductRepository;
     private final ProductRepository productRepository;
     private final OptionRepository optionRepository;
+    private final StockRepository stockRepository;
 
     @Value("${FQDN}")
     private String FQDN;
@@ -70,6 +74,7 @@ public class CrawlerService {
         }
 
         saleProductRepository.saveAll(allSaleProducts);
+        generateStocks(allSaleProducts);
         return allSaleProducts;
     }
 
@@ -213,5 +218,18 @@ public class CrawlerService {
                 .parentCategory(parentCategory)
                 .categoryName(categoryName)
                 .build();
+    }
+
+    private void generateStocks(List<SaleProduct> allSaleProducts) {
+        List<Stock> stocks = new ArrayList<>();
+
+        allSaleProducts.forEach(saleProduct -> {
+            Stock stock = Stock.builder()
+                    .saleProduct(saleProduct)
+                    .quantity(new Random().nextInt(1000) + 1)
+                    .build();
+            stocks.add(stock);
+        });
+        stockRepository.saveAll(stocks);
     }
 }
