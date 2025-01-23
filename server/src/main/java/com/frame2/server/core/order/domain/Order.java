@@ -92,7 +92,6 @@ public class Order extends BaseEntity {
         // 재고 복원, 주문 상태 변경
     public void cancelOrder() {
         orderDetails.forEach(OrderDetail::cancelOrderDetail);
-        this.updateOrderStatus();
     }
 
     // 주문 상태 변경 메서드
