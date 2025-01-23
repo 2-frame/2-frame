@@ -13,6 +13,7 @@ const Layout = () => {
           <Outlet/>
         </div>
       </CenterWrapper>
+      {/*<BottomNavigator/>*/}
       <FloatingButton/>
     </>
   )

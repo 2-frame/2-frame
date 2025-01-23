@@ -4,10 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,6 +27,10 @@ public class Category extends BaseEntity {
 
     private String categoryName;
 
-    @OneToMany(mappedBy = "parentCategory")
-    private List<Category> subCategories;
+    @Builder
+    public Category(Category rootCategory, Category parentCategory, String categoryName) {
+        this.rootCategory = rootCategory;
+        this.parentCategory = parentCategory;
+        this.categoryName = categoryName;
+    }
 }

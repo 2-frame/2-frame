@@ -11,9 +11,11 @@ import java.util.List;
 
 public interface OrderService {
 
-    public IdResponse createOrder(OrderCreateRequest request);
-    public OrderResponse getOrder(Long orderId);
+    public IdResponse createOrder(Long memberId, OrderCreateRequest request);
+    public OrderResponse getOrder(Long memeberId, Long orderId);
     public PagedModel<OrderResponse> getOrders(Long memberId, Pageable pageable);
-    public OrderDetailResponse getOderDetail(Long orderDetailId);
-    public List<OrderDetailResponse> getOrderDetails(Long orderId);
+    public OrderDetailResponse getOderDetail(Long memeberId, Long orderDetailId);
+    public List<OrderDetailResponse> getOrderDetails(Long memberId, Long orderId);
+    public IdResponse cancelOrder(Long memberId, Long orderId);
+    public IdResponse cancelOrderDetail(Long memberId, Long orderDetailId);
 }

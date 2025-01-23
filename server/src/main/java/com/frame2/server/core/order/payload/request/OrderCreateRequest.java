@@ -9,8 +9,6 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 public record OrderCreateRequest(
-        @NotNull
-        Long memberId,
 
         @NotBlank(message = "받는 사람 이름은 필수입니다.")
         String recipient,
@@ -38,7 +36,7 @@ public record OrderCreateRequest(
             @Min(value = 1, message = "상품 수량은 최소 1개 이상이어야 합니다.")
             int quantity
     ){ }
-    public Order toEntity(){
+    public Order toEntity(Long memberId) {
         return Order.builder()
                 .memberId(memberId)
                 .recipient(recipient)

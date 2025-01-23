@@ -32,7 +32,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
     public void productReviewCreate(ProductReviewRequest request, Long memberId, Long saleProductId) {
         Member member = memberRepository.findOne(memberId);
         SaleProduct saleProduct = saleProductRepository.findOne(saleProductId);
-        OrderDetail orderDetail = orderDetailRepository.findOne(request.orderDetailId());
+        OrderDetail orderDetail = orderDetailRepository.findOne(memberId, request.orderDetailId());
 
         ProductReview productReview = request.toEntity(member, saleProduct, orderDetail);
         productReviewRepository.save(productReview);
