@@ -23,7 +23,7 @@ public class CrawlerApi {
 
     // 1. 카테고리 생성 (크롤링 X)
     @GetMapping("/generate-categories")
-    public void generateCategories() throws IOException {
+    public void generateCategories() {
 
         crawlerService.generateCategories(); // 카테고리 서비스는 한 번만 실행되면 된다
     }
@@ -31,6 +31,7 @@ public class CrawlerApi {
     // 2. baseUrl 수집 크롤링
     @GetMapping("/crawl-url")
     public List<String> crawlUrls() throws IOException {
+
         // product 링크 크롤링
         return urlService.crawlProductLinks(baseUrl);
     }
@@ -38,6 +39,7 @@ public class CrawlerApi {
     // 3. 옵션, 상품, 판매상품 크롤링
     @GetMapping("/start-crawl")
     public List<SaleProduct> startCrawl() throws IOException {
+
         return crawlerService.crawlSaleProducts();
     }
 }

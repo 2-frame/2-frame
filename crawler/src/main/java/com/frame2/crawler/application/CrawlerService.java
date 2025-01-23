@@ -8,11 +8,13 @@ import com.frame2.crawler.infrastructure.CategoryRepository;
 import com.frame2.crawler.infrastructure.OptionRepository;
 import com.frame2.crawler.infrastructure.ProductRepository;
 import com.frame2.crawler.infrastructure.SaleProductRepository;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,6 +41,10 @@ public class CrawlerService {
     // application.properties에서 URL 목록 가져오기
     @Value("${baseUrlList}")
     private String baseUrlListProperty;
+
+    // application.properties에서 카테고리 가져오기
+    @Value("${crawledCategory}")
+    private Long crawledCategory;
 
     // SaleProducts 크롤링 메서드
     @Transactional
@@ -77,6 +83,7 @@ public class CrawlerService {
         String imageUrl = extractImageUrl(document);
 
         Product product = Product.builder()
+                .category(categoryRepository.findOne(crawledCategory))
                 .name(productName)
                 .description(description)
                 .price(price)
@@ -156,7 +163,7 @@ public class CrawlerService {
 
     // 카테고리 저장
     @Transactional
-    public List<Category> generateCategories() {
+    public void generateCategories() {
         List<Category> categories = new ArrayList<>();
 
         // Root 카테고리 정의
@@ -197,8 +204,6 @@ public class CrawlerService {
 
         // 모든 카테고리 저장
         categoryRepository.saveAll(categories);
-
-        return categories;
     }
 
     // 카테고리 생성 헬퍼 메서드
