@@ -9,5 +9,5 @@ public enum ExceptionCode {
     CT04,
     O01, O02, O03,
     P04,
-    S01
+    CH04, S01
 }
