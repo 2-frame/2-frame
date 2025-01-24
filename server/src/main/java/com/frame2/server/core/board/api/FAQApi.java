@@ -25,7 +25,7 @@ public class FAQApi implements FAQApiSpec {
     }
 
     // 카테고리에 따른 전체 조회
-    @GetMapping
+    @GetMapping("/category")
     public ResponseEntity<List<FAQResponse>> getCategoryFAQList(@RequestParam("category") FAQCategory category) {
         List<FAQResponse> faqList = faqService.getCategoryFAQList(category);
         return ResponseEntity.ok(faqList);
