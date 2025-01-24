@@ -28,6 +28,8 @@
 
 ## 1. FK가 null 값이다 ㅠㅠ
 
+> 생성 순서: option, category > product > sale_products > stock
+
 ## 2. 아직은 어느 정도의 노동력이 투입되어야 한다.
 
 ## 참고사항

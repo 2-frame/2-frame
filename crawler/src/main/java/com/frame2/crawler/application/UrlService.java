@@ -26,7 +26,7 @@ public class UrlService {
     @Value("${productUrl}")
     private String productUrl;
 
-    // URL에서 "https://toffee.co.kr/product/*"로 시작하는 링크들을 추출하는 메서드
+    // URL에서 "productUrl"로 시작하는 링크들을 추출하는 메서드
     public List<String> crawlProductLinks(String baseUrl) throws IOException {
         List<String> productLinks = new ArrayList<>();
 
@@ -49,7 +49,8 @@ public class UrlService {
             }
 
             // 원하는 도메인과 경로를 가진 링크만 추가
-            if (href.startsWith(productUrl) && href.endsWith("/")) {
+//            if (href.startsWith(productUrl) && href.endsWith("/")) {
+            if (href.startsWith(productUrl)) {
                 // 이미 추가된 링크인지 확인하고, 중복된 링크는 추가하지 않도록 처리
                 if (!productLinks.contains(href)) {
                     productLinks.add(href);
@@ -57,7 +58,7 @@ public class UrlService {
             }
         }
 
-        // URL 목록을 application.properties 파일에 저장  -> 그냥 안 함
+        // URL 목록을 application.properties 파일에 저장  -> 나중에 함
 //        fileService.toProperties(productLinks);
 
         return productLinks;
