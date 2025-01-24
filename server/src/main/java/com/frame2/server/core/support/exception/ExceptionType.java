@@ -1,13 +1,13 @@
 package com.frame2.server.core.support.exception;
 
+import lombok.Getter;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.http.HttpStatus;
+
 import static com.frame2.server.core.support.exception.ExceptionCode.E500;
 import static org.springframework.boot.logging.LogLevel.ERROR;
 import static org.springframework.boot.logging.LogLevel.INFO;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
-import lombok.Getter;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ExceptionType {
@@ -51,8 +51,11 @@ public enum ExceptionType {
     // - 재고 -
     OUT_OF_STOCK(ExceptionCode.S01, "상품 재고가 부족합니다."),
 
+    // - FAQ -
+    FAQ_NOT_FOUND(HttpStatus.NOT_FOUND, ExceptionCode.B03, "존재하지 않는 FAQ입니다.", ERROR),
+
     // - 챗봇 -
-    CHATBOT_CALL_FAIL(HttpStatus.BAD_REQUEST, ExceptionCode.CH04, "챗봇 호출에 실패했습니다.", ERROR),;
+    CHATBOT_CALL_FAIL(HttpStatus.BAD_REQUEST, ExceptionCode.CH04, "챗봇 호출에 실패했습니다.", ERROR);
 
     private final HttpStatus status;
 
