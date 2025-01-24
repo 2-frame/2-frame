@@ -17,6 +17,7 @@ public class FAQApi implements FAQApiSpec {
     private final FAQService faqService;
 
     // 카테고리에 따른 전체 조회
+    @Override
     @GetMapping
     public ResponseEntity<List<FAQResponse>> getCategoryFAQList(
             @RequestParam(value = "category", required = false) FAQCategory category) {
