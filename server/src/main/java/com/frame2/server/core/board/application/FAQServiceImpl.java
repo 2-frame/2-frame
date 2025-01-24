@@ -17,7 +17,7 @@ public class FAQServiceImpl implements FAQService {
 
     private final FAQRepository faqRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public FAQResponse getFAQ(Long faqId) {
         FAQ faq = faqRepository.findOne(faqId);
         return FAQResponse.from(faq);
