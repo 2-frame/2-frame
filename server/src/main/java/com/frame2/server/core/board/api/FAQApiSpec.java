@@ -9,15 +9,12 @@ import java.util.List;
 
 @Tag(name = "FAQ")
 public interface FAQApiSpec {
-
-    // 전체조회
-    ResponseEntity<List<FAQResponse>> getFAQList();
-
-    // 카테고리에 따른 전체 조회
+    
+    // 전체 조회와 카테고리에 따른 전체 조회
     ResponseEntity<List<FAQResponse>> getCategoryFAQList(FAQCategory category);
 
     // 단건조회
     ResponseEntity<FAQResponse> getFAQ(Long feqId);
-    
+
 }
 
