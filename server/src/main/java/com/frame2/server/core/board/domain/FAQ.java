@@ -17,7 +17,7 @@ public class FAQ extends BaseEntity {
     private FAQCategory category;
 
     // 순서
-    @Column(name = "`orders`")
+    @Column(name = "`order`")
     private int order;
 
     // 질문
