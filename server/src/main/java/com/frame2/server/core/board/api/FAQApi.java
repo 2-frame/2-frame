@@ -21,7 +21,6 @@ public class FAQApi implements FAQApiSpec {
     @GetMapping
     public ResponseEntity<List<FAQResponse>> getCategoryFAQList(
             @RequestParam(value = "category", required = false) FAQCategory category) {
-        System.out.println("category = " + category);
         List<FAQResponse> faqList;
 
         if (category != null) {
