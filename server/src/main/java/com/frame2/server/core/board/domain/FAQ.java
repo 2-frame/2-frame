@@ -1,20 +1,23 @@
 package com.frame2.server.core.board.domain;
 
 import com.frame2.server.core.support.entity.BaseEntity;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
 @Getter
 @Builder
+@Table(name = "faq")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FAQ extends BaseEntity {
 
     // 카테고리
+    @Enumerated(EnumType.STRING)
     private FAQCategory category;
 
     // 순서
+    @Column(name = "`orders`")
     private int order;
 
     // 질문
@@ -22,5 +25,5 @@ public class FAQ extends BaseEntity {
 
     // 답변
     private String answer;
-    
+
 }
