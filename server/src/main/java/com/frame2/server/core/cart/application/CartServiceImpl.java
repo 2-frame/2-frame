@@ -6,6 +6,7 @@ import com.frame2.server.core.cart.payload.request.QuantityRequest;
 import com.frame2.server.core.cart.payload.response.CartItemListResponse;
 import com.frame2.server.core.member.infrastructure.MemberRepository;
 import com.frame2.server.core.product.infrastructure.SaleProductRepository;
+import com.frame2.server.core.support.entity.BaseEntity;
 import com.frame2.server.core.support.exception.DomainException;
 import com.frame2.server.core.support.exception.ExceptionType;
 import java.util.List;
@@ -35,10 +36,10 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void addCartItem(Long memberId, CartItemRequest cartItemRequest) {
         cartItemRepository.findByMemberIdAndSaleProductIdAndDeleteStatusFalse(memberId, cartItemRequest.saleProductId())
-                // 이미 장바구니에 해당 상품이 있다면 수량만 업데이트
-                .ifPresentOrElse(item -> item.addSameItemToCart(cartItemRequest.quantity()),
-                        // 장바구니에 상품이 없으면 새로 생성하여 저장
-                        () -> createCartItem(memberId, cartItemRequest));
+                // 이미 장바구니에 해당 상품이 있다면 논리적 삭제
+                .ifPresent(BaseEntity::delete);
+        // 장바구니에 상품이 없거나, 삭제 후에 새로 생성하여 저장
+        createCartItem(memberId, cartItemRequest);
     }
 
     @Override
